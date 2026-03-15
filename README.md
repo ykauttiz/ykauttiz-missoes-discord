@@ -78,7 +78,7 @@ O código aparece **protegido** (ilegível) para preservar a autoria de yKauttiz
 
 **3.** Clique na aba **Console** no topo do DevTools
 
-**4.** Copie o conteúdo do arquivo `stable.js`, cole no console e pressione `Enter`
+**4.** Acesse `ykauttiz.github.io/ykauttiz-missoes-discord`, clique em Copiar Script e cole no console
 
 > Se o Discord pedir `allow pasting` — digite isso no console e pressione Enter antes de colar o script
 
