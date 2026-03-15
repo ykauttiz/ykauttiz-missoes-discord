@@ -134,10 +134,8 @@ O código protegido é uma medida para preservar a autoria de yKauttiz, não par
 Acesse o site do projeto com documentação completa, log preview e FAQ:
 
 ```
-https://seuusuario.github.io/ykauttiz-missoes-discord
+https://ykauttiz.github.io/ykauttiz-missoes-discord
 ```
-
-*(substitua `seuusuario` pelo seu usuário do GitHub)*
 
 ---
 
