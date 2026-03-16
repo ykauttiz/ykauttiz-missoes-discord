@@ -8,7 +8,7 @@
 <meta name="author" content="yKauttiz">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#06b6d4">
-<title>yKauttiz — Automatize Missões do Discord | v3.0.0 STABLE 2026</title>
+<title>yKauttiz — Automatize Missões do Discord | v4.0.0 STABLE 2026</title>
 <meta property="og:title" content="yKauttiz — Automatize Missões do Discord">
 <meta property="og:description" content="Script gratuito v3.0.0. Retomada parcial, timing gaussiano anti-detecção, CONFIG editável. USE POR SUA CONTA E RISCO.">
 <meta property="og:type" content="website">
@@ -19,7 +19,7 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='18' fill='%23000'>yK</text></svg>">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":"SoftwareApplication","name":"yKauttiz Missões Discord","description":"Script gratuito para automatizar missões do Discord. v3.0.0 STABLE 2026.","url":"https://ykauttiz.github.io/ykauttiz-missoes-discord","author":{"@type":"Person","name":"yKauttiz"},"applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"operatingSystem":"Windows, Linux, macOS"},
+{"@type":"SoftwareApplication","name":"yKauttiz Missões Discord","description":"Script gratuito para automatizar missões do Discord. v4.0.0 STABLE 2026.","url":"https://ykauttiz.github.io/ykauttiz-missoes-discord","author":{"@type":"Person","name":"yKauttiz"},"applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"operatingSystem":"Windows, Linux, macOS"},
 {"@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"Isso é um vírus?","acceptedAnswer":{"@type":"Answer","text":"Não. JavaScript puro no console do próprio Discord. Não baixa, não instala, não envia dados."}},
 {"@type":"Question","name":"Posso ser banido?","acceptedAnswer":{"@type":"Answer","text":"USE POR SUA CONTA E RISCO. Usa APIs internas não oficiais."}}
@@ -43,11 +43,34 @@ body{background:var(--bg);color:var(--tx);font-family:'JetBrains Mono',monospace
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 /* ═══ CURSOR ═══ */
 /* Cursor uses left/top positioning — NO transform conflict with click state */
-#cdot{position:fixed;width:6px;height:6px;background:var(--ac);border-radius:50%;pointer-events:none;z-index:10000;left:-3px;top:-3px;will-change:left,top;mix-blend-mode:difference;transition:background .3s,width .15s,height .15s,opacity .2s}
-#cring{position:fixed;width:32px;height:32px;border:1.5px solid var(--ac);border-radius:50%;pointer-events:none;z-index:9999;left:-16px;top:-16px;will-change:left,top;opacity:.5;transition:border-color .3s,opacity .25s,width .3s,height .3s,left .3s,top .3s}
-body.ch #cdot{width:9px;height:9px;left:-4.5px;top:-4.5px}
-body.ch #cring{width:48px;height:48px;opacity:.2;left:-24px;top:-24px}
-body.cc #cdot{opacity:.25;width:3px;height:3px;left:-1.5px;top:-1.5px}
+/* Cursor: uses CSS transform only — no left/top conflict with click state */
+#cdot{
+  position:fixed;pointer-events:none;z-index:10000;
+  width:6px;height:6px;
+  background:var(--ac);border-radius:50%;
+  top:0;left:0;
+  /* transform is the ONLY positioning — JS sets --cx/--cy */
+  transform:translate(var(--cx,0px),var(--cy,0px)) translate(-50%,-50%);
+  mix-blend-mode:difference;
+  transition:background .3s,width .18s,height .18s,opacity .2s;
+  will-change:transform;
+}
+#cring{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:32px;height:32px;
+  border:1.5px solid var(--ac);border-radius:50%;
+  top:0;left:0;
+  /* ring lags behind via JS lerp, same CSS var approach */
+  transform:translate(var(--rx,0px),var(--ry,0px)) translate(-50%,-50%);
+  opacity:.5;
+  transition:border-color .3s,opacity .25s,width .3s,height .3s;
+  will-change:transform;
+}
+/* Hover: just size change, no position change needed */
+body.ch #cdot{width:9px;height:9px}
+body.ch #cring{width:48px;height:48px;opacity:.2}
+/* Click: just scale — transform position is preserved because it uses CSS vars */
+body.cc #cdot{opacity:.2;width:2px;height:2px;transition:opacity .05s,width .05s,height .05s}
 /* ═══ SCROLL BAR ═══ */
 #sbar{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--ac),var(--pu),var(--gr));background-size:200%;z-index:2000;pointer-events:none;animation:sbg 4s linear infinite}
 @keyframes sbg{0%{background-position:0%}100%{background-position:200%}}
@@ -390,8 +413,8 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
 <!-- TICKER -->
 <div class="tkw" style="margin-top:52px" aria-hidden="true">
   <div class="tki">
-    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v3.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
-    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v3.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
+    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v4.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
+    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v4.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
   </div>
 </div>
 
@@ -408,7 +431,7 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
     <p class="hprop">Automatize suas missões do Discord em segundos — gratuito, sem instalação</p>
     <div class="htype"><span id="ttext"></span><span class="cur">|</span></div>
     <div class="hbadges">
-      <span class="badge bg">v3.0.0 STABLE</span>
+      <span class="badge bg">v4.0.0 STABLE</span>
       <span class="badge ba">🔒 código protegido</span>
       <span class="badge ba">Anti-Hang Protocol</span>
       <span class="badge br2c">⚠ use por sua conta e risco</span>
@@ -443,7 +466,7 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
     </div>
     <div class="aimeta">
       <div class="aicell"><div class="aicl">Autor</div><div class="aicv">yKauttiz</div></div>
-      <div class="aicell"><div class="aicl">Versão atual</div><div class="aicv gr">v3.0.0 STABLE</div></div>
+      <div class="aicell"><div class="aicl">Versão atual</div><div class="aicv gr">v4.0.0 STABLE</div></div>
       <div class="aicell"><div class="aicl">Distribuição</div><div class="aicv ac">Gratuita</div></div>
     </div>
     <div class="ainote">O <b>yKauttiz Missões Discord</b> nasceu da necessidade de automatizar um processo repetitivo de forma confiável. O desenvolvimento segue um ciclo de identificação de problema → protótipo → teste real → refinamento → lançamento. Cada versão é documentada no changelog antes de ser publicada como STABLE. O código protegido garante que apenas a versão oficial seja utilizada, protegendo tanto o autor quanto os usuários de versões adulteradas.</div>
@@ -484,9 +507,10 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
       <tr><td class="ct">PLAY_ON_DESKTOP</td><td><span class="cx">✗</span></td><td><span class="ck">✓</span></td><td>GameStore · Anti-Hang 25min · HIDE_ACTIVITY opcional</td></tr>
       <tr><td class="ct">STREAM_ON_DESKTOP</td><td><span class="cx">✗</span></td><td><span class="ck">✓</span></td><td>StreamStore · 1 pessoa no canal · Anti-Hang 25min</td></tr>
       <tr><td class="ct">PLAY_ACTIVITY</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td>VoiceStateStore · canal atual do usuário</td></tr>
+      <tr><td class="ct">ACHIEVEMENT_IN_ACTIVITY</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td>location_type:voice_channel · trata 403 graciosamente</td></tr>
     </tbody>
   </table>
-  <div class="cst rv">🟢 Compatível com Discord Stable · Mar 2026</div>
+  <div class="cst rv">🟢 v4.0.0 Compatível com Discord Stable · Mar 2026</div>
 </section>
 
 <div class="div"></div>
@@ -507,11 +531,11 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
     </div>
     <div class="panel-code" id="spc">Gerando script protegido...</div>
     <div class="panel-foot">
-      <button class="cpbtn mag" id="cpbtn" onclick="copiar()"><span class="bt">Copiar Script — yKauttiz v3.0.0</span></button>
+      <button class="cpbtn mag" id="cpbtn" onclick="copiar()"><span class="bt">Copiar Script — yKauttiz v4.0.0</span></button>
       <div class="pmeta">
         <span id="spch">—</span>
         <span style="color:var(--br2)">·</span>
-        <span style="color:var(--ac)">v3.0.0 STABLE</span>
+        <span style="color:var(--ac)">v4.0.0 STABLE</span>
         <span style="color:var(--br2)">·</span>
         <span id="spsid">—</span>
         <span style="color:var(--br2)">·</span>
@@ -534,6 +558,8 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
     <div class="mc" style="--cc:var(--ye)"><div class="mci">🎮</div><div class="mn">PLAY_ON_DESKTOP</div><div class="md">GameStore injection · PID realista · Anti-Hang 25min · HIDE_ACTIVITY opcional.</div><span class="mt" style="--cc:var(--ye)">Desktop App obrig.</span></div>
     <div class="mc" style="--cc:var(--ye)"><div class="mci">📡</div><div class="mn">STREAM_ON_DESKTOP</div><div class="md">StreamStore injection · restaura automaticamente · Anti-Hang 25min.</div><span class="mt" style="--cc:var(--ye)">Desktop App + 1 pessoa</span></div>
     <div class="mc" style="--cc:var(--ac)"><div class="mci">🔄</div><div class="mn">PLAY_ACTIVITY</div><div class="md">VoiceStateStore para canal correto · heartbeat gaussiano [12s-45s].</div><span class="mt">Canal de voz</span></div>
+    <div class="mc" style="--cc:var(--or)"><div class="mci">🔔</div><div class="mn">AUTO-ENROLL</div><div class="md">Inscrição automática com delay gaussiano 2-8s · Pula se jogo não instalado (400 expected) · Ativado via CFG.</div><span class="mt" style="--cc:var(--or)">CFG.AUTO_ENROLL</span></div>
+    <div class="mc" style="--cc:var(--ye)"><div class="mci">🏆</div><div class="mn">ACHIEVEMENT_IN_ACTIVITY</div><div class="md">Heartbeat via canal de voz com location_type correto · Trata 403 graciosamente.</div><span class="mt" style="--cc:var(--ye)">Canal de voz</span></div>
     <div class="mc" style="--cc:var(--pu)"><div class="mci">⚡</div><div class="mn">RETOMADA PARCIAL</div><div class="md">Lê progresso real do Discord · configVersion 1 e 2 suportados · continua do ponto exato.</div><span class="mt" style="--cc:var(--pu)">Automático</span></div>
   </div>
   <div class="pdems rv">
@@ -670,8 +696,8 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
   <div class="wn rv">
     <div class="wni">🚀</div>
     <div>
-      <div class="wnt">Novo na v3.0.0 STABLE — Mar 2026</div>
-      <div class="wnd"><b>Loop iterativo</b> (fim da recursão), <b>Anti-Hang Protocol</b> (timeout 25min), <b>CONFIG block editável</b>, <b>notificações nativas</b>, <b>yKauttizStop()</b> para parada graciosa, <b>distribuição bi-modal</b> no videoStep, <b>per-request drift</b> (elimina fingerprinting), <b>VoiceStateStore</b> para PLAY_ACTIVITY, <b>Fisher-Yates shuffle</b> na fila, e muitos outros fixes.</div>
+      <div class="wnt">Novo na v4.0.0 STABLE — Mar 2026</div>
+      <div class="wnd"><b>AUTO_ENROLL toggle</b>, <b>ACHIEVEMENT_IN_ACTIVITY</b> suportado, <b>3 estratégias webpack</b>, além de: <b>Loop iterativo</b>, <b>Anti-Hang Protocol</b> (timeout 25min), <b>CONFIG block editável</b>, <b>notificações nativas</b>, <b>yKauttizStop()</b> para parada graciosa, <b>distribuição bi-modal</b> no videoStep, <b>per-request drift</b> (elimina fingerprinting), <b>VoiceStateStore</b> para PLAY_ACTIVITY, <b>Fisher-Yates shuffle</b> na fila, e muitos outros fixes.</div>
     </div>
   </div>
 
@@ -708,7 +734,7 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
 <footer>
   <div class="flogo">yKauttiz</div>
   <div class="fsub">
-    Missões Discord · v3.0.0 STABLE 2026 · Gratuito<br>
+    Missões Discord · v4.0.0 STABLE 2026 · Gratuito<br>
     <a href="https://discord.gg/G3wrqyJQrC" target="_blank" rel="noopener noreferrer">discord.gg/G3wrqyJQrC</a>
     &nbsp;·&nbsp;<a href="#cl-sec">Changelog</a>
     &nbsp;·&nbsp;<a href="#faq-sec">FAQ</a>
@@ -724,15 +750,23 @@ footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
 var cdot=document.getElementById('cdot');
 var cring=document.getElementById('cring');
 var mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-
-function moveDot(){cdot.style.left=(mx-3)+'px';cdot.style.top=(my-3)+'px';}
+var root=document.documentElement;
+// Update CSS vars for cursor position — no left/top or transform in JS
+function moveDot(){root.style.setProperty('--cx',mx+'px');root.style.setProperty('--cy',my+'px');}
 function lp(a,b,t){return a+(b-a)*t;}
-(function animRing(){rx=lp(rx,mx,.1);ry=lp(ry,my,.1);cring.style.left=(rx-16)+'px';cring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+(function animRing(){
+  rx=lp(rx,mx,.11);ry=lp(ry,my,.11);
+  root.style.setProperty('--rx',rx+'px');
+  root.style.setProperty('--ry',ry+'px');
+  requestAnimationFrame(animRing);
+})();
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;moveDot();},{passive:true});
 document.addEventListener('mouseleave',function(){cdot.style.opacity='0';cring.style.opacity='0';});
 document.addEventListener('mouseenter',function(){cdot.style.opacity='';cring.style.opacity='';});
 document.addEventListener('mousedown',function(){document.body.classList.add('cc');});
 document.addEventListener('mouseup',function(){document.body.classList.remove('cc');});
+// Initialize so cursor doesn't start at 0,0
+moveDot();root.style.setProperty('--rx',mx+'px');root.style.setProperty('--ry',my+'px');
 document.querySelectorAll('button,a,label,.badge,.mc,.acard,.osc').forEach(function(el){
   el.addEventListener('mouseenter',function(){document.body.classList.add('ch');});
   el.addEventListener('mouseleave',function(){document.body.classList.remove('ch');});
@@ -904,7 +938,13 @@ function protect(src){
 
 /* ════ CHANGELOG DATA ════ */
 var CL=[
-  {v:'v3.0.0 STABLE',vs:'v3.0.0',d:'Mar 2026',st:'st-s',h:['Loop iterativo','Anti-Hang 25min','CONFIG editável','Notificações nativas'],i:[
+  {v:'v4.0.0 STABLE',vs:'v4.0.0',d:'Mar 2026',st:'st-s',h:['Loop iterativo','Anti-Hang 25min','CONFIG editável','Notificações nativas'],i:[
+    ['a','AUTO_ENROLL toggle: tenta inscrição automática com delay gaussiano 2-8s (ativado via CFG.AUTO_ENROLL)'],
+    ['a','ACHIEVEMENT_IN_ACTIVITY suportado: heartbeat via canal de voz com location_type correto'],
+    ['a','3 estratégias findModule: webpack fallback paths para resiliência a updates do Discord'],
+    ['a','UserStore (getCurrentUser) para identificar usuário correto no VoiceState'],
+    ['a','Dispatcher fallback: suporta exports.h e exports.default'],
+    ['a','API fallback: suporta exports.Bo e exports.default'],
     ['a','Loop iterativo substituindo recursão — elimina risco de stack overflow com muitas missões'],
     ['a','Anti-Hang Protocol: Promise.race com timeout de 25min em PLAY_ON_DESKTOP e STREAM_ON_DESKTOP — nunca trava infinitamente'],
     ['a','CONFIG block no topo: VIDEO_SPEED, HIDE_ACTIVITY, DRY_RUN, LOG_LEVEL, URGENCY_FIRST, SHUFFLE_QUEUE, MAX_RETRIES, PID_MIN/MAX'],
@@ -997,39 +1037,71 @@ var CL=[
 })();
 
 /* ════ RAW SCRIPT ════ */
-var RAW=`;
-;(async()=>{
+var RAW=`;(async()=>{
 'use strict';delete window.$;
 
-// ── CONFIG ────────────────────────────────────────────────
 const CFG={
-  VIDEO_SPEED:'normal',    // 'rapido'|'normal'|'lento'
-  HIDE_ACTIVITY:false,     // esconde status de jogo
-  DRY_RUN:false,           // nao envia requests, so lista
-  LOG_LEVEL:'normal',      // 'normal'|'verbose'|'silencioso'
-  URGENCY_FIRST:true,      // missoes urgentes primeiro
-  SHUFFLE_QUEUE:true,      // embaralha fila
-  NOTIFICATIONS:true,      // notificacoes desktop
+  VIDEO_SPEED:'normal',
+  HIDE_ACTIVITY:false,
+  DRY_RUN:false,
+  LOG_LEVEL:'normal',
+  URGENCY_FIRST:true,
+  SHUFFLE_QUEUE:true,
+  AUTO_ENROLL:false,
+  NOTIFICATIONS:true,
+  EXPORT_LOG:true,
   MAX_RETRIES:{r429:4,r5xx:3,rNet:5},
-  PLAY_TIMEOUT:25*60*1000, // 25min anti-hang
+  PLAY_TIMEOUT:25*60*1000,
   PID_MIN:4096,PID_MAX:24576,
-  PAUSE_COOLDOWN:30000,    // min 30s entre micro-pausas
+  PAUSE_COOLDOWN:30000,
 };
 
-// ── IDENTIDADE ────────────────────────────────────────────
-const VER='v3.0.0';
+const VER='v4.0.0';
 const SIGN='yKauttiz.MissoesDiscord.STABLE.2026';
 const GID='1356778105737580554';
 const INV='G3wrqyJQrC';
 const SID='yk_'+Math.random().toString(36).slice(2,8).toUpperCase();
 const T0=Date.now();
-const DIG=T0.toString(36).slice(-4);
 const BLD=location.hostname.includes('canary')?'Canary':location.hostname.includes('ptb')?'PTB':'Stable';
 const DESK=typeof DiscordNative!=='undefined';
-let stopFlag=false;
-let cleanup=null;
-window.yKauttizStop=function(){stopFlag=true;console.warn('%c[yKauttiz] Parando...','color:#FEE75C;font-weight:bold');if(cleanup)try{cleanup();}catch(e){}};
-const LOG={_w:0,_e:0,_l:[],_t:[],
+let stopFlag=false,cleanup=null;
+window.yKauttizStop=function(){stopFlag=true;LOG.w('Parada solicitada...');if(cleanup)try{cleanup();}catch(e){}};
+function ftm(ms){return ms<60000?Math.round(ms/1000)+'s':Math.floor(ms/60000)+'m'+Math.round((ms%60000)/1000)+'s';}
+function ts(){return new Date().toLocaleTimeString('pt-BR');}
+function gauss(m,d){var u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.max(0,m+d*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v));}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function rng(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function sl(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rng(0,i);var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var BDRIFT=Math.round(gauss(120,40));
+function getDrift(){return clamp(Math.round(gauss(BDRIFT,18)),40,380);}
+var THR=1.0;
+function iv(){return Math.max(650,Math.floor(gauss(1050*THR,200)));}
+function thrUp(){THR=Math.min(THR*1.5,4.0);}
+function thrRst(){THR=1.0;}
+function vstep(rem){
+  rem=rem||999;
+  var sp=CFG.VIDEO_SPEED==='rapido'?[3,7]:CFG.VIDEO_SPEED==='lento'?[7,14]:[5,9];
+  var s=Math.random()<0.8?clamp(Math.round(gauss((sp[0]+sp[1])/2,(sp[1]-sp[0])/4)),sp[0],sp[1]):rng(1,4);
+  return clamp(s,1,Math.min(rem,14));
+}
+var lastPause=0;
+async function maybePause(){
+  if(Date.now()-lastPause<CFG.PAUSE_COOLDOWN)return;
+  if(Math.random()<0.15){await sl(Math.max(1500,Math.floor(gauss(4000,1400))));lastPause=Date.now();}
+}
+async function backoff(type,n,status){
+  var d;
+  if(type==='429'){d=clamp(Math.floor(gauss(8000*Math.pow(2,n),1500)),5000,90000);LOG.w('[429] Rate limit tentativa '+n+'. Aguardando '+Math.round(d/1000)+'s...');}
+  else if(type==='5xx'){thrUp();d=n===1?10000:15000;LOG.w('['+(status||500)+'] Servidor. Throttle:'+THR.toFixed(1)+'x. Aguardando '+Math.round(d/1000)+'s...');}
+  else{d=clamp(5000*n,3000,30000);LOG.w('[rede] Falha '+n+'. Aguardando '+Math.round(d/1000)+'s...');}
+  await sl(Math.floor(gauss(d,d*0.12)));
+}
+function cErr(e){var s=e&&(e.status||e.code)||0;return{s:s,is400:s===400,is401:s===401,is403:s===403,is404:s===404,is429:s===429,is5xx:s>=500&&s<600,isNet:!s};}
+var notifOk=false;
+if(CFG.NOTIFICATIONS&&typeof Notification!=='undefined'){try{Notification.requestPermission().then(function(p){notifOk=p==='granted';});}catch(e){}}
+function notify(t,b){if(!notifOk)return;try{new Notification('yKauttiz — '+t,{body:b});}catch(e){}}
+var LOG={_w:0,_e:0,_l:[],
   banner:function(){
     console.log('\n%c yKauttiz %c Missoes Discord %c STABLE %c '+VER+' %c discord.gg/G3wrqyJQrC \n',
       'background:#5865F2;color:#fff;font-weight:bold;font-size:13px;padding:4px 10px;border-radius:4px 0 0 4px',
@@ -1037,10 +1109,9 @@ const LOG={_w:0,_e:0,_l:[],_t:[],
       'background:#57F287;color:#0d2115;font-weight:bold;font-size:14px;padding:4px 10px',
       'background:#57F287;color:#0d2115;font-weight:bold;font-size:13px;padding:4px 10px',
       'background:#23272A;color:#5865F2;font-size:11px;padding:4px 10px;border-radius:0 4px 4px 0');
-    console.log('%c  !! USE POR SUA CONTA E RISCO !!\n\n  Sessao: '+SID+' | '+VER+' | Drift base: '+BDRIFT+'ms\n  Discord '+BLD+' | Desktop: '+(DESK?'Sim':'Nao')+'\n  Para parar a qualquer momento: yKauttizStop()\n  F12 / Ctrl+Shift+I (Win/Linux) | Cmd+Opt+I (Mac)',
-      'color:#ED4245;font-family:monospace;font-size:11px;line-height:1.9');
+    console.log('%c  !! USE POR SUA CONTA E RISCO !!\n\n  Sessao: '+SID+' | '+VER+' | Drift: '+BDRIFT+'ms | Discord '+BLD+' | Desktop: '+(DESK?'Sim':'Nao')+'\n  Para parar: yKauttizStop() | Log: window.yKauttizLog','color:#ED4245;font-family:monospace;font-size:11px;line-height:1.9');
   },
-  i:function(m){if(CFG.LOG_LEVEL==='silencioso')return;console.log('%c[yKauttiz]%c '+ts()+' '+m,'color:#8b9cf7;font-weight:bold','color:#c0c4d6');this._l.push({t:'i',m:m,ts:Date.now()});},
+  i:function(m){if(CFG.LOG_LEVEL==='silencioso')return;console.log('%c[yKauttiz]%c ['+ts()+'] '+m,'color:#8b9cf7;font-weight:bold','color:#c0c4d6');this._l.push({t:'i',m:m,ts:Date.now()});},
   ok:function(m){console.log('%c[yKauttiz]%c \u2713 '+m,'color:#57F287;font-weight:bold','color:#57F287');this._l.push({t:'ok',m:m,ts:Date.now()});},
   w:function(m){this._w++;console.warn('%c[yKauttiz]%c \u26a0 '+m,'color:#FEE75C;font-weight:bold','color:#FEE75C');this._l.push({t:'w',m:m,ts:Date.now()});},
   e:function(m){this._e++;console.error('%c[yKauttiz]%c \u2717 '+m,'color:#ED4245;font-weight:bold','color:#ED4245');this._l.push({t:'e',m:m,ts:Date.now()});},
@@ -1051,79 +1122,28 @@ const LOG={_w:0,_e:0,_l:[],_t:[],
     var eta=cur<tot?'~'+ftm((tot-cur)/(vel||7)*1000):'PRONTO';
     var vs=vel?(vel<4?' rapido':vel>10?' lento':' normal'):'';
     var ts2=thr>1.1?'  thr:'+thr.toFixed(1)+'x':'';
-    console.log('%c[yKauttiz]%c '+name+'\n  ['+b+'] '+p+'%  '+Math.round(cur)+'s/'+tot+'s  '+eta+(vel?'  vel:'+vel.toFixed(1)+'s/r'+vs:'')+ts2,'color:#8b9cf7;font-weight:bold','color:#8b9cf7;font-family:monospace;font-size:11px');
+    console.log('%c[yKauttiz]%c '+name+'\n  ['+b+'] '+p+'%  '+Math.round(cur)+'s/'+tot+'s  '+eta+(vel?'  vel:'+vel.toFixed(1)+vs:'')+ts2,'color:#8b9cf7;font-weight:bold','color:#8b9cf7;font-family:monospace;font-size:11px');
   },
   miss:function(nm,tp,pos,tot,fr,tgt,exp,ck){
     if(CFG.LOG_LEVEL==='silencioso')return;
     var r=tgt-fr,p=Math.min(100,Math.round(fr/tgt*100));
-    console.log('%c[yKauttiz]%c\n  -- Missao '+pos+'/'+tot+' | '+SID+' --\n  Nome: '+nm+'\n  Tipo: '+tp+'\n  Progresso: '+Math.round(fr)+'s/'+tgt+'s ('+p+'%) | Restam: '+Math.round(r)+'s (~'+Math.ceil(r/60)+'min)\n  Checkpoint: '+ck.toFixed(1)+'s | Expira em: '+exp+'h\n  '+'─'.repeat(40),'color:#FEE75C;font-weight:bold','color:#c0c4d6;font-family:monospace');
+    console.log('%c[yKauttiz]%c\n  -- Missao '+pos+'/'+tot+' | '+SID+' --\n  Nome: '+nm+'\n  Tipo: '+tp+'\n  Prog: '+Math.round(fr)+'s/'+tgt+'s ('+p+'%) | Restam: '+Math.round(r)+'s (~'+Math.ceil(r/60)+'min)\n  Checkpoint: '+ck.toFixed(1)+'s | Expira: em '+exp+'h\n  '+'─'.repeat(42),'color:#FEE75C;font-weight:bold','color:#c0c4d6;font-family:monospace');
   },
   res:function(ok,sk,er,mt){
     var t=ftm(Date.now()-T0);
     var ts2=mt.length?'\n  Por missao:\n'+mt.map(function(m){return'  · '+m.n+': '+ftm(m.e)+' ('+m.t+')'}).join('\n'):'';
-    console.log('%c[yKauttiz]%c\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n  \u2551  yKauttiz '+VER+' \u2014 Resumo        \u2551\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  \u2713 Concluidas:  '+String(ok).padEnd(5)+'              \u2551\n  \u2551  \u23ed Puladas:     '+String(sk).padEnd(5)+'              \u2551\n  \u2551  \u2717 Erros:       '+String(er).padEnd(5)+'              \u2551\n  \u2551  \u23f1 Tempo total: '+t.padEnd(22)+'\u2551'+ts2+'\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  Colete as recompensas no Discord! \u2551\n  \u2551  (c) 2026 yKauttiz               \u2551\n  \u2551  discord.gg/G3wrqyJQrC           \u2551\n  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
-    window.yKauttizLog={ver:VER,sid:SID,start:new Date(T0).toISOString(),end:new Date().toISOString(),ok:ok,skipped:sk,errors:er,missions:mt,logs:LOG._l};
-    LOG.i('Log exportavel: copy(JSON.stringify(window.yKauttizLog))');
+    console.log('%c[yKauttiz]%c\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n  \u2551  yKauttiz '+VER+'             \u2551\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  \u2713 Concluidas: '+String(ok).padEnd(5)+'           \u2551\n  \u2551  \u23ed Puladas:    '+String(sk).padEnd(5)+'           \u2551\n  \u2551  \u2717 Erros:      '+String(er).padEnd(5)+'           \u2551\n  \u2551  \u23f1 Tempo:      '+t.padEnd(18)+'\u2551'+ts2+'\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  Colete as recompensas!       \u2551\n  \u2551  (c) 2026 yKauttiz            \u2551\n  \u2551  discord.gg/G3wrqyJQrC       \u2551\n  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
+    if(CFG.EXPORT_LOG){window.yKauttizLog={ver:VER,sid:SID,start:new Date(T0).toISOString(),end:new Date().toISOString(),ok:ok,sk:sk,er:er,missions:mt,logs:LOG._l};LOG.i('Log exportavel: copy(JSON.stringify(window.yKauttizLog))');}
   }
 };
 
-// ── MATH ─────────────────────────────────────────────────
-function gauss(m,d){var u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.max(0,m+d*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v));}
-function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
-function rng(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
-function sl(ms){return new Promise(function(r){setTimeout(r,ms);});}
-function ftm(ms){return ms<60000?Math.round(ms/1000)+'s':Math.floor(ms/60000)+'m'+Math.round((ms%60000)/1000)+'s';}
-function ts(){return new Date().toLocaleTimeString('pt-BR');}
-function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rng(0,i);var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-
-// ── DRIFT ────────────────────────────────────────────────
-var BDRIFT=Math.round(gauss(120,40));
-function getDrift(){return clamp(Math.round(gauss(BDRIFT,18)),40,380);}
-
-// ── THROTTLE ─────────────────────────────────────────────
-var THR=1.0;
-function iv(){return Math.max(650,Math.floor(gauss(1050*THR,200)));}
-function thrUp(){THR=Math.min(THR*1.5,4.0);}
-function thrRst(){THR=1.0;}
-
-// ── VIDEO STEP ────────────────────────────────────────────
-function vstep(rem){
-  rem=rem||999;
-  var sp=CFG.VIDEO_SPEED==='rapido'?[3,7]:CFG.VIDEO_SPEED==='lento'?[7,14]:[5,9];
-  var s=Math.random()<0.8?clamp(Math.round(gauss((sp[0]+sp[1])/2,(sp[1]-sp[0])/4)),sp[0],sp[1]):rng(1,4);
-  return clamp(s,1,Math.min(rem,14));
-}
-
-// ── MICRO-PAUSA ───────────────────────────────────────────
-var lastPause=0;
-async function maybePause(){
-  if(Date.now()-lastPause<CFG.PAUSE_COOLDOWN)return;
-  if(Math.random()<0.15){await sl(Math.max(1500,Math.floor(gauss(4000,1400))));lastPause=Date.now();}
-}
-
-// ── BACKOFF UNIFICADO ─────────────────────────────────────
-async function backoff(type,n,status){
-  var d;
-  if(type==='429'){d=clamp(Math.floor(gauss(8000*Math.pow(2,n),1500)),5000,90000);LOG.w('[429] Rate limit, tentativa '+n+'. Aguardando '+Math.round(d/1000)+'s...');}
-  else if(type==='5xx'){thrUp();d=n===1?10000:15000;LOG.w('['+(status||500)+'] Servidor. Throttle:'+THR.toFixed(1)+'x. Aguardando '+Math.round(d/1000)+'s...');}
-  else{d=clamp(5000*n,3000,30000);LOG.w('[rede] Falha '+n+'/'+CFG.MAX_RETRIES.rNet+'. Aguardando '+Math.round(d/1000)+'s...');}
-  await sl(Math.floor(gauss(d,d*0.12)));
-}
-
-// ── ERROR CLASSIFIER ──────────────────────────────────────
-function cErr(e){var s=e&&(e.status||e.code)||0;return{s:s,is400:s===400,is401:s===401,is403:s===403,is404:s===404,is429:s===429,is5xx:s>=500&&s<600,isNet:!s};}
-
-// ── NOTIFICACAO ───────────────────────────────────────────
-var notifOk=false;
-if(CFG.NOTIFICATIONS&&typeof Notification!=='undefined'){try{Notification.requestPermission().then(function(p){notifOk=p==='granted';});}catch(e){}}
-function notify(title,body){if(!notifOk)return;try{new Notification('yKauttiz — '+title,{body:body});}catch(e){}}
-
-// ── WEBPACK BOOTSTRAP ─────────────────────────────────────
 var WP=null;
-var strategies=[
+var STRATS=[
   function(){var w=webpackChunkdiscord_app.push([[Symbol()],{},function(r){return r;}]);webpackChunkdiscord_app.pop();return w;},
+  function(){var k=Object.keys(webpackChunkdiscord_app.__proto__||{});var w=webpackChunkdiscord_app[k[0]]||null;return w;},
+  function(){return window.webpackChunkdiscord_app&&webpackChunkdiscord_app[webpackChunkdiscord_app.length-1]&&webpackChunkdiscord_app[webpackChunkdiscord_app.length-1][2]||null;},
 ];
-for(var si=0;si<strategies.length;si++){try{WP=strategies[si]();if(WP&&WP.c)break;}catch(e){}}
+for(var si=0;si<STRATS.length;si++){try{WP=STRATS[si]();if(WP&&WP.c)break;}catch(e){}}
 if(!WP||!WP.c){console.error('%c[yKauttiz] Execute dentro do Discord (F12). webpack nao encontrado.','color:#ED4245;font-weight:bold;font-size:13px');return;}
 
 function fm(){
@@ -1133,80 +1153,82 @@ function fm(){
   return null;
 }
 
-// ── STORES ───────────────────────────────────────────────
-var SS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&x.exports.A.__proto__.getStreamerActiveStreamMetadata;});SS=SS&&SS.exports&&SS.exports.A;
-var GS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getRunningGames==='function';});GS=GS&&GS.exports&&GS.exports.Ay;
-var QS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getQuest==='function';});QS=QS&&QS.exports&&QS.exports.A;
-var CS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getAllThreadsForParent==='function';});CS=CS&&CS.exports&&CS.exports.A;
-var GuS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getSFWDefaultChannel==='function';});GuS=GuS&&GuS.exports&&GuS.exports.Ay;
-var DS=fm(function(x){return x&&x.exports&&x.exports.h&&x.exports.h.__proto__&&typeof x.exports.h.__proto__.flushWaitQueue==='function';});DS=DS&&DS.exports&&DS.exports.h;
-var API=fm(function(x){return x&&x.exports&&x.exports.Bo&&typeof x.exports.Bo.get==='function'&&typeof x.exports.Bo.post==='function';});API=API&&API.exports&&API.exports.Bo;
-var VS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getVoiceStateForUser==='function';});VS=VS&&VS.exports&&VS.exports.Ay;
-// MemberStore — caminho correto sem inconsistencia
-var MS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.isMember==='function';});MS=MS&&MS.exports&&MS.exports.Ay;
+var SS_m=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&x.exports.A.__proto__.getStreamerActiveStreamMetadata;});
+var SS=SS_m&&SS_m.exports&&SS_m.exports.A;
+var GS_m=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getRunningGames==='function';});
+var GS=GS_m&&GS_m.exports&&GS_m.exports.Ay;
+var QS_m=fm(
+  function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getQuest==='function';},
+  function(x){return x&&x.exports&&x.exports.default&&x.exports.default.__proto__&&typeof x.exports.default.__proto__.getQuest==='function';},
+  function(x){return x&&x.exports&&typeof x.exports.getQuest==='function';}
+);
+var QS=QS_m&&(QS_m.exports.A||QS_m.exports.default||QS_m.exports);
+var CS_m=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getAllThreadsForParent==='function';});
+var CS=CS_m&&CS_m.exports&&CS_m.exports.A;
+var GuS_m=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getSFWDefaultChannel==='function';});
+var GuS=GuS_m&&GuS_m.exports&&GuS_m.exports.Ay;
+var DS_m=fm(
+  function(x){return x&&x.exports&&x.exports.h&&x.exports.h.__proto__&&typeof x.exports.h.__proto__.flushWaitQueue==='function';},
+  function(x){return x&&x.exports&&x.exports.default&&typeof x.exports.default.subscribe==='function'&&typeof x.exports.default.dispatch==='function';}
+);
+var DS=DS_m&&(DS_m.exports.h||DS_m.exports.default);
+var API_m=fm(
+  function(x){return x&&x.exports&&x.exports.Bo&&typeof x.exports.Bo.get==='function'&&typeof x.exports.Bo.post==='function';},
+  function(x){return x&&x.exports&&x.exports.default&&typeof x.exports.default.get==='function'&&typeof x.exports.default.post==='function'&&typeof x.exports.default.put==='function';}
+);
+var API=API_m&&(API_m.exports.Bo||API_m.exports.default);
+var VS_m=fm(
+  function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getVoiceStateForUser==='function';},
+  function(x){return x&&x.exports&&x.exports.default&&typeof x.exports.default.getVoiceStateForUser==='function';}
+);
+var VS=VS_m&&(VS_m.exports.Ay||VS_m.exports.default);
+var MS_m=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.isMember==='function';});
+var MS=MS_m&&MS_m.exports&&MS_m.exports.Ay;
+var US_m=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getCurrentUser==='function';});
+var US=US_m&&US_m.exports&&US_m.exports.Ay;
 
 if(!QS){console.error('%c[yKauttiz] QuestStore nao encontrado. Ctrl+R e tente novamente.','color:#ED4245;font-weight:bold');return;}
 if(!API){console.error('%c[yKauttiz] API nao encontrada. Ctrl+R e tente novamente.','color:#ED4245;font-weight:bold');return;}
 
-// ── SERVIDOR OBRIGATORIO ─────────────────────────────────
-// Verifica PRIMEIRO se ja eh membro — sem fazer request desnecessario
-// Se nao for membro, tenta entrar automaticamente
-// PARA o script se nao conseguir confirmar a presenca no servidor
 async function checkServer(){
   LOG.i('Verificando servidor (obrigatorio)...');
-
-  // Verificacao 1: MemberStore direto (mais confiavel)
   var isMember=false;
-  try{
-    if(MS&&typeof MS.isMember==='function'){
-      isMember=MS.isMember(GID);
-      LOG.d('MemberStore.isMember: '+isMember);
-    }
-  }catch(e){LOG.d('MemberStore erro: '+e);}
-
-  // Verificacao 2: GuildStore fallback
-  if(!isMember){
-    try{
-      var guilds=GuS&&GuS.getAllGuilds?GuS.getAllGuilds():{};
-      isMember=Object.prototype.hasOwnProperty.call(guilds,GID)||Object.keys(guilds).includes(GID);
-      LOG.d('GuildStore check: '+isMember+' ('+Object.keys(guilds).length+' guilds)');
-    }catch(e){LOG.d('GuildStore erro: '+e);}
-  }
-
+  try{if(MS&&typeof MS.isMember==='function'){isMember=MS.isMember(GID);LOG.d('MemberStore: '+isMember);}}catch(e){}
+  if(!isMember){try{var g=GuS&&GuS.getAllGuilds&&GuS.getAllGuilds()||{};isMember=Object.prototype.hasOwnProperty.call(g,GID)||Object.keys(g).includes(GID);LOG.d('GuildStore: '+isMember+' ('+Object.keys(g).length+' guilds)');}catch(e){}}
   if(isMember){LOG.ok('Ja esta no servidor yKauttiz! discord.gg/G3wrqyJQrC');return true;}
-
-  // Tenta entrar automaticamente
-  LOG.i('Nao esta no servidor. Tentando entrar em discord.gg/'+INV+'...');
+  LOG.i('Entrando em discord.gg/'+INV+'...');
   try{
     await API.post({url:'/invites/'+INV});
-    LOG.ok('Entrou no servidor yKauttiz! discord.gg/G3wrqyJQrC');
-    return true;
+    LOG.ok('Entrou no servidor! discord.gg/G3wrqyJQrC');return true;
   }catch(e){
     var s=e&&(e.status||e.code);
-    LOG.d('Invite response status: '+s);
-
-    // 400 pode ser "already member" — verificar de novo
     if(s===400){
-      var doubleCheck=false;
-      try{if(MS&&typeof MS.isMember==='function')doubleCheck=MS.isMember(GID);}catch(e2){}
-      if(!doubleCheck){try{var g2=GuS&&GuS.getAllGuilds?GuS.getAllGuilds():{};doubleCheck=Object.keys(g2).includes(GID);}catch(e2){}}
-      if(doubleCheck){LOG.ok('Servidor verificado (ja era membro). discord.gg/G3wrqyJQrC');return true;}
-      // 400 sem ser membro = convite invalido ou servidor cheio
-      LOG.e('Erro ao entrar no servidor (400). Entre manualmente: discord.gg/G3wrqyJQrC');
-      LOG.e('O servidor e OBRIGATORIO. Script encerrado.');
-      return false;
-    }
-    // 403 = banido, 404 = invite invalido, etc.
-    LOG.e('Nao foi possivel entrar no servidor (codigo: '+s+').');
-    LOG.e('O servidor discord.gg/G3wrqyJQrC e OBRIGATORIO para usar este script.');
-    LOG.e('Entre manualmente em discord.gg/G3wrqyJQrC e rode novamente.');
-    LOG.e('Script encerrado.');
+      var dc=false;
+      try{if(MS&&typeof MS.isMember==='function')dc=MS.isMember(GID);}catch(e2){}
+      if(!dc){try{var g2=GuS&&GuS.getAllGuilds&&GuS.getAllGuilds()||{};dc=Object.keys(g2).includes(GID);}catch(e2){}}
+      if(dc){LOG.ok('Servidor verificado (ja era membro). discord.gg/G3wrqyJQrC');return true;}
+      LOG.e('Invite invalido ou servidor cheio (400). Entre manualmente: discord.gg/G3wrqyJQrC');
+    }else{LOG.e('Nao foi possivel entrar ('+s+'). Entre manualmente em discord.gg/G3wrqyJQrC');}
+    LOG.e('O servidor e OBRIGATORIO. Script encerrado.');return false;
+  }
+}
+
+async function tryAutoEnroll(q){
+  if(!CFG.AUTO_ENROLL)return false;
+  try{
+    await sl(Math.floor(gauss(3000,800)));
+    await API.post({url:'/quests/'+q.id+'/enroll'});
+    LOG.ok('Auto-enroll em "'+q.config.messages.questName+'"');
+    await sl(1000);return true;
+  }catch(e){
+    var er=cErr(e);
+    if(er.is400)LOG.d('Auto-enroll 400 (jogo nao instalado ou nao elegivel) — pulando');
+    else LOG.w('Auto-enroll falhou ('+er.s+')');
     return false;
   }
 }
 
-// ── TIPOS SUPORTADOS ─────────────────────────────────────
-var SUPPORTED=['WATCH_VIDEO','WATCH_VIDEO_ON_MOBILE','WATCH_VIDEO_MOBILE','PLAY_ON_DESKTOP','STREAM_ON_DESKTOP','PLAY_ACTIVITY'];
+var SUPPORTED=['WATCH_VIDEO','WATCH_VIDEO_ON_MOBILE','WATCH_VIDEO_MOBILE','PLAY_ON_DESKTOP','STREAM_ON_DESKTOP','PLAY_ACTIVITY','ACHIEVEMENT_IN_ACTIVITY'];
 function getType(q){
   try{
     var tc=q.config.taskConfig||q.config.taskConfigV2;
@@ -1215,77 +1237,69 @@ function getType(q){
     var found=null;
     for(var i=0;i<SUPPORTED.length;i++){if(tasks.indexOf(SUPPORTED[i])>=0){found=SUPPORTED[i];break;}}
     return found||tasks[0]||null;
-  }catch(e){LOG.e('getType erro em "'+q.config.messages.questName+'": '+e.message);return null;}
+  }catch(e){LOG.e('getType erro em "'+((q.config&&q.config.messages&&q.config.messages.questName)||'?')+'": '+(e.message||e));return null;}
 }
 
-// ── INIT ─────────────────────────────────────────────────
 LOG.banner();
 var serverOk=await checkServer();
 if(!serverOk)return;
 await sl(400);
 
-// Validar build
-if(DESK&&!GS)LOG.w('GameStore nao disponivel — PLAY_ON_DESKTOP sera pulado.');
-if(DESK&&!SS)LOG.w('StreamStore nao disponivel — STREAM_ON_DESKTOP sera pulado.');
+var rawQ=[].concat([...QS.quests.values()]);
 
-// ── FILTRAR MISSOES ───────────────────────────────────────
-var rawQuests=[].concat([...QS.quests.values()]);
-var quests=rawQuests.filter(function(q){
+if(CFG.AUTO_ENROLL){
+  var unenrolled=rawQ.filter(function(q){return q.userStatus&&!q.userStatus.enrolledAt&&!q.userStatus.completedAt;});
+  if(unenrolled.length)LOG.i('Auto-enroll: '+unenrolled.length+' missao(oes) nao inscritas...');
+  for(var ui=0;ui<unenrolled.length;ui++){await tryAutoEnroll(unenrolled[ui]);}
+  if(unenrolled.length){rawQ=[].concat([...QS.quests.values()]);}
+}
+
+var quests=rawQ.filter(function(q){
   if(!q.userStatus||!q.userStatus.enrolledAt||q.userStatus.completedAt)return false;
   if(new Date(q.config.expiresAt).getTime()<=Date.now())return false;
   return getType(q)!==null;
 });
 
 if(!quests.length){
-  LOG.w('Nenhuma missao ativa encontrada.');
-  LOG.i('Discord -> Missoes -> inscreva-se manualmente nas elegiveis.');
-  LOG.i('(c) 2026 yKauttiz | discord.gg/G3wrqyJQrC');
-  return;
+  LOG.w('Nenhuma missao ativa encontrada. Discord -> Missoes -> inscreva-se manualmente.');
+  LOG.i('(c) 2026 yKauttiz | discord.gg/G3wrqyJQrC');return;
 }
 
-// Embaralha fila (exceto urgentes)
 if(CFG.SHUFFLE_QUEUE){
-  var urgent=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())<4*3600*1000;});
-  var normal=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())>=4*3600*1000;});
-  quests=urgent.concat(shuffle(normal));
+  var urg=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())<4*3600*1000;});
+  var norm=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())>=4*3600*1000;});
+  quests=urg.concat(shuffle(norm));
 }
-if(CFG.URGENCY_FIRST){
-  quests.sort(function(a,b){return new Date(a.config.expiresAt).getTime()-new Date(b.config.expiresAt).getTime();});
-}
+if(CFG.URGENCY_FIRST){quests.sort(function(a,b){return new Date(a.config.expiresAt).getTime()-new Date(b.config.expiresAt).getTime();});}
 
-// ETA total estimado
 var etaTotal=quests.reduce(function(acc,q){
   var tp=getType(q);var tc=q.config.taskConfig||q.config.taskConfigV2;
-  var fr=Math.floor((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
+  var fr=Math.floor((q.userStatus&&q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
   var tot=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
   return acc+(tot-fr)/7*1000;
 },0);
 
-LOG.i(quests.length+' missao(oes) encontrada(s) | ETA ~'+ftm(etaTotal)+' | '+SID);
+LOG.i(quests.length+' missao(oes) | ETA ~'+ftm(etaTotal)+' | '+SID);
 quests.forEach(function(q,i){
   var tp=getType(q);var tc=q.config.taskConfig||q.config.taskConfigV2;
-  var pg=Math.round((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
+  var pg=Math.round((q.userStatus&&q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
   var tot=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
   var expMs=new Date(q.config.expiresAt).getTime()-Date.now();
   var expH=Math.ceil(expMs/3600000);
   var urg=expMs<4*3600*1000?' [URGENTE]':expMs<24*3600*1000?' [<24h]':'';
-  console.log('%c  ['+(i+1)+'] %c'+q.config.messages.questName+'%c\n       '+tp+' | '+pg+'s/'+tot+'s | expira em '+expH+'h'+urg,'color:#5865F2;font-weight:bold','color:#fff;font-weight:bold','color:#5a607a;font-size:10px;font-family:monospace');
+  console.log('%c  ['+(i+1)+'] %c'+q.config.messages.questName+'%c\n       '+tp+' | '+pg+'s/'+tot+'s | expira '+expH+'h'+urg,'color:#5865F2;font-weight:bold','color:#fff;font-weight:bold','color:#5a607a;font-size:10px;font-family:monospace');
   if(pg>0&&pg<tot)LOG.i('"'+q.config.messages.questName+'": retomando de '+pg+'s');
 });
+if(CFG.DRY_RUN){LOG.w('[DRY_RUN] Nenhum request enviado. ETA: ~'+ftm(etaTotal));return;}
 
-if(CFG.DRY_RUN){LOG.w('[DRY_RUN] Nenhum request enviado. ETA estimado: ~'+ftm(etaTotal));return;}
-
-// ── PROCESSAR FILA (loop iterativo) ──────────────────────
 var P={ok:0,sk:0,er:0};
 var MT=[];
 var queue=[].concat(quests);
-var pos=0;
 
 while(queue.length>0&&!stopFlag){
   var q=queue.shift();
   var tp=getType(q);
   if(!tp){P.sk++;continue;}
-  pos++;
   var tc=q.config.taskConfig||q.config.taskConfigV2;
   var nm=q.config.messages.questName;
   var appId=q.config.application&&q.config.application.id;
@@ -1293,170 +1307,115 @@ while(queue.length>0&&!stopFlag){
   var tgt=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
   var expH=Math.ceil((new Date(q.config.expiresAt).getTime()-Date.now())/3600000);
   var fr=0;
-  // Retomada parcial — respeita configVersion
-  try{
-    if(q.config.configVersion===1){fr=Math.floor(q.userStatus.streamProgressSeconds||0);}
-    else{fr=Math.floor((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);}
-  }catch(e){fr=0;}
-  var ck=fr;
-  var QT=Date.now();
-  var TOUT=(tgt*3+120)*1000;
-  var enAt=new Date(q.userStatus.enrolledAt).getTime();
+  try{if(q.config.configVersion===1){fr=Math.floor(q.userStatus.streamProgressSeconds||0);}
+  else{fr=Math.floor((q.userStatus&&q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);}}catch(e){fr=0;}
+  var ck=fr,QT=Date.now(),TOUT=(tgt*3+120)*1000,enAt=new Date(q.userStatus.enrolledAt).getTime();
+  var pos=MT.length+P.sk+P.er+1;
   LOG.miss(nm,tp,pos,quests.length,fr,tgt,expH,ck);
 
-  // ── WATCH_VIDEO / WATCH_VIDEO_ON_MOBILE / WATCH_VIDEO_MOBILE ──
   if(tp==='WATCH_VIDEO'||tp==='WATCH_VIDEO_ON_MOBILE'||tp==='WATCH_VIDEO_MOBILE'){
     LOG.i('"'+nm+'" | '+fr+'s/'+tgt+'s | drift='+BDRIFT+'ms');
-    if(fr>0)LOG.i('Retomando de '+fr+'s ('+Math.round(fr/tgt*100)+'% ja concluido)');
+    if(fr>0)LOG.i('Retomando de '+fr+'s ('+Math.round(fr/tgt*100)+'%)');
     LOG.bar(fr,tgt,nm,7,THR);
     var done=false,e4=0,e5=0,eN=0,ns=0,tv=0,warnSent=false;
     while(!stopFlag){
-      if(Date.now()-QT>TOUT){LOG.w('Timeout atingido em "'+nm+'".');break;}
+      if(Date.now()-QT>TOUT){LOG.w('Timeout.');break;}
       try{
         var mxA=Math.floor((Date.now()-enAt)/1000)+10;
-        var rem=tgt-fr;
-        var step=vstep(rem);
-        if(mxA-fr<step){
-          if(!warnSent){LOG.i('Aguardando validacao do Discord (inscricao recente)...');warnSent=true;}
-          await sl(2000);continue;
-        }
+        var rem=tgt-fr;var step=vstep(rem);
+        if(mxA-fr<step){if(!warnSent){LOG.i('Aguardando validacao (inscricao recente)...');warnSent=true;}await sl(2000);continue;}
         warnSent=false;
         var drift=getDrift();
-        var ts_val=Math.min(tgt-0.001,fr+step+gauss(0,0.3)+drift/1000);
-        var r=await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:ts_val}});
+        var ts_v=Math.min(tgt-0.001,fr+step+gauss(0,0.3)+drift/1000);
+        var r=await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:ts_v}});
         done=r.body&&r.body.completed_at!=null;
         fr=Math.min(tgt,fr+step);ck=fr;ns++;tv+=step;e4=0;e5=0;eN=0;thrRst();
         LOG.bar(fr,tgt,nm,ns>0?tv/ns:7,THR);
         if(fr>=tgt||done)break;
       }catch(ex){
         var er=cErr(ex);
-        if(er.is401){LOG.e('[401] Sessao expirada! Recarregue o Discord e rode novamente.');LOG.res(P.ok,P.sk,P.er,MT);return;}
-        if(er.is403){LOG.w('[403] Sem permissao em "'+nm+'". Pulando...');done=false;break;}
-        if(er.is404){LOG.w('[404] "'+nm+'" nao encontrada. Pulando...');done=false;break;}
+        if(er.is401){LOG.e('[401] Sessao expirada.');LOG.res(P.ok,P.sk,P.er,MT);return;}
+        if(er.is403){LOG.w('[403] Sem permissao. Pulando...');break;}
+        if(er.is404){LOG.w('[404] Quest nao encontrada. Pulando...');break;}
         if(er.is429){e4++;if(e4>CFG.MAX_RETRIES.r429){LOG.e('[429] Rate limit persistente.');break;}await backoff('429',e4,0);continue;}
-        if(er.is5xx){e5++;if(e5>CFG.MAX_RETRIES.r5xx){LOG.e('['+er.s+'] Servidor indisponivel.');break;}await backoff('5xx',e5,er.s);continue;}
+        if(er.is5xx){e5++;if(e5>CFG.MAX_RETRIES.r5xx){LOG.e('['+er.s+'] Servidor.');break;}await backoff('5xx',e5,er.s);continue;}
         eN++;if(eN>CFG.MAX_RETRIES.rNet){LOG.e('[rede] Muitas falhas.');break;}await backoff('net',eN,0);continue;
       }
       await sl(iv());await maybePause();
     }
-    // Garantir timestamp final
     if(!done&&fr>0){try{await sl(Math.floor(gauss(700,150)));await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:tgt}});done=true;}catch(ex){}}
     var el=Date.now()-QT;
-    if(done||fr>=tgt){P.ok++;MT.push({n:nm,t:tp,e:el});LOG.ok('"'+nm+'" concluida em '+ftm(el)+'! vel:'+(ns>0?(tv/ns).toFixed(1):'?')+'s/step');notify('Missao concluida!',nm+' — '+ftm(el));LOG.i('Colete a recompensa/orbs manualmente na aba Missoes.');}
+    if(done||fr>=tgt){P.ok++;MT.push({n:nm,t:tp,e:el});LOG.ok('"'+nm+'" concluida em '+ftm(el)+'! vel:'+(ns>0?(tv/ns).toFixed(1):'?')+'s/step');notify('Missao concluida!',nm+' — '+ftm(el));LOG.i('Colete a recompensa manualmente.');}
     else{P.sk++;LOG.w('"'+nm+'" pulada apos '+ftm(el)+'.');}
   }
 
-  // ── PLAY_ON_DESKTOP ───────────────────────────────────────
   else if(tp==='PLAY_ON_DESKTOP'){
-    if(!DESK){LOG.w('"'+nm+'" requer Discord Desktop App. Pulando...');P.sk++;continue;}
+    if(!DESK){LOG.w('"'+nm+'" requer Desktop App. Pulando...');P.sk++;continue;}
     if(!GS||!DS){LOG.w('GameStore/Dispatcher indisponivel. Pulando...');P.sk++;continue;}
     var gO=GS.getRunningGames,pO=GS.getGameForPID,fg=null,resolved=false;
-    cleanup=function(){
-      try{GS.getRunningGames=gO;GS.getGameForPID=pO;if(fg)DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:[fg],added:[],games:[]});}catch(ex){}
-      cleanup=null;
-    };
-    // HIDE_ACTIVITY
+    cleanup=function(){try{GS.getRunningGames=gO;GS.getGameForPID=pO;if(fg)DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:[fg],added:[],games:[]});}catch(ex){}cleanup=null;};
     if(CFG.HIDE_ACTIVITY){try{DS.dispatch({type:'PRESENCE_LOCAL_GAME_ACTIVITY_HIDE',hide:true});}catch(ex){}}
     try{
       var appRes=await API.get({url:'/applications/public?application_ids='+appId});
-      var app=appRes.body&&appRes.body[0];
-      if(!app)throw new Error('App nao encontrado');
-      var rawExe=app.executables&&app.executables.find&&app.executables.find(function(x){return x.os==='win32';})||{};
-      var exeN=(rawExe.name||app.name).replace(/[<>]/g,'').replace(/[\/\\:*?"]/g,'');
+      var app=appRes.body&&appRes.body[0];if(!app)throw new Error('App nao encontrado');
+      var rawExe=(app.executables&&app.executables.find&&app.executables.find(function(x){return x.os==='win32';})||{}).name||app.name;
+      var exeN=rawExe.replace(/[<>]/g,'').replace(/[\/\\:*?"]/g,'');
       var exeF=exeN+(exeN.toLowerCase().endsWith('.exe')?'':'.exe');
       var pid=rng(CFG.PID_MIN,CFG.PID_MAX);
       fg={cmdLine:'C:\\Program Files\\'+app.name+'\\'+exeF,exeName:exeF,exePath:'c:/program files/'+app.name.toLowerCase()+'/'+exeF,hidden:false,isLauncher:false,id:appId,name:app.name,pid:pid,pidPath:[pid],processName:app.name,start:Date.now()};
-      var curGames=GS.getRunningGames();
-      GS.getRunningGames=function(){return[fg];};
-      GS.getGameForPID=function(p){return p===pid?fg:undefined;};
-      DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:curGames,added:[fg],games:[fg]});
+      var curG=GS.getRunningGames();
+      GS.getRunningGames=function(){return[fg];};GS.getGameForPID=function(p){return p===pid?fg:undefined;};
+      DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:curG,added:[fg],games:[fg]});
       LOG.i('Jogo simulado: '+appNm+' (pid:'+pid+') | ETA ~'+Math.ceil((tgt-fr)/60)+'min');
       var hangTO=new Promise(function(_,rj){setTimeout(function(){rj(new Error('PLAY_TIMEOUT'));},CFG.PLAY_TIMEOUT);});
-      var questDone=new Promise(function(rv,rj){
-        var handler=function(data){
-          try{
-            var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.PLAY_ON_DESKTOP&&data.userStatus.progress.PLAY_ON_DESKTOP.value||0);
-            LOG.bar(pg,tgt,nm,1,THR);
-            if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);resolved=true;rv(pg);}
-          }catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);rj(ex);}
-        };
-        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);
+      var qDone=new Promise(function(rv,rj){
+        var hnd=function(data){try{var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.PLAY_ON_DESKTOP&&data.userStatus.progress.PLAY_ON_DESKTOP.value||0);LOG.bar(pg,tgt,nm,1,THR);if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd);resolved=true;rv(pg);}}catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd);rj(ex);}};
+        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd);
       });
-      await Promise.race([questDone,hangTO]);
+      await Promise.race([qDone,hangTO]);
       if(resolved){P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida em '+ftm(Date.now()-QT)+'!');notify('Missao concluida!',nm);LOG.i('Colete a recompensa manualmente.');}
     }catch(ex){
-      if(ex.message==='PLAY_TIMEOUT'){LOG.e('"'+nm+'" atingiu Anti-Hang timeout ('+Math.round(CFG.PLAY_TIMEOUT/60000)+'min). Discord parou de enviar heartbeats.');}
-      else{var er2=cErr(ex);if(er2.is401){LOG.e('[401] Sessao expirada.');cleanup&&cleanup();LOG.res(P.ok,P.sk,P.er,MT);return;}LOG.e('Erro em PLAY_ON_DESKTOP "'+nm+'": '+(ex.message||ex));}
+      if(ex.message==='PLAY_TIMEOUT'){LOG.e('"'+nm+'" Anti-Hang timeout ('+Math.round(CFG.PLAY_TIMEOUT/60000)+'min).');}
+      else{var er2=cErr(ex);if(er2.is401){LOG.e('[401] Sessao expirada.');cleanup&&cleanup();LOG.res(P.ok,P.sk,P.er,MT);return;}LOG.e('Erro PLAY_ON_DESKTOP: '+(ex.message||ex));}
       P.er++;
-    }finally{
-      cleanup&&cleanup();
-      if(CFG.HIDE_ACTIVITY){try{DS.dispatch({type:'PRESENCE_LOCAL_GAME_ACTIVITY_HIDE',hide:false});}catch(ex){}}
-    }
+    }finally{cleanup&&cleanup();if(CFG.HIDE_ACTIVITY){try{DS.dispatch({type:'PRESENCE_LOCAL_GAME_ACTIVITY_HIDE',hide:false});}catch(ex){}}}
   }
 
-  // ── STREAM_ON_DESKTOP ─────────────────────────────────────
   else if(tp==='STREAM_ON_DESKTOP'){
-    if(!DESK){LOG.w('"'+nm+'" requer Discord Desktop App. Pulando...');P.sk++;continue;}
-    if(!SS||!DS){LOG.w('StreamStore/Dispatcher indisponivel. Pulando...');P.sk++;continue;}
-    var pid2=rng(CFG.PID_MIN,CFG.PID_MAX);
-    var origMeta=SS.getStreamerActiveStreamMetadata;
-    var resolved2=false;
+    if(!DESK){LOG.w('"'+nm+'" requer Desktop App. Pulando...');P.sk++;continue;}
+    if(!SS||!DS){LOG.w('StreamStore indisponivel. Pulando...');P.sk++;continue;}
+    var pid2=rng(CFG.PID_MIN,CFG.PID_MAX),origMeta=SS.getStreamerActiveStreamMetadata,resolved2=false;
     cleanup=function(){try{SS.getStreamerActiveStreamMetadata=origMeta;}catch(ex){}cleanup=null;};
     SS.getStreamerActiveStreamMetadata=function(){return{id:appId,pid:pid2,sourceName:null};};
     LOG.i('Stream simulada: '+appNm+' (pid:'+pid2+')');
-    LOG.w('NECESSARIO: compartilhe uma janela em canal de voz com pelo menos 1 pessoa!');
+    LOG.w('NECESSARIO: compartilhe janela em canal de voz com pelo menos 1 pessoa!');
     try{
       var hangTO2=new Promise(function(_,rj){setTimeout(function(){rj(new Error('STREAM_TIMEOUT'));},CFG.PLAY_TIMEOUT);});
-      var questDone2=new Promise(function(rv,rj){
-        var handler2=function(data){
-          try{
-            var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.STREAM_ON_DESKTOP&&data.userStatus.progress.STREAM_ON_DESKTOP.value||0);
-            LOG.bar(pg,tgt,nm,1,THR);
-            if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);resolved2=true;rv(pg);}
-          }catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);rj(ex);}
-        };
-        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);
+      var qDone2=new Promise(function(rv,rj){
+        var hnd2=function(data){try{var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.STREAM_ON_DESKTOP&&data.userStatus.progress.STREAM_ON_DESKTOP.value||0);LOG.bar(pg,tgt,nm,1,THR);if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd2);resolved2=true;rv(pg);}}catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd2);rj(ex);}};
+        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',hnd2);
       });
-      await Promise.race([questDone2,hangTO2]);
+      await Promise.race([qDone2,hangTO2]);
       if(resolved2){P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida!');notify('Stream concluida!',nm);LOG.i('Colete a recompensa manualmente.');}
     }catch(ex){
-      if(ex.message==='STREAM_TIMEOUT'){LOG.e('"'+nm+'" atingiu timeout. Amigo saiu do canal ou stream foi interrompida.');}
-      else{LOG.e('Erro em STREAM "'+nm+'": '+(ex.message||ex));}
-      P.er++;
+      if(ex.message==='STREAM_TIMEOUT'){LOG.e('"'+nm+'" timeout. Amigo saiu ou stream foi interrompida.');}
+      else{LOG.e('Erro STREAM: '+(ex.message||ex));}P.er++;
     }finally{cleanup&&cleanup();}
   }
 
-  // ── PLAY_ACTIVITY ──────────────────────────────────────────
   else if(tp==='PLAY_ACTIVITY'){
-    // Detectar canal de voz onde o usuario ESTA atualmente
     var vc=null;
-    // Tentativa 1: VoiceStateStore — canal atual do usuario
-    try{
-      var allMods=Object.values(WP.c);
-      var curUser=null;
-      for(var mi=0;mi<allMods.length;mi++){
-        try{var u=allMods[mi].exports&&allMods[mi].exports.Ay&&allMods[mi].exports.Ay.getCurrentUser&&allMods[mi].exports.Ay.getCurrentUser();if(u&&u.id){curUser=u;break;}}catch(e){}
-      }
-      if(curUser&&VS&&typeof VS.getVoiceStateForUser==='function'){
-        var vsData=VS.getVoiceStateForUser(curUser.id);
-        vc=vsData&&vsData.channelId||null;
-        LOG.d('VoiceState canal: '+vc);
-      }
-    }catch(e){LOG.d('VoiceState erro: '+e);}
-    // Tentativa 2: DM privado
+    try{if(VS&&US){var cu=US.getCurrentUser&&US.getCurrentUser();if(cu){var vsD=VS.getVoiceStateForUser&&VS.getVoiceStateForUser(cu.id);vc=vsD&&vsD.channelId||null;LOG.d('VoiceState canal: '+vc);}}}catch(e){}
     if(!vc){try{vc=CS&&CS.getSortedPrivateChannels&&CS.getSortedPrivateChannels()[0]&&CS.getSortedPrivateChannels()[0].id||null;}catch(e){}}
-    // Tentativa 3: primeiro servidor com canal vocal
     if(!vc){try{var gs=GuS&&GuS.getAllGuilds&&GuS.getAllGuilds()||{};Object.values(gs).some(function(g){return g&&g.VOCAL&&g.VOCAL[0]&&(vc=g.VOCAL[0].channel&&g.VOCAL[0].channel.id,!!vc);});}catch(e){}}
-    if(!vc){LOG.e('Nenhum canal de voz encontrado. Entre em um canal e rode novamente.');P.sk++;continue;}
-    var sk='call:'+vc+':1';
-    var e4a=0,e5a=0,eNa=0;
-    LOG.i('PLAY_ACTIVITY no canal '+vc+' | ETA ~'+Math.ceil((tgt-fr)/60)+'min');
-    LOG.bar(fr,tgt,nm,1,THR);
+    if(!vc){LOG.e('Canal de voz nao encontrado. Entre em um canal e tente novamente.');P.sk++;continue;}
+    var sk='call:'+vc+':1',e4a=0,e5a=0,eNa=0;
+    LOG.i('PLAY_ACTIVITY canal:'+vc+' | ETA ~'+Math.ceil((tgt-fr)/60)+'min');LOG.bar(fr,tgt,nm,1,THR);
     while(!stopFlag){
-      if(Date.now()-QT>TOUT){LOG.w('Timeout em PLAY_ACTIVITY.');break;}
+      if(Date.now()-QT>TOUT){LOG.w('Timeout PLAY_ACTIVITY.');break;}
       try{
-        var hbRes=await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk,terminal:false}});
-        var pg=hbRes.body&&hbRes.body.progress&&hbRes.body.progress.PLAY_ACTIVITY&&hbRes.body.progress.PLAY_ACTIVITY.value||0;
+        var hbR=await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk,terminal:false}});
+        var pg=hbR.body&&hbR.body.progress&&hbR.body.progress.PLAY_ACTIVITY&&hbR.body.progress.PLAY_ACTIVITY.value||0;
         LOG.bar(pg,tgt,nm,1,THR);e4a=0;e5a=0;eNa=0;thrRst();
         if(pg>=tgt){try{await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk,terminal:true}});}catch(ex){}break;}
       }catch(ex){
@@ -1466,20 +1425,45 @@ while(queue.length>0&&!stopFlag){
         if(er3.is5xx){e5a++;if(e5a>CFG.MAX_RETRIES.r5xx){P.er++;break;}await backoff('5xx',e5a,er3.s);continue;}
         eNa++;if(eNa>CFG.MAX_RETRIES.rNet){P.er++;break;}await backoff('net',eNa,0);continue;
       }
-      await sl(clamp(Math.floor(gauss(22000,5000)),12000,45000));
-      await maybePause();
+      await sl(clamp(Math.floor(gauss(22000,5000)),12000,45000));await maybePause();
     }
-    P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida em '+ftm(Date.now()-QT)+'!');notify('Missao concluida!',nm);LOG.i('Colete a recompensa/orbs manualmente na aba Missoes.');
+    P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida em '+ftm(Date.now()-QT)+'!');notify('Concluida!',nm);LOG.i('Colete a recompensa manualmente.');
   }
 
-  // ── TIPO DESCONHECIDO ─────────────────────────────────────
+  else if(tp==='ACHIEVEMENT_IN_ACTIVITY'){
+    LOG.i('"'+nm+'" (ACHIEVEMENT_IN_ACTIVITY) | Canal de voz necessario');
+    var vc2=null;
+    try{if(VS&&US){var cu2=US.getCurrentUser&&US.getCurrentUser();if(cu2){var vs2=VS.getVoiceStateForUser&&VS.getVoiceStateForUser(cu2.id);vc2=vs2&&vs2.channelId||null;}}}catch(e){}
+    if(!vc2){try{var gs2=GuS&&GuS.getAllGuilds&&GuS.getAllGuilds()||{};Object.values(gs2).some(function(g){return g&&g.VOCAL&&g.VOCAL[0]&&(vc2=g.VOCAL[0].channel&&g.VOCAL[0].channel.id,!!vc2);});}catch(e){}}
+    if(!vc2){LOG.e('Canal de voz nao encontrado para ACHIEVEMENT_IN_ACTIVITY.');P.sk++;continue;}
+    var sk2='call:'+vc2+':1',e4b=0,e5b=0,eNb=0;
+    LOG.i('ACHIEVEMENT heartbeat canal:'+vc2);LOG.bar(fr,tgt,nm,1,THR);
+    while(!stopFlag){
+      if(Date.now()-QT>TOUT){LOG.w('Timeout ACHIEVEMENT.');break;}
+      try{
+        var hbR2=await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk2,terminal:false,location_type:'voice_channel'}});
+        var pg2=hbR2.body&&hbR2.body.progress&&hbR2.body.progress.ACHIEVEMENT_IN_ACTIVITY&&hbR2.body.progress.ACHIEVEMENT_IN_ACTIVITY.value||0;
+        LOG.bar(pg2,tgt,nm,1,THR);e4b=0;e5b=0;eNb=0;thrRst();
+        if(pg2>=tgt){try{await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk2,terminal:true,location_type:'voice_channel'}});}catch(ex){}break;}
+      }catch(ex2){
+        var er4=cErr(ex2);
+        if(er4.is403){LOG.w('[403] ACHIEVEMENT_IN_ACTIVITY: cliente Discord ativo necessario no canal. Pulando...');P.sk++;break;}
+        if(er4.is401){LOG.e('[401] Sessao expirada.');LOG.res(P.ok,P.sk,P.er,MT);return;}
+        if(er4.is429){e4b++;if(e4b>CFG.MAX_RETRIES.r429){P.er++;break;}await backoff('429',e4b,0);continue;}
+        if(er4.is5xx){e5b++;if(e5b>CFG.MAX_RETRIES.r5xx){P.er++;break;}await backoff('5xx',e5b,er4.s);continue;}
+        eNb++;if(eNb>CFG.MAX_RETRIES.rNet){P.er++;break;}await backoff('net',eNb,0);continue;
+      }
+      await sl(clamp(Math.floor(gauss(20000,4000)),10000,40000));await maybePause();
+    }
+    P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida!');notify('Concluida!',nm);LOG.i('Colete a recompensa manualmente.');
+  }
+
   else{
     LOG.w('Tipo "'+tp+'" nao suportado. Pulando. Reporte em discord.gg/G3wrqyJQrC');
-    try{var det=JSON.stringify({type:tp,name:nm,tasks:Object.keys(tc.tasks)});copy(det);LOG.i('Detalhes copiados para clipboard. Reporte em discord.gg/G3wrqyJQrC');}catch(ex){LOG.i('Reporte o tipo "'+tp+'" em discord.gg/G3wrqyJQrC');}
+    try{var det=JSON.stringify({type:tp,name:nm,tasks:Object.keys(tc.tasks)});copy(det);LOG.i('Detalhes copiados. Cole em discord.gg/G3wrqyJQrC');}catch(ex){LOG.i('Reporte o tipo "'+tp+'" em discord.gg/G3wrqyJQrC');}
     P.sk++;
   }
 
-  // Cooldown entre missoes
   if(queue.length>0&&!stopFlag){
     var el2=MT.length>0?MT[MT.length-1].e:3000;
     var cd=clamp(Math.floor(gauss(el2<60000?4000:6000,800)),2000,10000);
@@ -1488,7 +1472,8 @@ while(queue.length>0&&!stopFlag){
 }
 
 LOG.res(P.ok,P.sk,P.er,MT);
-})();`;
+})();
+`;
 
 var PROT=protect(RAW);
 var sid='yk_'+Math.random().toString(36).slice(2,6).toUpperCase();
@@ -1496,7 +1481,7 @@ var sid='yk_'+Math.random().toString(36).slice(2,6).toUpperCase();
 document.getElementById('spc').textContent=PROT;
 document.getElementById('spch').textContent=PROT.length.toLocaleString()+' chars';
 document.getElementById('spsid').textContent=sid;
-document.getElementById('spi').textContent='yKauttiz_v3.0.0.js · '+PROT.length.toLocaleString()+' chars · protegido';
+document.getElementById('spi').textContent='yKauttiz_v4.0.0.js · '+PROT.length.toLocaleString()+' chars · protegido';
 
 /* Copy */
 window.copiar=async function(){
@@ -1507,10 +1492,10 @@ window.copiar=async function(){
     btn.classList.add('done');
     btn.querySelector('.bt').textContent='✓ Copiado ('+PROT.length.toLocaleString()+' bytes) — cole no console F12';
     confetti(r.left+r.width/2,r.top+r.height/2);
-    setTimeout(function(){btn.classList.remove('done');btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v3.0.0';},3200);
+    setTimeout(function(){btn.classList.remove('done');btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v4.0.0';},3200);
   }catch(e){
     btn.querySelector('.bt').textContent='Selecione tudo (Ctrl+A) e copie';
-    setTimeout(function(){btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v3.0.0';},4000);
+    setTimeout(function(){btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v4.0.0';},4000);
   }
 };
 
