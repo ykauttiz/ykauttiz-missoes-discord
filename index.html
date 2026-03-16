@@ -1,126 +1,1522 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>yKauttiz — Indisponível</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500&family=Syne:wght%7C700;800&display=swap" rel="stylesheet">
+<meta name="description" content="yKauttiz — Script gratuito v3.0.0 para automatizar missões do Discord. WATCH_VIDEO, PLAY_ON_DESKTOP, STREAM e PLAY_ACTIVITY. Anti-detecção gaussiano, retomada parcial.">
+<meta name="keywords" content="discord quests,discord missoes,automacao discord,script discord missoes,ykauttiz">
+<meta name="author" content="yKauttiz">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#06b6d4">
+<title>yKauttiz — Automatize Missões do Discord | v3.0.0 STABLE 2026</title>
+<meta property="og:title" content="yKauttiz — Automatize Missões do Discord">
+<meta property="og:description" content="Script gratuito v3.0.0. Retomada parcial, timing gaussiano anti-detecção, CONFIG editável. USE POR SUA CONTA E RISCO.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ykauttiz.github.io/ykauttiz-missoes-discord">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="yKauttiz — Automatize Missões do Discord v3.0.0">
+<link rel="canonical" href="https://ykauttiz.github.io/ykauttiz-missoes-discord">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2306b6d4'/><text x='16' y='23' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='18' fill='%23000'>yK</text></svg>">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"SoftwareApplication","name":"yKauttiz Missões Discord","description":"Script gratuito para automatizar missões do Discord. v3.0.0 STABLE 2026.","url":"https://ykauttiz.github.io/ykauttiz-missoes-discord","author":{"@type":"Person","name":"yKauttiz"},"applicationCategory":"UtilitiesApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"BRL"},"operatingSystem":"Windows, Linux, macOS"},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Isso é um vírus?","acceptedAnswer":{"@type":"Answer","text":"Não. JavaScript puro no console do próprio Discord. Não baixa, não instala, não envia dados."}},
+{"@type":"Question","name":"Posso ser banido?","acceptedAnswer":{"@type":"Answer","text":"USE POR SUA CONTA E RISCO. Usa APIs internas não oficiais."}}
+]}
+]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <style>
-body{
-  background:#020203;color:#e9e9f0;
-  font-family:'JetBrains Mono',monospace;
-  display:flex;align-items:center;justify-content:center;
-  min-height:100vh;margin:0;padding:24px;text-align:center;
-  overflow:hidden;
-}
-canvas{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  z-index:-1;opacity:.35;
-}
-.card{
-  background:linear-gradient(160deg,#0a0a12,#0c0c15);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:24px;padding:52px 40px;
-  max-width:760px;width:100%;
-  box-shadow:0 20px 60px rgba(0,0,0,.65);
-  position:relative;overflow:hidden;
-}
-.card::before{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(1200px 600px at 0% 0%,rgba(6,182,212,.12),transparent 40%),
-            radial-gradient(900px 500px at 100% 0%,rgba(168,85,247,.12),transparent 40%);
-  pointer-events:none;
-}
-h1{
-  font-family:'Syne',sans-serif;
-  font-size:clamp(30px,5vw,44px);
-  font-weight:800;letter-spacing:-2px;
-  background:linear-gradient(135deg,#06b6d4,#a855f7);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  margin-bottom:14px;
-}
-.sub{
-  font-size:15px;color:#9a9aa8;
-  line-height:1.7;margin-bottom:28px;
-}
-.alert{
-  background:linear-gradient(160deg,#141418,#16161c);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:12px;padding:20px 22px;
-  font-size:13px;color:#f0f0f5;
-  line-height:1.8;
-  position:relative;
-}
-.alert b{color:#f0f0f5}
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(160deg,#06b6d4,.a855f7);
-  color:#0b0b12;font-weight:700;
-  border-radius:999px;padding:6px 14px;
-  font-size:12px;margin-bottom:14px;
-}
-footer{
-  margin-top:30px;font-size:11px;color:#5e5e70;
-}
-@media(max-width:520px){
-  .card{padding:36px 24px;}
+/* ═══ THEMES ═══ */
+[data-theme="dark"]{--bg:#050507;--bg1:#0c0c0f;--bg2:#131316;--bg3:#1a1a1e;--br:#222226;--br2:#3a3a40;--tx:#f0f0f5;--tx2:#8f8f9e;--tx3:#52525e;--ac:#06b6d4;--gr:#22c55e;--rd:#ef4444;--ye:#eab308;--pu:#a855f7;--or:#f97316;--gac:rgba(6,182,212,.18);--hg:radial-gradient(ellipse 90% 60% at 50% -5%,rgba(6,182,212,.07),transparent 70%)}
+[data-theme="light"]{--bg:#f8f8fc;--bg1:#f0f0f5;--bg2:#e4e4ec;--bg3:#d8d8e4;--br:#d0d0de;--br2:#9090a8;--tx:#111118;--tx2:#44445a;--tx3:#88889a;--ac:#2563eb;--gr:#16a34a;--rd:#dc2626;--ye:#ca8a04;--pu:#9333ea;--or:#ea580c;--gac:rgba(37,99,235,.14);--hg:radial-gradient(ellipse 90% 60% at 50% -5%,rgba(37,99,235,.06),transparent 70%)}
+[data-theme="matrix"]{--bg:#000;--bg1:#010c01;--bg2:#021402;--bg3:#031d03;--br:#0a2a0a;--br2:#145014;--tx:#00ff41;--tx2:#00b82e;--tx3:#006618;--ac:#00ff41;--gr:#00ff41;--rd:#ff0040;--ye:#fff200;--pu:#c800ff;--or:#ff8800;--gac:rgba(0,255,65,.22);--hg:radial-gradient(ellipse 90% 60% at 50% -5%,rgba(0,255,65,.08),transparent 70%)}
+[data-theme="vapor"]{--bg:#06001a;--bg1:#0d0029;--bg2:#140038;--bg3:#1c0050;--br:#2a0066;--br2:#5200bb;--tx:#ffe8ff;--tx2:#d4a0f0;--tx3:#8844aa;--ac:#f0abfc;--gr:#4ade80;--rd:#f43f5e;--ye:#fde047;--pu:#c084fc;--or:#fb923c;--gac:rgba(240,171,252,.22);--hg:radial-gradient(ellipse 90% 60% at 50% -5%,rgba(240,171,252,.08),transparent 70%)}
+/* ═══ BASE ═══ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--tx);font-family:'JetBrains Mono',monospace;overflow-x:hidden;cursor:none;transition:background .5s,color .5s}
+::selection{background:var(--ac);color:var(--bg)}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--br2);border-radius:3px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+/* ═══ CURSOR ═══ */
+/* Cursor uses left/top positioning — NO transform conflict with click state */
+#cdot{position:fixed;width:6px;height:6px;background:var(--ac);border-radius:50%;pointer-events:none;z-index:10000;left:-3px;top:-3px;will-change:left,top;mix-blend-mode:difference;transition:background .3s,width .15s,height .15s,opacity .2s}
+#cring{position:fixed;width:32px;height:32px;border:1.5px solid var(--ac);border-radius:50%;pointer-events:none;z-index:9999;left:-16px;top:-16px;will-change:left,top;opacity:.5;transition:border-color .3s,opacity .25s,width .3s,height .3s,left .3s,top .3s}
+body.ch #cdot{width:9px;height:9px;left:-4.5px;top:-4.5px}
+body.ch #cring{width:48px;height:48px;opacity:.2;left:-24px;top:-24px}
+body.cc #cdot{opacity:.25;width:3px;height:3px;left:-1.5px;top:-1.5px}
+/* ═══ SCROLL BAR ═══ */
+#sbar{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--ac),var(--pu),var(--gr));background-size:200%;z-index:2000;pointer-events:none;animation:sbg 4s linear infinite}
+@keyframes sbg{0%{background-position:0%}100%{background-position:200%}}
+/* ═══ BACK TO TOP ═══ */
+#btt{position:fixed;bottom:24px;right:24px;z-index:700;width:40px;height:40px;border-radius:10px;background:var(--bg2);border:1px solid var(--br);color:var(--tx2);cursor:none;display:flex;align-items:center;justify-content:center;transition:all .25s;opacity:0;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+#btt.vis{opacity:1;pointer-events:auto}
+#btt:hover{background:var(--ac);color:var(--bg);border-color:var(--ac);transform:translateY(-2px)}
+/* ═══ SKIP LINK ═══ */
+.skip{position:fixed;top:8px;left:8px;z-index:99999;padding:8px 16px;border-radius:8px;background:var(--ac);color:var(--bg);font-size:12px;font-weight:700;text-decoration:none;transform:translateY(-120%);transition:transform .2s}
+.skip:focus{transform:translateY(0)}
+/* ═══ KEYFRAMES ═══ */
+@keyframes fu{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes si{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes blob{0%,100%{border-radius:60% 40% 30% 70%/60% 30% 70% 40%}33%{border-radius:30% 60% 70% 40%/50% 60% 30% 60%}66%{border-radius:50% 60% 30% 60%/40% 60% 50% 30%}}
+@keyframes glitch1{2%{transform:translate(2px,-1px)}4%{transform:none}}
+@keyframes glitch2{2%{transform:translate(-2px,2px);clip-path:inset(40% 0 40% 0)}4%{transform:none;clip-path:none}}
+@keyframes pdot{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--gr) 40%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes scan{0%{top:0}100%{top:100vh}}
+@keyframes rglow{0%,100%{box-shadow:0 0 0 0 transparent}50%{box-shadow:0 0 20px 3px color-mix(in srgb,var(--ac) 30%,transparent)}}
+/* ═══ REVEAL ═══ */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.vis{opacity:1;transform:none}
+/* ═══ SCAN LINE ═══ */
+#scanl{position:fixed;left:0;width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(6,182,212,.1),transparent);pointer-events:none;z-index:900;animation:scan 15s linear infinite}
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;border-bottom:1px solid var(--br);background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);height:52px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;transition:background .5s}
+.nlogo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,var(--ac),var(--pu));background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 5s ease infinite}
+.nlinks{display:flex;align-items:center;gap:2px}
+.nlink{font-size:9.5px;letter-spacing:.5px;text-transform:uppercase;padding:5px 10px;border-radius:7px;color:var(--tx3);text-decoration:none;cursor:none;transition:color .2s,background .2s;white-space:nowrap}
+.nlink:hover,.nlink.act{color:var(--tx);background:var(--bg2)}
+.nright{display:flex;align-items:center;gap:5px}
+.tlbl{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-right:3px}
+/* Theme buttons with SVG icons */
+.tbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--br);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:none;transition:all .25s;position:relative;overflow:hidden}
+.tbtn svg{width:14px;height:14px;transition:transform .3s;opacity:.55;stroke:var(--ac);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tbtn:hover{border-color:var(--ac);transform:translateY(-1px)}
+.tbtn:hover svg{transform:scale(1.2) rotate(-8deg);opacity:1}
+.tbtn.act{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--bg2))}
+.tbtn.act svg{opacity:1}
+@media(max-width:720px){.nlinks{display:none}.tlbl{display:none}}
+/* ═══ TICKER ═══ */
+.tkw{overflow:hidden;border-bottom:1px solid var(--br);padding:9px 0;background:var(--bg1);position:relative}
+.tkw::before,.tkw::after{content:'';position:absolute;top:0;bottom:0;width:70px;z-index:2;pointer-events:none}
+.tkw::before{left:0;background:linear-gradient(90deg,var(--bg1),transparent)}
+.tkw::after{right:0;background:linear-gradient(-90deg,var(--bg1),transparent)}
+.tkw:hover .tki{animation-play-state:paused}
+.tki{display:flex;width:max-content;animation:ticker 40s linear infinite}
+.ti{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);padding:0 28px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.ts{color:var(--ac)}
+/* ═══ HERO ═══ */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px 64px;text-align:center;position:relative;overflow:hidden}
+#hcanvas{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.4}
+.hbg{position:absolute;inset:0;background:var(--hg);pointer-events:none;z-index:1}
+.hgrid{position:absolute;inset:0;background-image:linear-gradient(var(--br) 1px,transparent 1px),linear-gradient(90deg,var(--br) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse 85% 75% at 50% 50%,black 10%,transparent);opacity:.3;pointer-events:none;z-index:1}
+.blobs{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.blob{position:absolute;filter:blur(80px);opacity:.06;animation:blob var(--bd,12s) ease-in-out infinite var(--bdl,0s)}
+.b1{width:440px;height:440px;background:var(--ac);top:-10%;left:-10%;--bd:15s}
+.b2{width:320px;height:320px;background:var(--pu);top:20%;right:-8%;--bd:11s;--bdl:-4s}
+.b3{width:260px;height:260px;background:var(--gr);bottom:5%;left:35%;--bd:13s;--bdl:-7s}
+.hc{position:relative;z-index:2}
+.hey{font-size:9px;letter-spacing:5px;text-transform:uppercase;color:var(--ac);margin-bottom:18px;display:flex;align-items:center;gap:12px;justify-content:center;animation:fu .5s ease both}
+.el{width:32px;height:1px;opacity:.5}
+.el1{background:linear-gradient(90deg,transparent,var(--ac))}
+.el2{background:linear-gradient(90deg,var(--ac),transparent)}
+.htitle{font-family:'Syne',sans-serif;font-size:clamp(56px,10vw,120px);font-weight:800;line-height:.9;letter-spacing:-5px;color:var(--tx);margin-bottom:4px;animation:fu .6s .1s ease both;display:inline-block;position:relative}
+.htitle::before,.htitle::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;height:100%;font-family:'Syne',sans-serif;font-weight:800;background:linear-gradient(135deg,var(--ac),var(--pu) 50%,var(--gr));background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.htitle::before{animation:glitch1 7s infinite,shimmer 6s ease infinite;opacity:.35}
+.htitle::after{animation:glitch2 7s infinite .1s,shimmer 6s ease infinite;opacity:.22}
+.grad{background:linear-gradient(135deg,var(--ac),var(--pu) 50%,var(--gr));background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 6s ease infinite;display:inline-block;position:relative;z-index:2}
+.hsub{font-family:'Syne',sans-serif;font-size:clamp(14px,2.5vw,24px);font-weight:300;color:var(--tx3);letter-spacing:.5px;margin-bottom:10px;animation:fu .6s .2s ease both}
+.hprop{font-family:'Syne',sans-serif;font-size:clamp(12px,1.8vw,16px);color:var(--tx2);margin-bottom:26px;animation:fu .6s .25s ease both;letter-spacing:.3px}
+.htype{font-size:11px;letter-spacing:.5px;color:var(--tx2);margin-bottom:30px;height:18px;animation:fu .6s .3s ease both}
+.htype .cur{animation:blink 1s step-end infinite;color:var(--ac)}
+.hbadges{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:34px;animation:fu .6s .4s ease both}
+.badge{font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:100px;border:1px solid var(--br);background:var(--bg1);color:var(--tx2);transition:all .25s;cursor:default;white-space:nowrap}
+.badge:hover{transform:translateY(-2px);border-color:var(--ac);color:var(--ac)}
+.bg{border-color:color-mix(in srgb,var(--gr) 38%,transparent);color:var(--gr);background:color-mix(in srgb,var(--gr) 5%,var(--bg1))}
+.ba{border-color:color-mix(in srgb,var(--ac) 38%,transparent);color:var(--ac);background:color-mix(in srgb,var(--ac) 6%,var(--bg1))}
+.br2c{border-color:color-mix(in srgb,var(--rd) 38%,transparent);color:var(--rd);background:color-mix(in srgb,var(--rd) 5%,var(--bg1))}
+.hcta{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;animation:fu .6s .5s ease both}
+/* Magnetic buttons */
+.btnp{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:14px 32px;border-radius:10px;background:var(--ac);color:var(--bg);border:none;cursor:none;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;will-change:transform}
+.btnp:hover{transform:translateY(-3px);box-shadow:0 12px 32px color-mix(in srgb,var(--ac) 38%,transparent)}
+.btnp:active{transform:translateY(-1px)}
+.btns{font-family:'Syne',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:13px 28px;border-radius:10px;background:transparent;color:var(--tx);border:1px solid var(--br);cursor:none;transition:all .25s}
+.btns:hover{border-color:var(--br2);background:var(--bg2);transform:translateY(-2px)}
+.hscroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;animation:float 3.5s ease infinite;z-index:2}
+.hscroll span{font-size:8px;letter-spacing:3px;text-transform:uppercase;color:var(--tx3)}
+.hscroll svg{color:var(--ac);animation:float 2s ease infinite}
+/* ═══ SECTIONS ═══ */
+.sec{padding:72px 24px;max-width:1000px;margin:0 auto}
+.slbl{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--ac);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--br)}
+.stit{font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,40px);font-weight:800;letter-spacing:-2px;color:var(--tx);margin-bottom:8px;line-height:1.05}
+.ssub{font-size:12px;color:var(--tx3);line-height:1.9;max-width:520px}
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--br2),transparent);margin:0 24px}
+/* ═══ GRID PANELS ═══ */
+.panel{border:1px solid var(--br);border-radius:14px;overflow:hidden;background:var(--bg1);margin-top:44px}
+.panel-h{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--br);background:var(--bg2)}
+.panel-dots{display:flex;gap:5px}
+.pd{width:9px;height:9px;border-radius:50%}
+.panel-info{font-size:9.5px;color:var(--tx3);letter-spacing:.5px}
+.panel-badge{font-size:8.5px;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;border-radius:100px;background:color-mix(in srgb,var(--ac) 10%,var(--bg3));color:var(--ac);border:1px solid color-mix(in srgb,var(--ac) 20%,transparent)}
+.panel-code{font-size:9.5px;line-height:1.7;padding:18px;color:var(--tx3);max-height:200px;overflow-y:auto;overflow-x:hidden;word-break:break-all;white-space:pre-wrap;scrollbar-width:thin;scrollbar-color:var(--br) transparent;user-select:none;-webkit-user-select:none}
+.panel-foot{padding:13px 18px;border-top:1px solid var(--br);display:flex;gap:10px;flex-wrap:wrap;background:var(--bg2);align-items:center}
+/* Copy button */
+.cpbtn{flex:1;min-width:180px;font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 22px;border-radius:9px;cursor:none;border:1px solid var(--ac);background:var(--ac);color:var(--bg);position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s,background .3s,border-color .3s}
+.cpbtn:hover{transform:translateY(-2px);box-shadow:0 10px 28px color-mix(in srgb,var(--ac) 38%,transparent)}
+.cpbtn.done{background:var(--gr);border-color:var(--gr);animation:rglow 1.5s ease 2}
+.pmeta{font-size:9.5px;color:var(--tx3);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+/* ═══ STATS ═══ */
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--br);border-radius:14px;overflow:hidden;border:1px solid var(--br);margin-top:44px}
+.sc{background:var(--bg1);padding:28px 20px;transition:background .2s;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--sc,var(--ac));opacity:.6}
+.sc:hover{background:var(--bg2)}
+.sn{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-2px;color:var(--sc,var(--ac));line-height:1;margin-bottom:7px}
+.sl2{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--tx3);line-height:1.5}
+/* Compat table */
+.ctbl{width:100%;border-collapse:collapse;margin-top:28px;border:1px solid var(--br);border-radius:12px;overflow:hidden;font-size:11px}
+.ctbl th{background:var(--bg2);color:var(--tx3);font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;padding:10px 13px;text-align:left;border-bottom:1px solid var(--br);font-weight:500}
+.ctbl td{padding:10px 13px;border-bottom:1px solid var(--br);background:var(--bg1);color:var(--tx2)}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl tr:hover td{background:var(--bg2)}
+.ck{color:var(--gr);font-weight:700;font-size:13px}.cx{color:var(--rd);font-size:13px}
+.ct{color:var(--tx);font-weight:600;font-family:'Syne',sans-serif}
+.cst{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:600;letter-spacing:.5px;padding:5px 13px;border-radius:100px;background:color-mix(in srgb,var(--gr) 10%,var(--bg2));color:var(--gr);border:1px solid color-mix(in srgb,var(--gr) 25%,transparent);margin-top:16px}
+.cst::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--gr);animation:pdot 1.8s ease infinite}
+/* Gaussian explain */
+.gex{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--br);border-radius:12px;overflow:hidden;border:1px solid var(--br);margin-top:16px}
+.gc{background:var(--bg1);padding:16px 18px;transition:background .2s}
+.gc:hover{background:var(--bg2)}
+.gn{font-size:9px;font-weight:700;color:var(--ac);margin-bottom:5px;letter-spacing:1px;text-transform:uppercase}
+.gd{font-size:10.5px;color:var(--tx3);line-height:1.65}
+/* ═══ MISSION CARDS ═══ */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;background:var(--br);border-radius:14px;overflow:hidden;border:1px solid var(--br);margin-top:44px}
+.mc{background:var(--bg1);padding:26px;transition:background .2s;position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform}
+.mc::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--cc,var(--ac)) 14%,transparent),transparent 55%);opacity:0;transition:opacity .3s;pointer-events:none}
+.mc:hover{background:var(--bg2)}
+.mc:hover::before{opacity:1}
+.mci{width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--cc,var(--ac)) 12%,var(--bg2));border:1px solid color-mix(in srgb,var(--cc,var(--ac)) 25%,transparent);display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px;transition:transform .25s}
+.mc:hover .mci{transform:scale(1.1) rotate(-6deg)}
+.mn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);letter-spacing:-.3px;margin-bottom:5px}
+.md{font-size:11px;color:var(--tx3);line-height:1.7}
+.mt{display:inline-block;margin-top:10px;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:color-mix(in srgb,var(--cc,var(--ac)) 10%,var(--bg2));color:var(--cc,var(--ac));border:1px solid color-mix(in srgb,var(--cc,var(--ac)) 20%,transparent)}
+/* Progress demos */
+.pdems{display:grid;gap:1px;background:var(--br);border-radius:14px;overflow:hidden;border:1px solid var(--br);margin-top:44px}
+.pdr{background:var(--bg1);padding:20px 22px;display:grid;grid-template-columns:1fr 200px;gap:14px;align-items:center;transition:background .2s}
+.pdr:hover{background:var(--bg2)}
+.pdn{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.pdt{font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px;display:inline-block;margin-bottom:8px}
+.pdbw{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:5px}
+.pdb{height:3px;border-radius:2px;background:var(--gr)}
+.pdm{font-size:9.5px;color:var(--tx3);display:flex;justify-content:space-between}
+.pdn2{font-size:10px;color:var(--tx3);text-align:right;line-height:1.6}
+/* ═══ STEPS ═══ */
+.stps{margin-top:44px}
+.sr{display:grid;grid-template-columns:56px 1fr;gap:16px;align-items:start;padding:20px 0;border-bottom:1px solid var(--br);transition:all .22s}
+.sr:last-child{border-bottom:none}
+.sr:hover{background:var(--bg1);padding-left:14px;padding-right:14px;border-radius:12px;border-color:transparent;margin:0 -14px}
+.snum{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--br2);letter-spacing:-2px;line-height:1;transition:color .2s,text-shadow .2s}
+.sr:hover .snum{color:var(--ac);text-shadow:0 0 20px color-mix(in srgb,var(--ac) 38%,transparent)}
+.stit2{font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700;color:var(--tx);margin-bottom:5px;letter-spacing:-.3px}
+.sdesc{font-size:11.5px;color:var(--tx2);line-height:1.85}
+.kbd{display:inline-block;font-size:9.5px;padding:2px 7px;border-radius:5px;background:var(--bg3);border:1px solid var(--br2);color:var(--ac);margin:0 2px;box-shadow:0 2px 0 var(--br2)}
+.osg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--br);border-radius:11px;overflow:hidden;border:1px solid var(--br);margin-top:12px}
+.osc{background:var(--bg1);padding:18px;transition:background .2s}
+.osc:hover{background:var(--bg2)}
+.ost{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--tx);margin-bottom:9px}
+.osl{list-style:none}
+.osl li{font-size:10.5px;color:var(--tx2);line-height:1.9;display:flex;align-items:center;gap:5px}
+.osn{font-size:10px;color:var(--tx3);margin-top:7px;padding-top:7px;border-top:1px solid var(--br);line-height:1.6}
+/* ═══ TERMINAL ═══ */
+.trm{margin-top:44px;border-radius:14px;overflow:hidden;border:1px solid var(--br);background:var(--bg);transition:border-color .2s}
+.trm:hover{border-color:var(--br2)}
+.trmh{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--br);background:var(--bg2)}
+.trmdots{display:flex;gap:5px}
+.trmd{width:9px;height:9px;border-radius:50%}
+.trmt{font-size:10px;color:var(--tx3);flex:1;text-align:center;letter-spacing:.5px}
+.trmlive{font-size:8px;color:var(--gr);letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:4px}
+.trmlive::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gr);animation:pdot 1.6s ease infinite}
+.trmb{padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:10.5px;line-height:1.9}
+.la{color:var(--ac);font-weight:700}.lok{color:var(--gr)}.lw{color:var(--ye)}.le{color:var(--rd)}.ld{color:var(--tx3)}.li{color:var(--ac)}.lb{color:var(--tx2)}.lt{color:var(--tx)}
+/* Log line animation */
+.ll{opacity:0;transform:translateX(-8px);transition:opacity .3s,transform .3s;display:block}
+.ll.vis{opacity:1;transform:none}
+/* ═══ FAQ ═══ */
+.faqlist{margin-top:44px}
+.faqi{border-bottom:1px solid var(--br);overflow:hidden}
+.faqq{width:100%;padding:19px 0;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:none;background:none;border:none;color:var(--tx);text-align:left;font-family:'Syne',sans-serif;font-size:13.5px;font-weight:600;letter-spacing:-.3px;transition:color .2s}
+.faqq:hover{color:var(--ac)}
+.faqic{width:22px;height:22px;border-radius:6px;border:1px solid var(--br);flex-shrink:0;display:grid;place-items:center;font-size:14px;color:var(--tx3);transition:all .3s;background:var(--bg2);line-height:1}
+.faqi.op .faqic{transform:rotate(45deg);border-color:var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,var(--bg2))}
+.faqa{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.16,1,.3,1)}
+.faqai{padding:0 0 20px;font-size:12px;color:var(--tx2);line-height:1.9}
+.faqai b{color:var(--tx)}
+.faqai .co{display:inline;font-family:'JetBrains Mono',monospace;font-size:10px;padding:1px 6px;border-radius:4px;background:var(--bg3);color:var(--ac);border:1px solid var(--br)}
+.faqi.op .faqa{max-height:480px}
+/* ═══ CHANGELOG ═══ */
+.cll{margin-top:44px}
+.cle{display:grid;grid-template-columns:140px 1fr;gap:22px;padding:26px 0;border-bottom:1px solid var(--br)}
+.cle:last-child{border-bottom:none}
+.clm{}
+.clv{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--tx);letter-spacing:-1px;margin-bottom:5px}
+.clst{font-size:8.5px;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:100px;display:inline-block}
+.st-s{background:color-mix(in srgb,var(--gr) 10%,var(--bg2));color:var(--gr);border:1px solid color-mix(in srgb,var(--gr) 24%,transparent)}
+.st-b{background:color-mix(in srgb,var(--ye) 10%,var(--bg2));color:var(--ye);border:1px solid color-mix(in srgb,var(--ye) 24%,transparent)}
+.st-a{background:color-mix(in srgb,var(--or) 10%,var(--bg2));color:var(--or);border:1px solid color-mix(in srgb,var(--or) 24%,transparent)}
+.st-l{background:color-mix(in srgb,var(--rd) 10%,var(--bg2));color:var(--rd);border:1px solid color-mix(in srgb,var(--rd) 24%,transparent)}
+.cldt{font-size:10px;color:var(--tx3);margin-top:6px;letter-spacing:.5px}
+.clhl{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.clh{font-size:9px;font-weight:600;letter-spacing:.5px;padding:3px 9px;border-radius:100px;background:color-mix(in srgb,var(--ac) 8%,var(--bg2));color:var(--ac);border:1px solid color-mix(in srgb,var(--ac) 18%,transparent)}
+.clb{}
+.cli{list-style:none}
+.cli li{font-size:11.5px;color:var(--tx2);line-height:2;padding-left:14px;position:relative}
+.cli li::before{position:absolute;left:0;font-weight:700}
+.cli li.a::before{content:'+';color:var(--pu)}.cli li.f::before{content:'~';color:var(--gr)}.cli li.r::before{content:'-';color:var(--rd)}.cli li.w::before{content:'!';color:var(--ye)}
+.cli li b{color:var(--tx)}
+/* What's new */
+.wn{border:1px solid color-mix(in srgb,var(--gr) 30%,transparent);border-radius:12px;padding:16px 20px;background:color-mix(in srgb,var(--gr) 5%,var(--bg1));margin-bottom:22px;display:flex;align-items:flex-start;gap:14px}
+.wni{font-size:20px;flex-shrink:0;margin-top:2px}
+.wnt{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.wnd{font-size:11px;color:var(--tx2);line-height:1.8}
+.wnd b{color:var(--gr)}
+/* ═══ ABOUT ═══ */
+.acards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--br);border-radius:14px;overflow:hidden;border:1px solid var(--br);margin-top:44px}
+.acard{background:var(--bg1);padding:26px 22px;transition:background .2s}
+.acard:hover{background:var(--bg2)}
+.acic{width:38px;height:38px;border-radius:11px;background:color-mix(in srgb,var(--ac) 10%,var(--bg2));border:1px solid color-mix(in srgb,var(--ac) 20%,transparent);display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:14px;transition:transform .25s}
+.acard:hover .acic{transform:scale(1.08) rotate(-5deg)}
+.act{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--tx);margin-bottom:6px;letter-spacing:-.3px}
+.acd{font-size:11px;color:var(--tx3);line-height:1.75}
+.ainfo{margin-top:2px;border:1px solid var(--br);border-radius:14px;overflow:hidden;background:var(--bg1)}
+.aih{padding:20px 24px;border-bottom:1px solid var(--br);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.ait{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--tx);letter-spacing:-.4px}
+.ais{font-size:10px;color:var(--tx3);margin-top:2px}
+.joinbtn{font-family:'Syne',sans-serif;font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:10px 20px;border-radius:9px;background:var(--ac);color:var(--bg);text-decoration:none;display:inline-block;transition:all .25s;cursor:none}
+.joinbtn:hover{transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--ac) 35%,transparent)}
+.aimeta{display:grid;grid-template-columns:repeat(3,1fr);gap:0}
+.aicell{padding:16px 22px;border-right:1px solid var(--br)}
+.aicell:last-child{border-right:none}
+.aicl{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--tx3);margin-bottom:5px}
+.aicv{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--tx)}
+.aicv.gr{color:var(--gr)}.aicv.ac{color:var(--ac)}
+.ainote{padding:16px 22px;background:var(--bg2);font-size:11px;color:var(--tx2);line-height:1.85;border-top:1px solid var(--br)}
+.ainote b{color:var(--tx)}
+/* ═══ COPYRIGHT ═══ */
+.cpb{margin-top:44px;border:1px solid var(--br);border-radius:14px;overflow:hidden}
+.cpt{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--br);background:var(--bg1);flex-wrap:wrap;gap:14px}
+.cpauth{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-2px;background:linear-gradient(135deg,var(--pu),var(--ac));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cpyr{font-size:10px;color:var(--tx3);margin-top:3px}
+.cpsrv{color:var(--ac);text-decoration:none;font-size:11.5px;border-bottom:1px solid color-mix(in srgb,var(--ac) 38%,transparent);padding-bottom:2px;transition:color .2s}
+.cpsrv:hover{color:var(--tx)}
+.cprules{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cpr{padding:16px 22px;border-bottom:1px solid var(--br);border-right:1px solid var(--br);transition:background .2s}
+.cpr:nth-child(even){border-right:none}.cpr:nth-last-child(-n+2){border-bottom:none}
+.cpr:hover{background:var(--bg2)}
+.cpri{font-size:14px;margin-bottom:6px}.cprt{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--tx);margin-bottom:3px}.cprd{font-size:11px;color:var(--tx3);line-height:1.7}
+.cpsign{padding:16px 22px;background:var(--bg2);font-size:10px;color:var(--tx3);line-height:2;border-top:1px solid var(--br)}
+.cpsign b{color:var(--pu)}
+/* ═══ ALERTS ═══ */
+.alert{border-radius:11px;padding:13px 17px;margin-bottom:13px;border-left:3px solid;font-size:11.5px;line-height:1.85}
+.al-d{background:color-mix(in srgb,var(--rd) 7%,var(--bg2));border-color:var(--rd);color:color-mix(in srgb,var(--rd) 62%,var(--tx2))}
+.al-i{background:color-mix(in srgb,var(--ac) 7%,var(--bg2));border-color:var(--ac);color:color-mix(in srgb,var(--ac) 68%,var(--tx2))}
+.al-g{background:color-mix(in srgb,var(--gr) 7%,var(--bg2));border-color:var(--gr);color:color-mix(in srgb,var(--gr) 65%,var(--tx2))}
+.alert b{color:var(--tx)}
+/* CTA mini */
+.ctam{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-family:'Syne',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:10px 20px;border-radius:9px;background:color-mix(in srgb,var(--ac) 10%,var(--bg2));color:var(--ac);border:1px solid color-mix(in srgb,var(--ac) 25%,transparent);text-decoration:none;cursor:none;transition:all .2s}
+.ctam:hover{background:var(--ac);color:var(--bg);transform:translateY(-1px)}
+/* ═══ FOOTER ═══ */
+footer{border-top:1px solid var(--br);padding:44px 24px;text-align:center}
+.flogo{font-family:'Syne',sans-serif;font-size:clamp(30px,6vw,52px);font-weight:800;letter-spacing:-3px;background:linear-gradient(135deg,var(--ac),var(--pu) 50%,var(--gr));background-size:300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 7s ease infinite,float 5s ease infinite;display:inline-block;margin-bottom:8px}
+.fsub{font-size:10.5px;color:var(--tx3);line-height:2.2;letter-spacing:.5px}
+.fsub a{color:var(--ac);text-decoration:none;transition:color .2s}
+.fsub a:hover{color:var(--tx)}
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:660px){
+  .sgrid{grid-template-columns:1fr 1fr}
+  .acards{grid-template-columns:1fr}
+  .osg{grid-template-columns:1fr}
+  .cprules{grid-template-columns:1fr}
+  .cpr:nth-child(odd){border-right:none}
+  .cpr{border-bottom:1px solid var(--br)}.cpr:last-child{border-bottom:none}
+  .cle{grid-template-columns:1fr;gap:10px}
+  .pdr{grid-template-columns:1fr;gap:8px}.pdn2{text-align:left}
+  .sr:hover{margin:0;padding:20px 0}
+  .aimeta{grid-template-columns:1fr 1fr}.aicell:last-child{border-right:none}
+  .gex{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-<canvas id="bg"></canvas>
-<div class="card">
-  <div class="badge">🛠️ MANUTENÇÃO PROGRAMADA</div>
-  <h1>yKauttiz</h1>
-  <p class="sub">Ferramenta gratuita para automatizar missões do Discord</p>
-  <div class="alert">
-    <b>🔧 O script está temporariamente indisponível</b><br>
-    Estamos trabalhando em atualizações e melhorias de segurança.<br>
-    <b>Estimativa de retorno:</b> <b>20h</b> (horário de Brasília)<br><br>
-    Durante este período, o código não será disponibilizado para cópia.<br>
-    Agradecemos sua compreensão e paciência.
+
+<!-- Skip link accessibility -->
+<a class="skip" href="#main">Ir para o conteúdo principal</a>
+
+<!-- Back to top -->
+<button id="btt" aria-label="Voltar ao topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- Cursor -->
+<div id="cdot"></div>
+<div id="cring"></div>
+<!-- Scroll progress -->
+<div id="sbar"></div>
+<!-- Scan line -->
+<div id="scanl" aria-hidden="true"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nlogo">yKauttiz</div>
+  <nav class="nlinks" aria-label="Seções">
+    <a class="nlink" href="#about-sec">Sobre</a>
+    <a class="nlink" href="#sc-sec">Script</a>
+    <a class="nlink" href="#hw-sec">Como usar</a>
+    <a class="nlink" href="#faq-sec">FAQ</a>
+    <a class="nlink" href="#cl-sec">Changelog</a>
+  </nav>
+  <div class="nright">
+    <span class="tlbl" aria-hidden="true">Tema</span>
+    <button class="tbtn act" data-theme="dark" onclick="setTheme('dark',this)" title="Tema escuro" aria-label="Ativar tema escuro">
+      <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+    <button class="tbtn" data-theme="light" onclick="setTheme('light',this)" title="Tema claro" aria-label="Ativar tema claro">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+    <button class="tbtn" data-theme="matrix" onclick="setTheme('matrix',this)" title="Tema Matrix" aria-label="Ativar tema Matrix">
+      <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+    </button>
+    <button class="tbtn" data-theme="vapor" onclick="setTheme('vapor',this)" title="Tema Vapor" aria-label="Ativar tema Vapor">
+      <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    </button>
   </div>
-  <footer>
-    © 2026 yKauttiz · discord.gg/G3wrqyJQrC
-  </footer>
+</nav>
+
+<!-- TICKER -->
+<div class="tkw" style="margin-top:52px" aria-hidden="true">
+  <div class="tki">
+    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v3.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
+    <span class="ti"><span class="ts">◆</span>yKauttiz Missões Discord<span class="ts">·</span>v3.0.0 STABLE 2026<span class="ts">·</span>servidor obrigatório<span class="ts">·</span>código protegido<span class="ts">·</span>gratuito<span class="ts">·</span>USE POR SUA CONTA E RISCO<span class="ts">·</span>discord.gg/G3wrqyJQrC<span class="ts">·</span>Anti-Hang Protocol<span class="ts">·</span>CONFIG editável<span class="ts">·</span>notificações nativas<span class="ts">·</span>retomada parcial<span class="ts">·</span>gaussiano 3 camadas<span class="ts">◆</span></span>
+  </div>
 </div>
+
+<!-- HERO -->
+<div class="hero" id="main">
+  <canvas id="hcanvas" aria-hidden="true"></canvas>
+  <div class="hbg"></div>
+  <div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="hgrid"></div>
+  <div class="hc">
+    <div class="hey"><span class="el el1"></span>ferramenta gratuita · 2026<span class="el el2"></span></div>
+    <h1 class="htitle" data-text="yKauttiz"><span class="grad">yKauttiz</span></h1>
+    <p class="hsub">Missões Discord</p>
+    <p class="hprop">Automatize suas missões do Discord em segundos — gratuito, sem instalação</p>
+    <div class="htype"><span id="ttext"></span><span class="cur">|</span></div>
+    <div class="hbadges">
+      <span class="badge bg">v3.0.0 STABLE</span>
+      <span class="badge ba">🔒 código protegido</span>
+      <span class="badge ba">Anti-Hang Protocol</span>
+      <span class="badge br2c">⚠ use por sua conta e risco</span>
+      <span class="badge">© 2026 yKauttiz</span>
+      <span class="badge">discord.gg/G3wrqyJQrC</span>
+    </div>
+    <div class="hcta">
+      <button class="btnp mag" onclick="document.getElementById('sc-sec').scrollIntoView({behavior:'smooth'})"><span class="bt">Copiar Script</span></button>
+      <button class="btns mag" onclick="document.getElementById('hw-sec').scrollIntoView({behavior:'smooth'})"><span class="bt">Como usar</span></button>
+    </div>
+  </div>
+  <div class="hscroll" aria-hidden="true">
+    <span>scroll</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="sec" id="about-sec" aria-labelledby="about-h">
+  <div class="slbl rv">sobre o projeto</div>
+  <h2 class="stit rv" id="about-h">Desenvolvido para a comunidade</h2>
+  <p class="ssub rv">Ferramenta criada do zero por yKauttiz, em contínua evolução com base em testes reais e feedback da comunidade. v3.0.0 é a versão mais completa já lançada.</p>
+  <div class="acards rv">
+    <div class="acard"><div class="acic">🔬</div><div class="act">Desenvolvimento iterativo</div><div class="acd">Cada versão é testada em condições reais antes de ser lançada. Novos tipos de missão e mudanças na API do Discord são identificados e corrigidos continuamente.</div></div>
+    <div class="acard"><div class="acic">🛡️</div><div class="act">Segurança e autoria</div><div class="acd">Código protegido para preservar a autoria e impedir redistribuição não autorizada. Verificação obrigatória do servidor garante que apenas a versão oficial seja usada.</div></div>
+    <div class="acard"><div class="acic">🌐</div><div class="act">Suporte ativo</div><div class="acd">Bugs, dúvidas e sugestões são tratados no servidor oficial. A comunidade contribui reportando problemas e novos tipos de missão descobertos.</div></div>
+  </div>
+  <div class="ainfo rv">
+    <div class="aih">
+      <div><div class="ait">Como o projeto é mantido</div><div class="ais">desenvolvimento solo · testes reais · versão pública gratuita</div></div>
+      <a class="joinbtn mag" href="https://discord.gg/G3wrqyJQrC" target="_blank" rel="noopener noreferrer"><span class="bt">Entrar no servidor</span></a>
+    </div>
+    <div class="aimeta">
+      <div class="aicell"><div class="aicl">Autor</div><div class="aicv">yKauttiz</div></div>
+      <div class="aicell"><div class="aicl">Versão atual</div><div class="aicv gr">v3.0.0 STABLE</div></div>
+      <div class="aicell"><div class="aicl">Distribuição</div><div class="aicv ac">Gratuita</div></div>
+    </div>
+    <div class="ainote">O <b>yKauttiz Missões Discord</b> nasceu da necessidade de automatizar um processo repetitivo de forma confiável. O desenvolvimento segue um ciclo de identificação de problema → protótipo → teste real → refinamento → lançamento. Cada versão é documentada no changelog antes de ser publicada como STABLE. O código protegido garante que apenas a versão oficial seja utilizada, protegendo tanto o autor quanto os usuários de versões adulteradas.</div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- STATS -->
+<section class="sec">
+  <div class="slbl rv">números</div>
+  <h2 class="stit rv">Números do projeto</h2>
+  <p class="ssub rv">Automação completa com timing gaussiano (que simula variação humana real), retomada parcial e tratamento robusto de todos os cenários de erro.</p>
+  <!-- Gaussian explanation -->
+  <div class="gex rv">
+    <div class="gc"><div class="gn">Camada 1 — Timestamp</div><div class="gd">Cada timestamp enviado tem variação aleatória que imita o atraso natural de rede humano, com drift por request único.</div></div>
+    <div class="gc"><div class="gn">Camada 2 — Intervalo</div><div class="gd">O tempo entre requests segue uma curva gaussiana — não é fixo, como um humano que às vezes pausa, olha outra coisa, volta.</div></div>
+    <div class="gc"><div class="gn">Camada 3 — Step</div><div class="gd">Distribuição bi-modal: 80% normal (5-9s) + 20% pausa curta (1-4s). Humanos não assistem vídeos em velocidade constante.</div></div>
+  </div>
+  <!-- Gaussian explanation -->
+  <div class="gex rv">
+    <div class="gc"><div class="gn">Camada 1 — Timestamp</div><div class="gd">Cada timestamp enviado tem variação aleatória que imita o atraso natural de rede humano, com drift por request único.</div></div>
+    <div class="gc"><div class="gn">Camada 2 — Intervalo</div><div class="gd">O tempo entre requests segue uma curva gaussiana — não é fixo, como um humano que às vezes pausa, olha outra coisa, volta.</div></div>
+    <div class="gc"><div class="gn">Camada 3 — Step</div><div class="gd">Distribuição bi-modal: 80% normal (5-9s) + 20% pausa curta (1-4s). Humanos não assistem vídeos em velocidade constante.</div></div>
+  </div>
+  <div class="sgrid rv">
+    <div class="sc" style="--sc:var(--ac)"><div class="sn" data-count="5" data-suf="">0</div><div class="sl2">tipos de<br>missão</div></div>
+    <div class="sc" style="--sc:var(--pu)"><div class="sn" data-count="7" data-suf="">0</div><div class="sl2">erros HTTP<br>tratados</div></div>
+    <div class="sc" style="--sc:var(--gr)"><div class="sn" data-count="3" data-suf="×">0</div><div class="sl2">camadas<br>gaussianas</div></div>
+    <div class="sc" style="--sc:var(--ye)"><div class="sn" data-count="100" data-suf="%">0</div><div class="sl2">gratuito<br>sempre</div></div>
+  </div>
+  <!-- Compatibility table -->
+  <table class="ctbl rv" aria-label="Compatibilidade por tipo de missão e plataforma">
+    <thead><tr><th>Tipo de Missão</th><th>Navegador</th><th>Desktop App</th><th>Observação</th></tr></thead>
+    <tbody>
+      <tr><td class="ct">WATCH_VIDEO</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td>Retomada parcial automática · configVersion suportado</td></tr>
+      <tr><td class="ct">WATCH_VIDEO_MOBILE</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td>Parâmetros mobile simulados</td></tr>
+      <tr><td class="ct">PLAY_ON_DESKTOP</td><td><span class="cx">✗</span></td><td><span class="ck">✓</span></td><td>GameStore · Anti-Hang 25min · HIDE_ACTIVITY opcional</td></tr>
+      <tr><td class="ct">STREAM_ON_DESKTOP</td><td><span class="cx">✗</span></td><td><span class="ck">✓</span></td><td>StreamStore · 1 pessoa no canal · Anti-Hang 25min</td></tr>
+      <tr><td class="ct">PLAY_ACTIVITY</td><td><span class="ck">✓</span></td><td><span class="ck">✓</span></td><td>VoiceStateStore · canal atual do usuário</td></tr>
+    </tbody>
+  </table>
+  <div class="cst rv">🟢 Compatível com Discord Stable · Mar 2026</div>
+</section>
+
+<div class="div"></div>
+
+<!-- SCRIPT -->
+<section class="sec" id="sc-sec" aria-labelledby="sc-h">
+  <div class="slbl rv">script</div>
+  <h2 class="stit rv" id="sc-h">Copie e cole no console</h2>
+  <p class="ssub rv">O código está protegido para preservar a autoria de yKauttiz. Cole no console do Discord (F12) e pressione Enter. O servidor é verificado automaticamente.</p>
+  <div class="alert al-d rv">
+    <b>⚠ Servidor obrigatório</b> — O script verifica e entra automaticamente em discord.gg/G3wrqyJQrC. Se falhar (e você não for membro), o script para completamente. <b>USE POR SUA CONTA E RISCO.</b>
+  </div>
+  <div class="panel rv">
+    <div class="panel-h">
+      <div class="panel-dots"><div class="pd" style="background:#ED4245"></div><div class="pd" style="background:#FEE75C"></div><div class="pd" style="background:#57F287"></div></div>
+      <span class="panel-info" id="spi">yKauttiz_v3.0.0.js · gerando...</span>
+      <span class="panel-badge">🔒 PROTEGIDO</span>
+    </div>
+    <div class="panel-code" id="spc">Gerando script protegido...</div>
+    <div class="panel-foot">
+      <button class="cpbtn mag" id="cpbtn" onclick="copiar()"><span class="bt">Copiar Script — yKauttiz v3.0.0</span></button>
+      <div class="pmeta">
+        <span id="spch">—</span>
+        <span style="color:var(--br2)">·</span>
+        <span style="color:var(--ac)">v3.0.0 STABLE</span>
+        <span style="color:var(--br2)">·</span>
+        <span id="spsid">—</span>
+        <span style="color:var(--br2)">·</span>
+        <span style="color:var(--tx3);font-size:9px">parar: yKauttizStop()</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- MISSIONS -->
+<section class="sec" aria-labelledby="mis-h">
+  <div class="slbl rv">missões</div>
+  <h2 class="stit rv" id="mis-h">Tipos suportados</h2>
+  <p class="ssub rv">O script detecta automaticamente o tipo de cada missão e processa com a estratégia correta. CONFIG editável no topo do script.</p>
+  <div class="mgrid rv">
+    <div class="mc" style="--cc:var(--gr)"><div class="mci">▶</div><div class="mn">WATCH_VIDEO</div><div class="md">Retomada parcial · step bi-modal · per-request drift · configVersion suportado.</div><span class="mt">Navegador ou App</span></div>
+    <div class="mc" style="--cc:var(--gr)"><div class="mci">📱</div><div class="mn">WATCH_VIDEO_MOBILE</div><div class="md">Idêntico ao WATCH_VIDEO com parâmetros mobile. Suporta WATCH_VIDEO_MOBILE (sem ON).</div><span class="mt">Navegador ou App</span></div>
+    <div class="mc" style="--cc:var(--ye)"><div class="mci">🎮</div><div class="mn">PLAY_ON_DESKTOP</div><div class="md">GameStore injection · PID realista · Anti-Hang 25min · HIDE_ACTIVITY opcional.</div><span class="mt" style="--cc:var(--ye)">Desktop App obrig.</span></div>
+    <div class="mc" style="--cc:var(--ye)"><div class="mci">📡</div><div class="mn">STREAM_ON_DESKTOP</div><div class="md">StreamStore injection · restaura automaticamente · Anti-Hang 25min.</div><span class="mt" style="--cc:var(--ye)">Desktop App + 1 pessoa</span></div>
+    <div class="mc" style="--cc:var(--ac)"><div class="mci">🔄</div><div class="mn">PLAY_ACTIVITY</div><div class="md">VoiceStateStore para canal correto · heartbeat gaussiano [12s-45s].</div><span class="mt">Canal de voz</span></div>
+    <div class="mc" style="--cc:var(--pu)"><div class="mci">⚡</div><div class="mn">RETOMADA PARCIAL</div><div class="md">Lê progresso real do Discord · configVersion 1 e 2 suportados · continua do ponto exato.</div><span class="mt" style="--cc:var(--pu)">Automático</span></div>
+  </div>
+  <div class="pdems rv">
+    <div class="pdr">
+      <div>
+        <div class="pdn">Ready or Not DLC</div>
+        <span class="pdt" style="background:color-mix(in srgb,var(--gr) 10%,var(--bg3));color:var(--gr);border:1px solid color-mix(in srgb,var(--gr) 20%,transparent)">WATCH_VIDEO</span>
+        <div class="pdbw"><div class="pdb" style="width:49%"></div></div>
+        <div class="pdm"><span style="color:var(--gr);font-weight:700">43s assistidos</span><span>87s total · 49%</span></div>
+      </div>
+      <div class="pdn2">Script lê 43s e continua de 43s → 87s. Não repete o que já foi assistido.</div>
+    </div>
+    <div class="pdr">
+      <div>
+        <div class="pdn">WWE 2K26</div>
+        <span class="pdt" style="background:color-mix(in srgb,var(--gr) 10%,var(--bg3));color:var(--gr);border:1px solid color-mix(in srgb,var(--gr) 20%,transparent)">WATCH_VIDEO</span>
+        <div class="pdbw"><div class="pdb" style="width:0%"></div></div>
+        <div class="pdm"><span>0s assistidos</span><span>29s total · 0%</span></div>
+      </div>
+      <div class="pdn2">Missão nova — começa do zero com step bi-modal gaussiano.</div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- HOW TO USE -->
+<section class="sec" id="hw-sec" aria-labelledby="hw-h">
+  <div class="slbl rv">como usar</div>
+  <h2 class="stit rv" id="hw-h">Guia completo — 6 passos</h2>
+  <p class="ssub rv">Qualquer pessoa consegue usar. Não precisa instalar nada — só o Discord aberto.</p>
+  <div class="stps rv">
+    <div class="sr"><div class="snum">01</div><div>
+      <div class="stit2">Habilite o DevTools (se necessário)</div>
+      <div class="sdesc">O Discord Stable bloqueia o console por padrão. Se F12 não abrir, habilite manualmente:</div>
+      <div class="osg" style="margin-top:12px">
+        <div class="osc"><div class="ost">Windows</div><ul class="osl"><li>Abra: <span class="kbd">%appdata%/discord/settings.json</span></li><li>Adicione a linha abaixo e reinicie:</li><li><span class="kbd" style="font-size:8px;word-break:break-all">"DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true</span></li></ul></div>
+        <div class="osc"><div class="ost">Linux / macOS</div><ul class="osl"><li>Abra: <span class="kbd">~/.config/discord/settings.json</span></li><li>Adicione a mesma linha e reinicie</li></ul></div>
+        <div class="osc"><div class="ost">Alternativa</div><div class="osn">Use <b>Discord PTB ou Canary</b> — têm DevTools habilitado por padrão. Funciona igual ao Stable para missões.</div></div>
+      </div>
+    </div></div>
+    <div class="sr"><div class="snum">02</div><div><div class="stit2">Inscreva-se nas missões</div><div class="sdesc">Abra o Discord → aba <b>Missões</b> → inscreva-se manualmente. Missões de jogos exigem o jogo instalado — o script não consegue contornar isso.</div></div></div>
+    <div class="sr"><div class="snum">03</div><div>
+      <div class="stit2">Abra o console do Discord</div>
+      <div class="sdesc">Use o atalho do seu sistema:</div>
+      <div class="osg" style="margin-top:12px">
+        <div class="osc"><div class="ost">Windows / Linux</div><ul class="osl"><li><span class="kbd">F12</span> direto</li><li><span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">I</span></li></ul></div>
+        <div class="osc"><div class="ost">macOS</div><ul class="osl"><li><span class="kbd">Cmd</span>+<span class="kbd">Opt</span>+<span class="kbd">I</span></li><li>F12 não funciona no Mac</li></ul></div>
+        <div class="osc"><div class="ost">Dica</div><div class="osn">Se aparecer "allow pasting", <b>digite isso no console</b> e pressione Enter antes de colar.</div></div>
+      </div>
+    </div></div>
+    <div class="sr"><div class="snum">04</div><div><div class="stit2">Clique na aba Console</div><div class="sdesc">No DevTools que abriu, clique em <b>Console</b> no topo da janela.</div></div></div>
+    <div class="sr"><div class="snum">05</div><div><div class="stit2">Cole e pressione Enter</div><div class="sdesc">Clique em <b>Copiar Script</b> acima, cole com <span class="kbd">Ctrl+V</span> e pressione <span class="kbd">Enter</span>. O script verifica o servidor, lista as missões e processa automaticamente. Para parar a qualquer momento: <span class="kbd">yKauttizStop()</span></div></div></div>
+    <div class="sr"><div class="snum">06</div><div><div class="stit2">Colete as recompensas</div><div class="sdesc">Após o script terminar, abra a aba <b>Missões</b> no Discord e colete recompensas e orbs manualmente. A coleta automática não funciona por design da plataforma.</div></div></div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- LOG PREVIEW -->
+<section class="sec" aria-labelledby="log-h">
+  <div class="slbl rv">log preview</div>
+  <h2 class="stit rv" id="log-h">O que aparece no console</h2>
+  <div class="trm rv">
+    <div class="trmh">
+      <div class="trmdots"><div class="trmd" style="background:#ED4245"></div><div class="trmd" style="background:#FEE75C"></div><div class="trmd" style="background:#57F287"></div></div>
+      <span class="trmt">Discord DevTools — Console</span>
+      <span class="trmlive" aria-hidden="true">simulado</span>
+    </div>
+    <div class="trmb" id="logprev" role="log" aria-label="Simulação do output do console" aria-live="polite">
+<span class="ll"><span class="la"> yKauttiz </span><span class="lt"> Missões Discord </span><span class="lok"> STABLE </span><span class="lok"> v3.0.0 </span><span class="ld"> discord.gg/G3wrqyJQrC</span></span>
+<span class="ll"><span class="le">  !! USE POR SUA CONTA E RISCO !!</span></span>
+<span class="ll"><span class="ld">  Sessão: yk_RGI7B5 | v3.0.0 | Drift: 134ms</span></span>
+<span class="ll"><span class="li">[yKauttiz]</span><span class="lt"> Verificando servidor (obrigatório)...</span></span>
+<span class="ll"><span class="lok">[yKauttiz] ✓ Já está no servidor yKauttiz! discord.gg/G3wrqyJQrC</span></span>
+<span class="ll"><span class="li">[yKauttiz]</span><span class="lt"> 2 missão(ões) encontrada(s) | ETA ~2min | yk_RGI7B5</span></span>
+<span class="ll"><span class="ld">  [1] Ready or Not DLC — WATCH_VIDEO | 43s/87s | expira em 99h</span></span>
+<span class="ll"><span class="li">[yKauttiz]</span><span class="lt"> "Ready or Not DLC": retomando de 43s</span></span>
+<span class="ll"><span class="lw">[yKauttiz] ⚠ "WWE 2K26" EXPIRA EM MENOS DE 24 HORAS!</span></span>
+<span class="ll"><span class="lb">  [█████████░░░░░░░░░░░] 49%  43s/87s  ~1min  vel:6.8s/r normal</span></span>
+<span class="ll"><span class="lb">  [████████████████████] 100%  87s/87s  PRONTO  vel:7.0s/r normal</span></span>
+<span class="ll"><span class="lok">[yKauttiz] ✓ "Ready or Not DLC" concluída em 24s! vel:7.0s/step</span></span>
+<span class="ll"><span class="li">[yKauttiz]</span><span class="lt"> Colete a recompensa/orbs manualmente na aba Missões.</span></span>
+    </div>
+  </div>
+  <div class="alert al-d rv" style="margin-top:16px">
+    <b>Se o servidor falhar:</b> o script para imediatamente com 4 linhas de erro vermelhas. Entre em discord.gg/G3wrqyJQrC e rode novamente.
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- FAQ -->
+<section class="sec" id="faq-sec" aria-labelledby="faq-h">
+  <div class="slbl rv">faq</div>
+  <h2 class="stit rv" id="faq-h">Perguntas frequentes</h2>
+  <div class="faqlist rv" role="list">
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa1"><span>Isso é um vírus ou malware?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa1" role="region"><div class="faqai"><b>Não.</b> O script é JavaScript puro que roda dentro do console do seu próprio Discord. Ele não baixa nada, não instala nada, não acessa arquivos do computador e não envia senhas ou dados pessoais a lugar nenhum. Quando você fecha o Discord, o script para e some completamente. O código aparece protegido para preservar a autoria de yKauttiz, não para esconder algo malicioso.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa2"><span>Por que o código parece ilegível?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa2" role="region"><div class="faqai">O script é distribuído protegido para preservar a autoria de yKauttiz e evitar redistribuição não autorizada. É uma prática comum entre desenvolvedores para proteger seu trabalho. O Discord executa normalmente e os logs aparecem coloridos como no preview acima.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa3"><span>Por que preciso estar no servidor discord.gg/G3wrqyJQrC?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa3" role="region"><div class="faqai">O servidor é o canal oficial de suporte, atualizações e distribuição. O script verifica sua presença e tenta entrar automaticamente ao iniciar. Se por algum motivo não conseguir, entre manualmente em <b>discord.gg/G3wrqyJQrC</b> e rode novamente. Sem verificação do servidor, o script não executa.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa4"><span>Posso ser banido do Discord?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa4" role="region"><div class="faqai"><b>USE POR SUA CONTA E RISCO.</b> O script usa APIs internas do Discord de forma não oficial, o que pode violar os Termos de Serviço. yKauttiz não se responsabiliza por banimentos, suspensões ou qualquer consequência. Se quiser mais segurança, use em uma conta secundária.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa5"><span>Por que preciso me inscrever nas missões manualmente?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa5" role="region"><div class="faqai">Missões de jogos específicos exigem que o jogo esteja instalado e vinculado à sua conta Discord. Essa validação é feita pelo próprio Discord de forma que não pode ser contornada via script. Inscreva-se manualmente na aba Missões antes de rodar.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa6"><span>Por que preciso coletar as recompensas manualmente?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa6" role="region"><div class="faqai">O Discord processa recompensas internamente com validação anti-fraude. A coleta automática não funciona por design da plataforma. Após o script terminar, basta abrir a aba <b>Missões</b> no Discord — as recompensas e orbs estão lá esperando.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa7"><span>Funciona no navegador ou precisa do Desktop App?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa7" role="region"><div class="faqai"><b>WATCH_VIDEO e PLAY_ACTIVITY</b> funcionam no navegador e no Desktop App.<br><br><b>PLAY_ON_DESKTOP e STREAM_ON_DESKTOP</b> funcionam apenas no Discord Desktop App. No navegador, esses tipos são detectados e pulados automaticamente com aviso no console.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa8"><span>O que fazer se aparecer "allow pasting"?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa8" role="region"><div class="faqai">Alguns builds do Discord exigem confirmação antes de permitir colar código. Quando aparecer, <b>digite</b> <span class="co">allow pasting</span> no console e pressione Enter. Depois cole o script normalmente. É uma proteção do Discord e não afeta o funcionamento.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa9"><span>Por que F12 não abre o console no Discord Stable?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa9" role="region"><div class="faqai">O Discord Stable bloqueia o DevTools por padrão. Para habilitar:<br><br>1. Feche o Discord<br>2. Abra <span class="co">%appdata%/discord/settings.json</span> (Windows) ou <span class="co">~/.config/discord/settings.json</span> (Linux/Mac) em um editor de texto<br>3. Adicione: <span class="co">"DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true</span><br>4. Salve e reinicie o Discord<br><br><b>Alternativa:</b> use o <b>Discord PTB ou Canary</b> — têm DevTools habilitados por padrão e funcionam igual ao Stable para missões.</div></div></div>
+
+    <div class="faqi" role="listitem"><button class="faqq" onclick="faq(this)" aria-expanded="false" aria-controls="fa10"><span>Como parar o script no meio da execução?</span><div class="faqic" aria-hidden="true">+</div></button><div class="faqa" id="fa10" role="region"><div class="faqai">Digite <span class="co">yKauttizStop()</span> no console e pressione Enter. O script finaliza o step atual, restaura todos os stores modificados (GameStore, StreamStore) e exibe o resumo parcial da sessão. Os dados de sessão ficam disponíveis via <span class="co">window.yKauttizLog</span>.</div></div></div>
+
+  </div>
+  <a class="ctam rv" href="https://discord.gg/G3wrqyJQrC" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="bt">Ainda com dúvidas? Entre no servidor</span>
+  </a>
+</section>
+
+<div class="div"></div>
+
+<!-- CHANGELOG -->
+<section class="sec" id="cl-sec" aria-labelledby="cl-h">
+  <div class="slbl rv">changelog</div>
+  <h2 class="stit rv" id="cl-h">Histórico de versões</h2>
+  <p class="ssub rv">Desenvolvimento transparente — cada versão documentada com datas reais e mudanças detalhadas.</p>
+
+  <div class="wn rv">
+    <div class="wni">🚀</div>
+    <div>
+      <div class="wnt">Novo na v3.0.0 STABLE — Mar 2026</div>
+      <div class="wnd"><b>Loop iterativo</b> (fim da recursão), <b>Anti-Hang Protocol</b> (timeout 25min), <b>CONFIG block editável</b>, <b>notificações nativas</b>, <b>yKauttizStop()</b> para parada graciosa, <b>distribuição bi-modal</b> no videoStep, <b>per-request drift</b> (elimina fingerprinting), <b>VoiceStateStore</b> para PLAY_ACTIVITY, <b>Fisher-Yates shuffle</b> na fila, e muitos outros fixes.</div>
+    </div>
+  </div>
+
+  <div class="cll rv" id="cll"></div>
+</section>
+
+<div class="div"></div>
+
+<!-- COPYRIGHT -->
+<section class="sec" aria-labelledby="cp-h">
+  <div class="slbl rv">copyright</div>
+  <h2 class="stit rv" id="cp-h">Propriedade intelectual</h2>
+  <div class="cpb rv">
+    <div class="cpt">
+      <div><div class="cpauth">yKauttiz</div><div class="cpyr">© 2026 · Todos os direitos reservados</div></div>
+      <div style="text-align:right">
+        <a class="cpsrv" href="https://discord.gg/G3wrqyJQrC" target="_blank" rel="noopener noreferrer">discord.gg/G3wrqyJQrC</a>
+        <div class="cpyr" style="margin-top:3px">Servidor ID: 1356778105737580554</div>
+      </div>
+    </div>
+    <div class="cprules">
+      <div class="cpr"><div class="cpri">✅</div><div class="cprt">Uso pessoal gratuito</div><div class="cprd">Pode usar livremente para uso pessoal. Gratuito para sempre.</div></div>
+      <div class="cpr"><div class="cpri">✅</div><div class="cprt">Compartilhamento com crédito</div><div class="cprd">Pode compartilhar mantendo yKauttiz, link e aviso de risco visíveis.</div></div>
+      <div class="cpr"><div class="cpri">❌</div><div class="cprt">Proibido vender ou monetizar</div><div class="cprd">Estritamente proibido cobrar. Somente yKauttiz pode criar versões pagas.</div></div>
+      <div class="cpr"><div class="cpri">❌</div><div class="cprt">Proibido remover a proteção</div><div class="cprd">Remover ou contornar a proteção é violação direta do copyright.</div></div>
+      <div class="cpr"><div class="cpri">❌</div><div class="cprt">Proibido remover aviso de risco</div><div class="cprd">"USE POR SUA CONTA E RISCO" não pode ser removido de nenhuma redistribuição.</div></div>
+      <div class="cpr"><div class="cpri">❌</div><div class="cprt">Proibido uso em escala</div><div class="cprd">Proibido uso comercial, bots em escala ou benefício de terceiros.</div></div>
+    </div>
+    <div class="cpsign">Versões legítimas <b>sempre</b> contêm: <b>yKauttiz</b> · <b>discord.gg/G3wrqyJQrC</b> · <b>aviso de risco</b><br>Versões sem esses elementos são não-autorizadas. Reporte em discord.gg/G3wrqyJQrC.</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">yKauttiz</div>
+  <div class="fsub">
+    Missões Discord · v3.0.0 STABLE 2026 · Gratuito<br>
+    <a href="https://discord.gg/G3wrqyJQrC" target="_blank" rel="noopener noreferrer">discord.gg/G3wrqyJQrC</a>
+    &nbsp;·&nbsp;<a href="#cl-sec">Changelog</a>
+    &nbsp;·&nbsp;<a href="#faq-sec">FAQ</a>
+    &nbsp;·&nbsp;<a href="#sc-sec">Script</a><br>
+    © 2026 yKauttiz · USE POR SUA CONTA E RISCO
+  </div>
+</footer>
+
 <script>
-const canvas=document.getElementById('bg');
-const ctx=canvas.getContext('2d');
-let w,h;
-function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;}
-window.addEventListener('resize',resize);resize();
-const stars=[];
-for(let i=0;i<140;i++){
-  stars.push({
-    x:Math.random()*w,
-    y:Math.random()*h,
-    r:Math.random()*1.4+.2,
-    a:Math.random()*Math.PI*2,
-    s:Math.random()*1.6+.4,
-    c:`hsl(${Math.random()*30+180},${Math.random()*40+20}%,${Math.random()*40+60}%)`
+(function(){'use strict';
+
+/* ════ CURSOR — left/top only, no transform conflict ════ */
+var cdot=document.getElementById('cdot');
+var cring=document.getElementById('cring');
+var mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+
+function moveDot(){cdot.style.left=(mx-3)+'px';cdot.style.top=(my-3)+'px';}
+function lp(a,b,t){return a+(b-a)*t;}
+(function animRing(){rx=lp(rx,mx,.1);ry=lp(ry,my,.1);cring.style.left=(rx-16)+'px';cring.style.top=(ry-16)+'px';requestAnimationFrame(animRing);})();
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;moveDot();},{passive:true});
+document.addEventListener('mouseleave',function(){cdot.style.opacity='0';cring.style.opacity='0';});
+document.addEventListener('mouseenter',function(){cdot.style.opacity='';cring.style.opacity='';});
+document.addEventListener('mousedown',function(){document.body.classList.add('cc');});
+document.addEventListener('mouseup',function(){document.body.classList.remove('cc');});
+document.querySelectorAll('button,a,label,.badge,.mc,.acard,.osc').forEach(function(el){
+  el.addEventListener('mouseenter',function(){document.body.classList.add('ch');});
+  el.addEventListener('mouseleave',function(){document.body.classList.remove('ch');});
+});
+
+/* ════ SCROLL PROGRESS ════ */
+var sbar=document.getElementById('sbar');
+var btt=document.getElementById('btt');
+window.addEventListener('scroll',function(){
+  var p=(scrollY/(document.documentElement.scrollHeight-innerHeight))*100;
+  sbar.style.width=Math.min(100,p)+'%';
+  btt.classList.toggle('vis',scrollY>400);
+},{passive:true});
+
+/* ════ CANVAS PARTICLES ════ */
+var canvas=document.getElementById('hcanvas');
+var ctx=canvas.getContext('2d');
+var W,H,pts=[];
+var cmx=-999,cmy=-999;
+function getCol(){var t=document.documentElement.getAttribute('data-theme')||'dark';return {'dark':'6,182,212','light':'37,99,235','matrix':'0,255,65','vapor':'240,171,252'}[t]||'6,182,212';}
+function resz(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;}
+function Pt(){this.reset();}
+Pt.prototype.reset=function(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.4+.4;this.vx=(Math.random()-.5)*.35;this.vy=(Math.random()-.5)*.35;this.a=Math.random()*.45+.1;this.life=Math.random()*200+100;this.ml=this.life;};
+Pt.prototype.upd=function(){var dx=this.x-cmx,dy=this.y-cmy,d=Math.sqrt(dx*dx+dy*dy);if(d<80){var f=(80-d)/80;this.vx+=dx/d*f*.45;this.vy+=dy/d*f*.45;}this.vx*=.98;this.vy*=.98;this.x+=this.vx;this.y+=this.vy;this.life--;if(this.x<0||this.x>W||this.y<0||this.y>H||this.life<=0)this.reset();};
+Pt.prototype.draw=function(){var fi=1-Math.max(0,(this.ml-this.life)/20);var fo=Math.min(1,this.life/30);ctx.globalAlpha=this.a*fi*fo;ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle='rgba('+getCol()+',1)';ctx.fill();};
+function initPts(){pts=[];var n=Math.min(75,Math.floor(W*H/8500));for(var i=0;i<n;i++)pts.push(new Pt());}
+function drawLines(){var c=getCol();for(var i=0;i<pts.length;i++){for(var j=i+1;j<pts.length;j++){var dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<80){ctx.globalAlpha=(1-d/80)*.08;ctx.beginPath();ctx.strokeStyle='rgba('+c+',1)';ctx.lineWidth=.5;ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}}};}
+(function animPts(){ctx.clearRect(0,0,W,H);drawLines();pts.forEach(function(p){p.upd();p.draw();});ctx.globalAlpha=1;requestAnimationFrame(animPts);})();
+document.querySelector('.hero').addEventListener('mousemove',function(e){var r=canvas.getBoundingClientRect();cmx=e.clientX-r.left;cmy=e.clientY-r.top;},{passive:true});
+document.querySelector('.hero').addEventListener('mouseleave',function(){cmx=-999;cmy=-999;});
+window.addEventListener('resize',function(){resz();initPts();},{passive:true});
+resz();initPts();
+
+/* ════ MAGNETIC BUTTONS ════ */
+document.querySelectorAll('.mag').forEach(function(btn){
+  var txt=btn.querySelector('.bt');
+  btn.addEventListener('mousemove',function(e){
+    var r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+    var dx=e.clientX-cx,dy=e.clientY-cy;
+    btn.style.transform='translate('+dx*.22+'px,'+dy*.22+'px)';
+    if(txt)txt.style.transform='translate('+dx*.09+'px,'+dy*.09+'px)';
   });
+  btn.addEventListener('mouseleave',function(){
+    btn.style.transition='transform .5s cubic-bezier(.23,1,.32,1)';
+    btn.style.transform='';
+    if(txt){txt.style.transition='transform .5s cubic-bezier(.23,1,.32,1)';txt.style.transform='';}
+    setTimeout(function(){btn.style.transition='';if(txt)txt.style.transition='';},500);
+  });
+  btn.addEventListener('mouseenter',function(){btn.style.transition='transform .15s ease';if(txt)txt.style.transition='transform .15s ease';});
+});
+
+/* ════ 3D TILT CARDS ════ */
+document.querySelectorAll('.mc').forEach(function(card){
+  card.addEventListener('mousemove',function(e){
+    var r=card.getBoundingClientRect();
+    var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform='perspective(600px) rotateY('+x*10+'deg) rotateX('+(-y*10)+'deg) scale(1.02)';
+    card.style.transition='transform .1s ease';
+    card.style.setProperty('--mx',(e.clientX-r.left)/r.width*100+'%');
+    card.style.setProperty('--my',(e.clientY-r.top)/r.height*100+'%');
+  });
+  card.addEventListener('mouseleave',function(){
+    card.style.transform='perspective(600px) rotateX(0) rotateY(0) scale(1)';
+    card.style.transition='transform .5s cubic-bezier(.23,1,.32,1)';
+  });
+});
+
+/* ════ REVEAL (IntersectionObserver) ════ */
+var rio=new IntersectionObserver(function(entries){
+  entries.forEach(function(e,i){if(e.isIntersecting){setTimeout(function(){e.target.classList.add('vis');},i*55);rio.unobserve(e.target);}});
+},{threshold:.08,rootMargin:'0px 0px -28px 0px'});
+document.querySelectorAll('.rv').forEach(function(el){rio.observe(el);});
+
+/* ════ COUNTERS ════ */
+var cio=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      var el=e.target,tgt=+el.dataset.count,suf=el.dataset.suf||'',t0=performance.now();
+      function ease(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;}
+      (function tick(now){var p=Math.min(1,(now-t0)/1100);el.textContent=Math.round(ease(p)*tgt)+suf;if(p<1)requestAnimationFrame(tick);else el.textContent=tgt+suf;})( performance.now());
+      cio.unobserve(el);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(function(el){cio.observe(el);});
+
+/* ════ TYPING EFFECT ════ */
+var lines=['Automação de missões do Discord','Retomada parcial de progresso','Timing gaussiano anti-detecção','CONFIG editável no topo do script','100% gratuito · Código protegido'];
+var li=0,ci=0,del=false;
+var tel=document.getElementById('ttext');
+function type(){
+  var cur=lines[li];
+  if(!del){ci++;tel.textContent=cur.slice(0,ci);if(ci===cur.length){del=true;setTimeout(type,2000);return;}setTimeout(type,48+Math.random()*32);}
+  else{ci--;tel.textContent=cur.slice(0,ci);if(ci===0){del=false;li=(li+1)%lines.length;setTimeout(type,320);return;}setTimeout(type,18);}
 }
-function draw(){
-  ctx.clearRect(0,0,w,h);
-  const g=ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)/2);
-  g.addColorStop(0,'rgba(6,182,212,.12)');g.addColorStop(1,'rgba(0,0,0,0)');
-  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-  ctx.fillStyle='rgba(255,255,255,.08)';
-  for(let i=0;i<90;i++){
-    const x=Math.random()*w,y=Math.random()*h,r=Math.random()*2;
-    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+setTimeout(type,600);
+
+/* ════ THEME ════ */
+window.setTheme=function(t,btn){
+  document.documentElement.setAttribute('data-theme',t);
+  document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('act');});
+  btn.classList.add('act');
+  localStorage.setItem('yk-t',t);
+  initPts(); // reinit canvas colors
+};
+var sv=localStorage.getItem('yk-t');
+if(sv){document.documentElement.setAttribute('data-theme',sv);document.querySelectorAll('.tbtn').forEach(function(b){b.classList.toggle('act',b.dataset.theme===sv);});}
+
+/* ════ NAV ACTIVE ════ */
+(function(){
+  var secs=document.querySelectorAll('section[id]');
+  var links=document.querySelectorAll('.nlink');
+  if(!links.length)return;
+  var nio=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.remove('act');});var a=document.querySelector('.nlink[href="#'+e.target.id+'"]');if(a)a.classList.add('act');}});},{threshold:.4});
+  secs.forEach(function(s){nio.observe(s);});
+})();
+
+/* ════ FAQ ════ */
+window.faq=function(btn){
+  var item=btn.closest('.faqi');
+  var wasOpen=item.classList.contains('op');
+  document.querySelectorAll('.faqi.op').forEach(function(i){i.classList.remove('op');i.querySelector('.faqq').setAttribute('aria-expanded','false');});
+  if(!wasOpen){item.classList.add('op');btn.setAttribute('aria-expanded','true');}
+};
+
+/* ════ LOG PREVIEW ANIMATION ════ */
+(function(){
+  var lp2=document.getElementById('logprev');
+  if(!lp2)return;
+  var lines2=lp2.querySelectorAll('.ll');
+  var lio=new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){lines2.forEach(function(l,i){setTimeout(function(){l.classList.add('vis');},i*200);});lio.disconnect();}
+  },{threshold:.3});
+  lio.observe(lp2);
+})();
+
+/* ════ CONFETTI ════ */
+function confetti(x,y){
+  var cols=['var(--ac)','var(--pu)','var(--gr)','var(--ye)','var(--rd)'];
+  for(var i=0;i<22;i++){
+    var p=document.createElement('span');
+    var sz=Math.random()*5+3;
+    p.style.cssText='position:fixed;left:'+x+'px;top:'+y+'px;width:'+sz+'px;height:'+sz+'px;background:'+cols[Math.floor(Math.random()*cols.length)]+';border-radius:'+(Math.random()>.5?'50%':'2px')+';pointer-events:none;z-index:9998;';
+    document.body.appendChild(p);
+    var ang=Math.random()*Math.PI*2,spd=Math.random()*6+3;
+    var vx=Math.cos(ang)*spd,vy=Math.sin(ang)*spd-4,px2=x,py2=y,op=1;
+    (function(p2,vx2,vy2,px3,py3){
+      var ovx=vx2,ovy=vy2,op2=1;
+      function a(){ovx*=.96;ovy+=.18;px3+=ovx;py3+=ovy;op2-=.024;p2.style.left=px3+'px';p2.style.top=py3+'px';p2.style.opacity=op2;p2.style.transform='rotate('+px3+'deg)';if(op2>0)requestAnimationFrame(a);else p2.remove();}
+      requestAnimationFrame(a);
+    })(p,vx,vy,px2,py2);
   }
-  for(const s of stars){
-    s.x+=s.s*Math.cos(s.a);s.y+=s.s*Math.sin(s.a);
-    if(s.x<0)s.x=w;if(s.x>w)s.x=0;if(s.y<0)s.y=h;if(s.y>h)s.y=0;
-    ctx.fillStyle=s.c;
-    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
-  }
-  requestAnimationFrame(draw);
 }
-draw();
+
+/* ════ SCRIPT PROTECTION ════ */
+function djb2(s){var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return(h>>>0).toString(16);}
+function protect(src){
+  var k=[121,75,97,117,116,116,105,122];
+  var k2=k.map(function(b,i){return(b^(i*31+17))&255;});
+  var k3=k.map(function(b,i){return(b+i*13+7)&255;});
+  var chk=djb2(src);
+  var b=[];for(var i=0;i<src.length;i++)b.push(src.charCodeAt(i)^k[i%k.length]);
+  b=b.map(function(v,i){return v^k2[i%k2.length];});
+  b=b.map(function(v,i){return(v^k3[i%k3.length]^(i&255))&255;});
+  var sz=Math.ceil(b.length/4);
+  var ps=[b.slice(0,sz),b.slice(sz,sz*2),b.slice(sz*2,sz*3),b.slice(sz*3)].map(function(p){return p.map(function(v){return v.toString(16).padStart(2,'0');}).join('');});
+  return '!function(){const _k=[121,75,97,117,116,116,105,122];const _k2=_k.map((b,i)=>(b^(i*31+17))&255);const _k3=_k.map((b,i)=>(b+i*13+7)&255);const _ck="'+chk+'";const _p0="'+ps[0]+'";const _p1="'+ps[1]+'";const _p2="'+ps[2]+'";const _p3="'+ps[3]+'";function _dh(h){let a=[];for(let i=0;i<h.length;i+=2)a.push(parseInt(h.slice(i,i+2),16));return a;}function _djb(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return(h>>>0).toString(16);}const _b=[..._dh(_p0),..._dh(_p1),..._dh(_p2),..._dh(_p3)];const _b2=_b.map((v,i)=>(v^_k3[i%_k3.length]^(i&255))&255);const _b1=_b2.map((v,i)=>v^_k2[i%_k2.length]);let _s="";for(let i=0;i<_b1.length;i++)_s+=String.fromCharCode(_b1[i]^_k[i%_k.length]);if(_djb(_s)!==_ck||_s.indexOf("yKauttiz.MissoesDiscord.STABLE.2026")<0){console.error("%c[yKauttiz] Versao nao autorizada. Obtenha o original em discord.gg/G3wrqyJQrC","color:#ED4245;font-weight:bold;font-size:13px");return;}eval(_s);}();';
+}
+
+/* ════ CHANGELOG DATA ════ */
+var CL=[
+  {v:'v3.0.0 STABLE',vs:'v3.0.0',d:'Mar 2026',st:'st-s',h:['Loop iterativo','Anti-Hang 25min','CONFIG editável','Notificações nativas'],i:[
+    ['a','Loop iterativo substituindo recursão — elimina risco de stack overflow com muitas missões'],
+    ['a','Anti-Hang Protocol: Promise.race com timeout de 25min em PLAY_ON_DESKTOP e STREAM_ON_DESKTOP — nunca trava infinitamente'],
+    ['a','CONFIG block no topo: VIDEO_SPEED, HIDE_ACTIVITY, DRY_RUN, LOG_LEVEL, URGENCY_FIRST, SHUFFLE_QUEUE, MAX_RETRIES, PID_MIN/MAX'],
+    ['a','Notificações nativas do sistema operacional ao completar cada missão (Notification API)'],
+    ['a','window.yKauttizStop() — parada graciosa: restaura stores e exibe resumo parcial'],
+    ['a','window.yKauttizLog — log de sessão exportável em JSON para suporte e debug'],
+    ['a','Distribuição bi-modal no videoStep: 80% normal (5-9s) + 20% pausa curta (1-4s) — muito mais humano'],
+    ['a','Per-request drift: cada timestamp tem variação própria (getDrift()) — elimina fingerprinting de sessão'],
+    ['a','Fisher-Yates shuffle na fila de missões — varia padrão entre sessões'],
+    ['a','Urgency-first scheduling: missões que expiram primeiro sobem na fila automaticamente'],
+    ['a','VoiceStateStore para detectar canal onde o usuário ESTÁ atualmente — PLAY_ACTIVITY corrigido'],
+    ['a','ETA global calculado antes de iniciar, exibido no log de abertura'],
+    ['a','Backoff unificado: backoff(type,n,status) substitui 3 funções duplicadas'],
+    ['a','Cooldown entre missões proporcional ao tempo da missão anterior'],
+    ['a','Heartbeat PLAY_ACTIVITY: gaussian(22000,5000) clip [12s-45s] — muito mais variado'],
+    ['a','HIDE_ACTIVITY: desativa Rich Presence durante PLAY_ON_DESKTOP se configurado'],
+    ['a','Detecção de tipo desconhecido com cópia automática de detalhes para clipboard'],
+    ['a','Resumo com tempo individual por missão'],
+    ['a','DRY_RUN mode: lista missões e calcula ETAs sem enviar nenhum request'],
+    ['a','LOG_LEVEL: normal | verbose | silencioso'],
+    ['a','Multi-strategy webpack bootstrap — mais resiliente a updates do Discord'],
+    ['a','Validação defensiva em getType() — erro específico em vez de TypeError silencioso'],
+    ['a','configVersion 1 e 2 suportados corretamente em WATCH_VIDEO'],
+    ['a','maybePause com cooldown mínimo de 30s — sem pausas consecutivas'],
+    ['a','videoStep considera tempo restante — sem overshoot no step final'],
+    ['a','PID range mais realista: 4096–24576'],
+    ['a','Suporte a WATCH_VIDEO_MOBILE (sem o ON) além de WATCH_VIDEO_ON_MOBILE'],
+    ['f','checkServer: verifica membership real (MemberStore + GuildStore) antes de aceitar 400'],
+    ['f','PLAY_ACTIVITY: VoiceStateStore para canal correto, não primeiro da lista'],
+    ['f','MemberStore path corrigido — inconsistência de desestruturação eliminada'],
+    ['r','Recursão em processNext() — substituída por while loop iterativo'],
+  ]},
+  {v:'v2.2 BETA',vs:'v2.2',d:'Fev 2026',st:'st-b',h:['Servidor obrigatório','Código protegido','Velocity tracker','Smart throttle'],i:[
+    ['a','Verificação obrigatória do servidor discord.gg/G3wrqyJQrC antes de executar'],
+    ['a','Auto-join: tenta entrar no servidor automaticamente ao iniciar'],
+    ['a','Código distribuído protegido (XOR triplo + checksum djb2 + fragmentação em 4 partes)'],
+    ['a','Velocity tracker: ETA calculado pela velocidade média real dos steps'],
+    ['a','Smart throttle: multiplica intervalo por 1.5x em 5xx, reseta em 2xx (máx 4.0x)'],
+    ['a','Session digest: hash 4 chars do timestamp em base36'],
+    ['a','Progress checkpoint: último timestamp real enviado'],
+    ['a','Erro 401 interrompe o script com instrução clara de recarregar'],
+    ['r','ACHIEVEMENT_IN_ACTIVITY — 403 Forbidden permanente (requer cliente ativo)'],
+  ]},
+  {v:'v2.1 BETA',vs:'v2.1',d:'Jan 2026',st:'st-b',h:['Retomada parcial','Backoffs','Micro-pausas'],i:[
+    ['a','Retomada de progresso parcial: lê userStatus.progress[tipo].value antes de cada missão'],
+    ['a','Backoff exponencial gaussiano em 429: 8000×2^n ms, máx 4 tentativas'],
+    ['a','Backoff crescente em erros de rede: 5000×n ms, máx 5 tentativas'],
+    ['a','Micro-pausas aleatórias: 15% de chance a cada step (1.5-8s)'],
+    ['w','Enroll automático: retorna 400 server-side para 100% dos casos (jogo não instalado)'],
+    ['w','Claim automático: retorna 400 persistente (processamento assíncrono do Discord)'],
+  ]},
+  {v:'v2.0 ALPHA',vs:'v2.0',d:'Dez 2025',st:'st-a',h:['Gaussiano Box-Muller','3 camadas jitter'],i:[
+    ['a','Distribuição gaussiana Box-Muller: delays com variação natural em 3 camadas'],
+    ['a','SESSION_DRIFT base por sessão + latência simulada'],
+    ['a','Session ID único por execução (formato yk_XXXXXX)'],
+    ['a','Suporte a PLAY_ON_DESKTOP com injeção em GameStore'],
+    ['a','Suporte a STREAM_ON_DESKTOP com injeção em StreamStore'],
+    ['a','Tratamento de 400, 401, 403, 404, 429, 5xx e erros de rede'],
+    ['r','Sem verificação de servidor'],['r','Sem retomada parcial de progresso'],
+  ]},
+  {v:'v1.2 LEGACY',vs:'v1.2',d:'Nov 2025',st:'st-l',h:['Store reload tentado'],i:[
+    ['a','Tentativa de store reload via API'],
+    ['a','Delay fixo entre requests (3000ms — sem variação)'],
+    ['w','Store reload: 404 no Discord Canary, instável no Stable'],
+    ['r','Sem gaussiano'],['r','Sem retomada parcial'],
+  ]},
+  {v:'v1.1 LEGACY',vs:'v1.1',d:'Nov 2025',st:'st-l',h:['Script base','Enroll tentado'],i:[
+    ['a','Script base funcional para WATCH_VIDEO'],
+    ['a','Tentativa de enroll automático via POST /quests/{id}/enroll'],
+    ['w','Enroll: retorna 400 para todos os casos — removido na v1.2'],
+    ['r','Sem anti-detecção'],['r','Sem tratamento robusto de erros'],
+  ]},
+  {v:'v1.0 LEGACY',vs:'v1.0',d:'Out 2025',st:'st-l',h:['Primeira versão pública'],i:[
+    ['a','Primeira versão pública do script'],
+    ['a','Suporte básico a WATCH_VIDEO via POST /video-progress'],
+    ['a','Logs coloridos simples no console'],
+    ['a','Detecção de QuestStore via webpack bootstrap'],
+    ['r','Sem gaussiano, sem retomada, sem proteção de autoria'],
+    ['r','Sem tratamento de erros HTTP'],
+  ]},
+];
+(function(){
+  var el=document.getElementById('cll');if(!el)return;
+  var html='';
+  var typeMap={a:'a',f:'f',r:'r',w:'w'};
+  CL.forEach(function(v){
+    html+='<div class="cle"><div class="clm"><div class="clv">'+v.vs+'</div><span class="clst '+v.st+'">'+(['st-s','st-b'].indexOf(v.st)>=0?'Atual':'Legacy')+' · '+v.d.split(' ')[1]+'</span><div class="cldt">'+v.d+'</div></div><div class="clb"><div class="clhl">'+v.h.map(function(h){return'<span class="clh">'+h+'</span>';}).join('')+'</div><ul class="cli">'+v.i.map(function(it){return'<li class="'+it[0]+'">'+it[1]+'</li>';}).join('')+'</ul></div></div>';
+  });
+  el.innerHTML=html;
+})();
+
+/* ════ RAW SCRIPT ════ */
+var RAW=`;
+;(async()=>{
+'use strict';delete window.$;
+
+// ── CONFIG ────────────────────────────────────────────────
+const CFG={
+  VIDEO_SPEED:'normal',    // 'rapido'|'normal'|'lento'
+  HIDE_ACTIVITY:false,     // esconde status de jogo
+  DRY_RUN:false,           // nao envia requests, so lista
+  LOG_LEVEL:'normal',      // 'normal'|'verbose'|'silencioso'
+  URGENCY_FIRST:true,      // missoes urgentes primeiro
+  SHUFFLE_QUEUE:true,      // embaralha fila
+  NOTIFICATIONS:true,      // notificacoes desktop
+  MAX_RETRIES:{r429:4,r5xx:3,rNet:5},
+  PLAY_TIMEOUT:25*60*1000, // 25min anti-hang
+  PID_MIN:4096,PID_MAX:24576,
+  PAUSE_COOLDOWN:30000,    // min 30s entre micro-pausas
+};
+
+// ── IDENTIDADE ────────────────────────────────────────────
+const VER='v3.0.0';
+const SIGN='yKauttiz.MissoesDiscord.STABLE.2026';
+const GID='1356778105737580554';
+const INV='G3wrqyJQrC';
+const SID='yk_'+Math.random().toString(36).slice(2,8).toUpperCase();
+const T0=Date.now();
+const DIG=T0.toString(36).slice(-4);
+const BLD=location.hostname.includes('canary')?'Canary':location.hostname.includes('ptb')?'PTB':'Stable';
+const DESK=typeof DiscordNative!=='undefined';
+let stopFlag=false;
+let cleanup=null;
+window.yKauttizStop=function(){stopFlag=true;console.warn('%c[yKauttiz] Parando...','color:#FEE75C;font-weight:bold');if(cleanup)try{cleanup();}catch(e){}};
+const LOG={_w:0,_e:0,_l:[],_t:[],
+  banner:function(){
+    console.log('\n%c yKauttiz %c Missoes Discord %c STABLE %c '+VER+' %c discord.gg/G3wrqyJQrC \n',
+      'background:#5865F2;color:#fff;font-weight:bold;font-size:13px;padding:4px 10px;border-radius:4px 0 0 4px',
+      'background:#23272A;color:#e2e4ed;font-weight:bold;font-size:13px;padding:4px 10px',
+      'background:#57F287;color:#0d2115;font-weight:bold;font-size:14px;padding:4px 10px',
+      'background:#57F287;color:#0d2115;font-weight:bold;font-size:13px;padding:4px 10px',
+      'background:#23272A;color:#5865F2;font-size:11px;padding:4px 10px;border-radius:0 4px 4px 0');
+    console.log('%c  !! USE POR SUA CONTA E RISCO !!\n\n  Sessao: '+SID+' | '+VER+' | Drift base: '+BDRIFT+'ms\n  Discord '+BLD+' | Desktop: '+(DESK?'Sim':'Nao')+'\n  Para parar a qualquer momento: yKauttizStop()\n  F12 / Ctrl+Shift+I (Win/Linux) | Cmd+Opt+I (Mac)',
+      'color:#ED4245;font-family:monospace;font-size:11px;line-height:1.9');
+  },
+  i:function(m){if(CFG.LOG_LEVEL==='silencioso')return;console.log('%c[yKauttiz]%c '+ts()+' '+m,'color:#8b9cf7;font-weight:bold','color:#c0c4d6');this._l.push({t:'i',m:m,ts:Date.now()});},
+  ok:function(m){console.log('%c[yKauttiz]%c \u2713 '+m,'color:#57F287;font-weight:bold','color:#57F287');this._l.push({t:'ok',m:m,ts:Date.now()});},
+  w:function(m){this._w++;console.warn('%c[yKauttiz]%c \u26a0 '+m,'color:#FEE75C;font-weight:bold','color:#FEE75C');this._l.push({t:'w',m:m,ts:Date.now()});},
+  e:function(m){this._e++;console.error('%c[yKauttiz]%c \u2717 '+m,'color:#ED4245;font-weight:bold','color:#ED4245');this._l.push({t:'e',m:m,ts:Date.now()});},
+  d:function(m){if(CFG.LOG_LEVEL==='verbose')console.debug('%c[yKauttiz/dbg] '+m,'color:#52525e;font-size:10px');},
+  bar:function(cur,tot,name,vel,thr){
+    var p=Math.min(100,Math.round(cur/tot*100));
+    var b='\u2588'.repeat(Math.floor(p/5))+'\u2591'.repeat(20-Math.floor(p/5));
+    var eta=cur<tot?'~'+ftm((tot-cur)/(vel||7)*1000):'PRONTO';
+    var vs=vel?(vel<4?' rapido':vel>10?' lento':' normal'):'';
+    var ts2=thr>1.1?'  thr:'+thr.toFixed(1)+'x':'';
+    console.log('%c[yKauttiz]%c '+name+'\n  ['+b+'] '+p+'%  '+Math.round(cur)+'s/'+tot+'s  '+eta+(vel?'  vel:'+vel.toFixed(1)+'s/r'+vs:'')+ts2,'color:#8b9cf7;font-weight:bold','color:#8b9cf7;font-family:monospace;font-size:11px');
+  },
+  miss:function(nm,tp,pos,tot,fr,tgt,exp,ck){
+    if(CFG.LOG_LEVEL==='silencioso')return;
+    var r=tgt-fr,p=Math.min(100,Math.round(fr/tgt*100));
+    console.log('%c[yKauttiz]%c\n  -- Missao '+pos+'/'+tot+' | '+SID+' --\n  Nome: '+nm+'\n  Tipo: '+tp+'\n  Progresso: '+Math.round(fr)+'s/'+tgt+'s ('+p+'%) | Restam: '+Math.round(r)+'s (~'+Math.ceil(r/60)+'min)\n  Checkpoint: '+ck.toFixed(1)+'s | Expira em: '+exp+'h\n  '+'─'.repeat(40),'color:#FEE75C;font-weight:bold','color:#c0c4d6;font-family:monospace');
+  },
+  res:function(ok,sk,er,mt){
+    var t=ftm(Date.now()-T0);
+    var ts2=mt.length?'\n  Por missao:\n'+mt.map(function(m){return'  · '+m.n+': '+ftm(m.e)+' ('+m.t+')'}).join('\n'):'';
+    console.log('%c[yKauttiz]%c\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n  \u2551  yKauttiz '+VER+' \u2014 Resumo        \u2551\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  \u2713 Concluidas:  '+String(ok).padEnd(5)+'              \u2551\n  \u2551  \u23ed Puladas:     '+String(sk).padEnd(5)+'              \u2551\n  \u2551  \u2717 Erros:       '+String(er).padEnd(5)+'              \u2551\n  \u2551  \u23f1 Tempo total: '+t.padEnd(22)+'\u2551'+ts2+'\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  Colete as recompensas no Discord! \u2551\n  \u2551  (c) 2026 yKauttiz               \u2551\n  \u2551  discord.gg/G3wrqyJQrC           \u2551\n  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
+    window.yKauttizLog={ver:VER,sid:SID,start:new Date(T0).toISOString(),end:new Date().toISOString(),ok:ok,skipped:sk,errors:er,missions:mt,logs:LOG._l};
+    LOG.i('Log exportavel: copy(JSON.stringify(window.yKauttizLog))');
+  }
+};
+
+// ── MATH ─────────────────────────────────────────────────
+function gauss(m,d){var u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.max(0,m+d*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v));}
+function clamp(v,mn,mx){return Math.max(mn,Math.min(mx,v));}
+function rng(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+function sl(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function ftm(ms){return ms<60000?Math.round(ms/1000)+'s':Math.floor(ms/60000)+'m'+Math.round((ms%60000)/1000)+'s';}
+function ts(){return new Date().toLocaleTimeString('pt-BR');}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=rng(0,i);var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+// ── DRIFT ────────────────────────────────────────────────
+var BDRIFT=Math.round(gauss(120,40));
+function getDrift(){return clamp(Math.round(gauss(BDRIFT,18)),40,380);}
+
+// ── THROTTLE ─────────────────────────────────────────────
+var THR=1.0;
+function iv(){return Math.max(650,Math.floor(gauss(1050*THR,200)));}
+function thrUp(){THR=Math.min(THR*1.5,4.0);}
+function thrRst(){THR=1.0;}
+
+// ── VIDEO STEP ────────────────────────────────────────────
+function vstep(rem){
+  rem=rem||999;
+  var sp=CFG.VIDEO_SPEED==='rapido'?[3,7]:CFG.VIDEO_SPEED==='lento'?[7,14]:[5,9];
+  var s=Math.random()<0.8?clamp(Math.round(gauss((sp[0]+sp[1])/2,(sp[1]-sp[0])/4)),sp[0],sp[1]):rng(1,4);
+  return clamp(s,1,Math.min(rem,14));
+}
+
+// ── MICRO-PAUSA ───────────────────────────────────────────
+var lastPause=0;
+async function maybePause(){
+  if(Date.now()-lastPause<CFG.PAUSE_COOLDOWN)return;
+  if(Math.random()<0.15){await sl(Math.max(1500,Math.floor(gauss(4000,1400))));lastPause=Date.now();}
+}
+
+// ── BACKOFF UNIFICADO ─────────────────────────────────────
+async function backoff(type,n,status){
+  var d;
+  if(type==='429'){d=clamp(Math.floor(gauss(8000*Math.pow(2,n),1500)),5000,90000);LOG.w('[429] Rate limit, tentativa '+n+'. Aguardando '+Math.round(d/1000)+'s...');}
+  else if(type==='5xx'){thrUp();d=n===1?10000:15000;LOG.w('['+(status||500)+'] Servidor. Throttle:'+THR.toFixed(1)+'x. Aguardando '+Math.round(d/1000)+'s...');}
+  else{d=clamp(5000*n,3000,30000);LOG.w('[rede] Falha '+n+'/'+CFG.MAX_RETRIES.rNet+'. Aguardando '+Math.round(d/1000)+'s...');}
+  await sl(Math.floor(gauss(d,d*0.12)));
+}
+
+// ── ERROR CLASSIFIER ──────────────────────────────────────
+function cErr(e){var s=e&&(e.status||e.code)||0;return{s:s,is400:s===400,is401:s===401,is403:s===403,is404:s===404,is429:s===429,is5xx:s>=500&&s<600,isNet:!s};}
+
+// ── NOTIFICACAO ───────────────────────────────────────────
+var notifOk=false;
+if(CFG.NOTIFICATIONS&&typeof Notification!=='undefined'){try{Notification.requestPermission().then(function(p){notifOk=p==='granted';});}catch(e){}}
+function notify(title,body){if(!notifOk)return;try{new Notification('yKauttiz — '+title,{body:body});}catch(e){}}
+
+// ── WEBPACK BOOTSTRAP ─────────────────────────────────────
+var WP=null;
+var strategies=[
+  function(){var w=webpackChunkdiscord_app.push([[Symbol()],{},function(r){return r;}]);webpackChunkdiscord_app.pop();return w;},
+];
+for(var si=0;si<strategies.length;si++){try{WP=strategies[si]();if(WP&&WP.c)break;}catch(e){}}
+if(!WP||!WP.c){console.error('%c[yKauttiz] Execute dentro do Discord (F12). webpack nao encontrado.','color:#ED4245;font-weight:bold;font-size:13px');return;}
+
+function fm(){
+  var preds=Array.prototype.slice.call(arguments);
+  var mods=Object.values(WP.c);
+  for(var pi=0;pi<preds.length;pi++){try{var found=mods.find(preds[pi]);if(found)return found;}catch(e){}}
+  return null;
+}
+
+// ── STORES ───────────────────────────────────────────────
+var SS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&x.exports.A.__proto__.getStreamerActiveStreamMetadata;});SS=SS&&SS.exports&&SS.exports.A;
+var GS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getRunningGames==='function';});GS=GS&&GS.exports&&GS.exports.Ay;
+var QS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getQuest==='function';});QS=QS&&QS.exports&&QS.exports.A;
+var CS=fm(function(x){return x&&x.exports&&x.exports.A&&x.exports.A.__proto__&&typeof x.exports.A.__proto__.getAllThreadsForParent==='function';});CS=CS&&CS.exports&&CS.exports.A;
+var GuS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getSFWDefaultChannel==='function';});GuS=GuS&&GuS.exports&&GuS.exports.Ay;
+var DS=fm(function(x){return x&&x.exports&&x.exports.h&&x.exports.h.__proto__&&typeof x.exports.h.__proto__.flushWaitQueue==='function';});DS=DS&&DS.exports&&DS.exports.h;
+var API=fm(function(x){return x&&x.exports&&x.exports.Bo&&typeof x.exports.Bo.get==='function'&&typeof x.exports.Bo.post==='function';});API=API&&API.exports&&API.exports.Bo;
+var VS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.getVoiceStateForUser==='function';});VS=VS&&VS.exports&&VS.exports.Ay;
+// MemberStore — caminho correto sem inconsistencia
+var MS=fm(function(x){return x&&x.exports&&x.exports.Ay&&typeof x.exports.Ay.isMember==='function';});MS=MS&&MS.exports&&MS.exports.Ay;
+
+if(!QS){console.error('%c[yKauttiz] QuestStore nao encontrado. Ctrl+R e tente novamente.','color:#ED4245;font-weight:bold');return;}
+if(!API){console.error('%c[yKauttiz] API nao encontrada. Ctrl+R e tente novamente.','color:#ED4245;font-weight:bold');return;}
+
+// ── SERVIDOR OBRIGATORIO ─────────────────────────────────
+// Verifica PRIMEIRO se ja eh membro — sem fazer request desnecessario
+// Se nao for membro, tenta entrar automaticamente
+// PARA o script se nao conseguir confirmar a presenca no servidor
+async function checkServer(){
+  LOG.i('Verificando servidor (obrigatorio)...');
+
+  // Verificacao 1: MemberStore direto (mais confiavel)
+  var isMember=false;
+  try{
+    if(MS&&typeof MS.isMember==='function'){
+      isMember=MS.isMember(GID);
+      LOG.d('MemberStore.isMember: '+isMember);
+    }
+  }catch(e){LOG.d('MemberStore erro: '+e);}
+
+  // Verificacao 2: GuildStore fallback
+  if(!isMember){
+    try{
+      var guilds=GuS&&GuS.getAllGuilds?GuS.getAllGuilds():{};
+      isMember=Object.prototype.hasOwnProperty.call(guilds,GID)||Object.keys(guilds).includes(GID);
+      LOG.d('GuildStore check: '+isMember+' ('+Object.keys(guilds).length+' guilds)');
+    }catch(e){LOG.d('GuildStore erro: '+e);}
+  }
+
+  if(isMember){LOG.ok('Ja esta no servidor yKauttiz! discord.gg/G3wrqyJQrC');return true;}
+
+  // Tenta entrar automaticamente
+  LOG.i('Nao esta no servidor. Tentando entrar em discord.gg/'+INV+'...');
+  try{
+    await API.post({url:'/invites/'+INV});
+    LOG.ok('Entrou no servidor yKauttiz! discord.gg/G3wrqyJQrC');
+    return true;
+  }catch(e){
+    var s=e&&(e.status||e.code);
+    LOG.d('Invite response status: '+s);
+
+    // 400 pode ser "already member" — verificar de novo
+    if(s===400){
+      var doubleCheck=false;
+      try{if(MS&&typeof MS.isMember==='function')doubleCheck=MS.isMember(GID);}catch(e2){}
+      if(!doubleCheck){try{var g2=GuS&&GuS.getAllGuilds?GuS.getAllGuilds():{};doubleCheck=Object.keys(g2).includes(GID);}catch(e2){}}
+      if(doubleCheck){LOG.ok('Servidor verificado (ja era membro). discord.gg/G3wrqyJQrC');return true;}
+      // 400 sem ser membro = convite invalido ou servidor cheio
+      LOG.e('Erro ao entrar no servidor (400). Entre manualmente: discord.gg/G3wrqyJQrC');
+      LOG.e('O servidor e OBRIGATORIO. Script encerrado.');
+      return false;
+    }
+    // 403 = banido, 404 = invite invalido, etc.
+    LOG.e('Nao foi possivel entrar no servidor (codigo: '+s+').');
+    LOG.e('O servidor discord.gg/G3wrqyJQrC e OBRIGATORIO para usar este script.');
+    LOG.e('Entre manualmente em discord.gg/G3wrqyJQrC e rode novamente.');
+    LOG.e('Script encerrado.');
+    return false;
+  }
+}
+
+// ── TIPOS SUPORTADOS ─────────────────────────────────────
+var SUPPORTED=['WATCH_VIDEO','WATCH_VIDEO_ON_MOBILE','WATCH_VIDEO_MOBILE','PLAY_ON_DESKTOP','STREAM_ON_DESKTOP','PLAY_ACTIVITY'];
+function getType(q){
+  try{
+    var tc=q.config.taskConfig||q.config.taskConfigV2;
+    if(!tc||!tc.tasks)return null;
+    var tasks=Object.keys(tc.tasks);
+    var found=null;
+    for(var i=0;i<SUPPORTED.length;i++){if(tasks.indexOf(SUPPORTED[i])>=0){found=SUPPORTED[i];break;}}
+    return found||tasks[0]||null;
+  }catch(e){LOG.e('getType erro em "'+q.config.messages.questName+'": '+e.message);return null;}
+}
+
+// ── INIT ─────────────────────────────────────────────────
+LOG.banner();
+var serverOk=await checkServer();
+if(!serverOk)return;
+await sl(400);
+
+// Validar build
+if(DESK&&!GS)LOG.w('GameStore nao disponivel — PLAY_ON_DESKTOP sera pulado.');
+if(DESK&&!SS)LOG.w('StreamStore nao disponivel — STREAM_ON_DESKTOP sera pulado.');
+
+// ── FILTRAR MISSOES ───────────────────────────────────────
+var rawQuests=[].concat([...QS.quests.values()]);
+var quests=rawQuests.filter(function(q){
+  if(!q.userStatus||!q.userStatus.enrolledAt||q.userStatus.completedAt)return false;
+  if(new Date(q.config.expiresAt).getTime()<=Date.now())return false;
+  return getType(q)!==null;
+});
+
+if(!quests.length){
+  LOG.w('Nenhuma missao ativa encontrada.');
+  LOG.i('Discord -> Missoes -> inscreva-se manualmente nas elegiveis.');
+  LOG.i('(c) 2026 yKauttiz | discord.gg/G3wrqyJQrC');
+  return;
+}
+
+// Embaralha fila (exceto urgentes)
+if(CFG.SHUFFLE_QUEUE){
+  var urgent=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())<4*3600*1000;});
+  var normal=quests.filter(function(q){return(new Date(q.config.expiresAt).getTime()-Date.now())>=4*3600*1000;});
+  quests=urgent.concat(shuffle(normal));
+}
+if(CFG.URGENCY_FIRST){
+  quests.sort(function(a,b){return new Date(a.config.expiresAt).getTime()-new Date(b.config.expiresAt).getTime();});
+}
+
+// ETA total estimado
+var etaTotal=quests.reduce(function(acc,q){
+  var tp=getType(q);var tc=q.config.taskConfig||q.config.taskConfigV2;
+  var fr=Math.floor((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
+  var tot=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
+  return acc+(tot-fr)/7*1000;
+},0);
+
+LOG.i(quests.length+' missao(oes) encontrada(s) | ETA ~'+ftm(etaTotal)+' | '+SID);
+quests.forEach(function(q,i){
+  var tp=getType(q);var tc=q.config.taskConfig||q.config.taskConfigV2;
+  var pg=Math.round((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);
+  var tot=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
+  var expMs=new Date(q.config.expiresAt).getTime()-Date.now();
+  var expH=Math.ceil(expMs/3600000);
+  var urg=expMs<4*3600*1000?' [URGENTE]':expMs<24*3600*1000?' [<24h]':'';
+  console.log('%c  ['+(i+1)+'] %c'+q.config.messages.questName+'%c\n       '+tp+' | '+pg+'s/'+tot+'s | expira em '+expH+'h'+urg,'color:#5865F2;font-weight:bold','color:#fff;font-weight:bold','color:#5a607a;font-size:10px;font-family:monospace');
+  if(pg>0&&pg<tot)LOG.i('"'+q.config.messages.questName+'": retomando de '+pg+'s');
+});
+
+if(CFG.DRY_RUN){LOG.w('[DRY_RUN] Nenhum request enviado. ETA estimado: ~'+ftm(etaTotal));return;}
+
+// ── PROCESSAR FILA (loop iterativo) ──────────────────────
+var P={ok:0,sk:0,er:0};
+var MT=[];
+var queue=[].concat(quests);
+var pos=0;
+
+while(queue.length>0&&!stopFlag){
+  var q=queue.shift();
+  var tp=getType(q);
+  if(!tp){P.sk++;continue;}
+  pos++;
+  var tc=q.config.taskConfig||q.config.taskConfigV2;
+  var nm=q.config.messages.questName;
+  var appId=q.config.application&&q.config.application.id;
+  var appNm=q.config.application&&q.config.application.name||'App';
+  var tgt=(tc&&tc.tasks&&tc.tasks[tp]&&tc.tasks[tp].target)||0;
+  var expH=Math.ceil((new Date(q.config.expiresAt).getTime()-Date.now())/3600000);
+  var fr=0;
+  // Retomada parcial — respeita configVersion
+  try{
+    if(q.config.configVersion===1){fr=Math.floor(q.userStatus.streamProgressSeconds||0);}
+    else{fr=Math.floor((q.userStatus.progress&&q.userStatus.progress[tp]&&q.userStatus.progress[tp].value)||0);}
+  }catch(e){fr=0;}
+  var ck=fr;
+  var QT=Date.now();
+  var TOUT=(tgt*3+120)*1000;
+  var enAt=new Date(q.userStatus.enrolledAt).getTime();
+  LOG.miss(nm,tp,pos,quests.length,fr,tgt,expH,ck);
+
+  // ── WATCH_VIDEO / WATCH_VIDEO_ON_MOBILE / WATCH_VIDEO_MOBILE ──
+  if(tp==='WATCH_VIDEO'||tp==='WATCH_VIDEO_ON_MOBILE'||tp==='WATCH_VIDEO_MOBILE'){
+    LOG.i('"'+nm+'" | '+fr+'s/'+tgt+'s | drift='+BDRIFT+'ms');
+    if(fr>0)LOG.i('Retomando de '+fr+'s ('+Math.round(fr/tgt*100)+'% ja concluido)');
+    LOG.bar(fr,tgt,nm,7,THR);
+    var done=false,e4=0,e5=0,eN=0,ns=0,tv=0,warnSent=false;
+    while(!stopFlag){
+      if(Date.now()-QT>TOUT){LOG.w('Timeout atingido em "'+nm+'".');break;}
+      try{
+        var mxA=Math.floor((Date.now()-enAt)/1000)+10;
+        var rem=tgt-fr;
+        var step=vstep(rem);
+        if(mxA-fr<step){
+          if(!warnSent){LOG.i('Aguardando validacao do Discord (inscricao recente)...');warnSent=true;}
+          await sl(2000);continue;
+        }
+        warnSent=false;
+        var drift=getDrift();
+        var ts_val=Math.min(tgt-0.001,fr+step+gauss(0,0.3)+drift/1000);
+        var r=await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:ts_val}});
+        done=r.body&&r.body.completed_at!=null;
+        fr=Math.min(tgt,fr+step);ck=fr;ns++;tv+=step;e4=0;e5=0;eN=0;thrRst();
+        LOG.bar(fr,tgt,nm,ns>0?tv/ns:7,THR);
+        if(fr>=tgt||done)break;
+      }catch(ex){
+        var er=cErr(ex);
+        if(er.is401){LOG.e('[401] Sessao expirada! Recarregue o Discord e rode novamente.');LOG.res(P.ok,P.sk,P.er,MT);return;}
+        if(er.is403){LOG.w('[403] Sem permissao em "'+nm+'". Pulando...');done=false;break;}
+        if(er.is404){LOG.w('[404] "'+nm+'" nao encontrada. Pulando...');done=false;break;}
+        if(er.is429){e4++;if(e4>CFG.MAX_RETRIES.r429){LOG.e('[429] Rate limit persistente.');break;}await backoff('429',e4,0);continue;}
+        if(er.is5xx){e5++;if(e5>CFG.MAX_RETRIES.r5xx){LOG.e('['+er.s+'] Servidor indisponivel.');break;}await backoff('5xx',e5,er.s);continue;}
+        eN++;if(eN>CFG.MAX_RETRIES.rNet){LOG.e('[rede] Muitas falhas.');break;}await backoff('net',eN,0);continue;
+      }
+      await sl(iv());await maybePause();
+    }
+    // Garantir timestamp final
+    if(!done&&fr>0){try{await sl(Math.floor(gauss(700,150)));await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:tgt}});done=true;}catch(ex){}}
+    var el=Date.now()-QT;
+    if(done||fr>=tgt){P.ok++;MT.push({n:nm,t:tp,e:el});LOG.ok('"'+nm+'" concluida em '+ftm(el)+'! vel:'+(ns>0?(tv/ns).toFixed(1):'?')+'s/step');notify('Missao concluida!',nm+' — '+ftm(el));LOG.i('Colete a recompensa/orbs manualmente na aba Missoes.');}
+    else{P.sk++;LOG.w('"'+nm+'" pulada apos '+ftm(el)+'.');}
+  }
+
+  // ── PLAY_ON_DESKTOP ───────────────────────────────────────
+  else if(tp==='PLAY_ON_DESKTOP'){
+    if(!DESK){LOG.w('"'+nm+'" requer Discord Desktop App. Pulando...');P.sk++;continue;}
+    if(!GS||!DS){LOG.w('GameStore/Dispatcher indisponivel. Pulando...');P.sk++;continue;}
+    var gO=GS.getRunningGames,pO=GS.getGameForPID,fg=null,resolved=false;
+    cleanup=function(){
+      try{GS.getRunningGames=gO;GS.getGameForPID=pO;if(fg)DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:[fg],added:[],games:[]});}catch(ex){}
+      cleanup=null;
+    };
+    // HIDE_ACTIVITY
+    if(CFG.HIDE_ACTIVITY){try{DS.dispatch({type:'PRESENCE_LOCAL_GAME_ACTIVITY_HIDE',hide:true});}catch(ex){}}
+    try{
+      var appRes=await API.get({url:'/applications/public?application_ids='+appId});
+      var app=appRes.body&&appRes.body[0];
+      if(!app)throw new Error('App nao encontrado');
+      var rawExe=app.executables&&app.executables.find&&app.executables.find(function(x){return x.os==='win32';})||{};
+      var exeN=(rawExe.name||app.name).replace(/[<>]/g,'').replace(/[\/\\:*?"]/g,'');
+      var exeF=exeN+(exeN.toLowerCase().endsWith('.exe')?'':'.exe');
+      var pid=rng(CFG.PID_MIN,CFG.PID_MAX);
+      fg={cmdLine:'C:\\Program Files\\'+app.name+'\\'+exeF,exeName:exeF,exePath:'c:/program files/'+app.name.toLowerCase()+'/'+exeF,hidden:false,isLauncher:false,id:appId,name:app.name,pid:pid,pidPath:[pid],processName:app.name,start:Date.now()};
+      var curGames=GS.getRunningGames();
+      GS.getRunningGames=function(){return[fg];};
+      GS.getGameForPID=function(p){return p===pid?fg:undefined;};
+      DS.dispatch({type:'RUNNING_GAMES_CHANGE',removed:curGames,added:[fg],games:[fg]});
+      LOG.i('Jogo simulado: '+appNm+' (pid:'+pid+') | ETA ~'+Math.ceil((tgt-fr)/60)+'min');
+      var hangTO=new Promise(function(_,rj){setTimeout(function(){rj(new Error('PLAY_TIMEOUT'));},CFG.PLAY_TIMEOUT);});
+      var questDone=new Promise(function(rv,rj){
+        var handler=function(data){
+          try{
+            var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.PLAY_ON_DESKTOP&&data.userStatus.progress.PLAY_ON_DESKTOP.value||0);
+            LOG.bar(pg,tgt,nm,1,THR);
+            if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);resolved=true;rv(pg);}
+          }catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);rj(ex);}
+        };
+        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler);
+      });
+      await Promise.race([questDone,hangTO]);
+      if(resolved){P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida em '+ftm(Date.now()-QT)+'!');notify('Missao concluida!',nm);LOG.i('Colete a recompensa manualmente.');}
+    }catch(ex){
+      if(ex.message==='PLAY_TIMEOUT'){LOG.e('"'+nm+'" atingiu Anti-Hang timeout ('+Math.round(CFG.PLAY_TIMEOUT/60000)+'min). Discord parou de enviar heartbeats.');}
+      else{var er2=cErr(ex);if(er2.is401){LOG.e('[401] Sessao expirada.');cleanup&&cleanup();LOG.res(P.ok,P.sk,P.er,MT);return;}LOG.e('Erro em PLAY_ON_DESKTOP "'+nm+'": '+(ex.message||ex));}
+      P.er++;
+    }finally{
+      cleanup&&cleanup();
+      if(CFG.HIDE_ACTIVITY){try{DS.dispatch({type:'PRESENCE_LOCAL_GAME_ACTIVITY_HIDE',hide:false});}catch(ex){}}
+    }
+  }
+
+  // ── STREAM_ON_DESKTOP ─────────────────────────────────────
+  else if(tp==='STREAM_ON_DESKTOP'){
+    if(!DESK){LOG.w('"'+nm+'" requer Discord Desktop App. Pulando...');P.sk++;continue;}
+    if(!SS||!DS){LOG.w('StreamStore/Dispatcher indisponivel. Pulando...');P.sk++;continue;}
+    var pid2=rng(CFG.PID_MIN,CFG.PID_MAX);
+    var origMeta=SS.getStreamerActiveStreamMetadata;
+    var resolved2=false;
+    cleanup=function(){try{SS.getStreamerActiveStreamMetadata=origMeta;}catch(ex){}cleanup=null;};
+    SS.getStreamerActiveStreamMetadata=function(){return{id:appId,pid:pid2,sourceName:null};};
+    LOG.i('Stream simulada: '+appNm+' (pid:'+pid2+')');
+    LOG.w('NECESSARIO: compartilhe uma janela em canal de voz com pelo menos 1 pessoa!');
+    try{
+      var hangTO2=new Promise(function(_,rj){setTimeout(function(){rj(new Error('STREAM_TIMEOUT'));},CFG.PLAY_TIMEOUT);});
+      var questDone2=new Promise(function(rv,rj){
+        var handler2=function(data){
+          try{
+            var pg=q.config.configVersion===1?(data.userStatus&&data.userStatus.streamProgressSeconds||0):Math.floor(data.userStatus&&data.userStatus.progress&&data.userStatus.progress.STREAM_ON_DESKTOP&&data.userStatus.progress.STREAM_ON_DESKTOP.value||0);
+            LOG.bar(pg,tgt,nm,1,THR);
+            if(pg>=tgt||stopFlag){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);resolved2=true;rv(pg);}
+          }catch(ex){DS.unsubscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);rj(ex);}
+        };
+        DS.subscribe('QUESTS_SEND_HEARTBEAT_SUCCESS',handler2);
+      });
+      await Promise.race([questDone2,hangTO2]);
+      if(resolved2){P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida!');notify('Stream concluida!',nm);LOG.i('Colete a recompensa manualmente.');}
+    }catch(ex){
+      if(ex.message==='STREAM_TIMEOUT'){LOG.e('"'+nm+'" atingiu timeout. Amigo saiu do canal ou stream foi interrompida.');}
+      else{LOG.e('Erro em STREAM "'+nm+'": '+(ex.message||ex));}
+      P.er++;
+    }finally{cleanup&&cleanup();}
+  }
+
+  // ── PLAY_ACTIVITY ──────────────────────────────────────────
+  else if(tp==='PLAY_ACTIVITY'){
+    // Detectar canal de voz onde o usuario ESTA atualmente
+    var vc=null;
+    // Tentativa 1: VoiceStateStore — canal atual do usuario
+    try{
+      var allMods=Object.values(WP.c);
+      var curUser=null;
+      for(var mi=0;mi<allMods.length;mi++){
+        try{var u=allMods[mi].exports&&allMods[mi].exports.Ay&&allMods[mi].exports.Ay.getCurrentUser&&allMods[mi].exports.Ay.getCurrentUser();if(u&&u.id){curUser=u;break;}}catch(e){}
+      }
+      if(curUser&&VS&&typeof VS.getVoiceStateForUser==='function'){
+        var vsData=VS.getVoiceStateForUser(curUser.id);
+        vc=vsData&&vsData.channelId||null;
+        LOG.d('VoiceState canal: '+vc);
+      }
+    }catch(e){LOG.d('VoiceState erro: '+e);}
+    // Tentativa 2: DM privado
+    if(!vc){try{vc=CS&&CS.getSortedPrivateChannels&&CS.getSortedPrivateChannels()[0]&&CS.getSortedPrivateChannels()[0].id||null;}catch(e){}}
+    // Tentativa 3: primeiro servidor com canal vocal
+    if(!vc){try{var gs=GuS&&GuS.getAllGuilds&&GuS.getAllGuilds()||{};Object.values(gs).some(function(g){return g&&g.VOCAL&&g.VOCAL[0]&&(vc=g.VOCAL[0].channel&&g.VOCAL[0].channel.id,!!vc);});}catch(e){}}
+    if(!vc){LOG.e('Nenhum canal de voz encontrado. Entre em um canal e rode novamente.');P.sk++;continue;}
+    var sk='call:'+vc+':1';
+    var e4a=0,e5a=0,eNa=0;
+    LOG.i('PLAY_ACTIVITY no canal '+vc+' | ETA ~'+Math.ceil((tgt-fr)/60)+'min');
+    LOG.bar(fr,tgt,nm,1,THR);
+    while(!stopFlag){
+      if(Date.now()-QT>TOUT){LOG.w('Timeout em PLAY_ACTIVITY.');break;}
+      try{
+        var hbRes=await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk,terminal:false}});
+        var pg=hbRes.body&&hbRes.body.progress&&hbRes.body.progress.PLAY_ACTIVITY&&hbRes.body.progress.PLAY_ACTIVITY.value||0;
+        LOG.bar(pg,tgt,nm,1,THR);e4a=0;e5a=0;eNa=0;thrRst();
+        if(pg>=tgt){try{await API.post({url:'/quests/'+q.id+'/heartbeat',body:{stream_key:sk,terminal:true}});}catch(ex){}break;}
+      }catch(ex){
+        var er3=cErr(ex);
+        if(er3.is401){LOG.e('[401] Sessao expirada.');LOG.res(P.ok,P.sk,P.er,MT);return;}
+        if(er3.is429){e4a++;if(e4a>CFG.MAX_RETRIES.r429){P.er++;break;}await backoff('429',e4a,0);continue;}
+        if(er3.is5xx){e5a++;if(e5a>CFG.MAX_RETRIES.r5xx){P.er++;break;}await backoff('5xx',e5a,er3.s);continue;}
+        eNa++;if(eNa>CFG.MAX_RETRIES.rNet){P.er++;break;}await backoff('net',eNa,0);continue;
+      }
+      await sl(clamp(Math.floor(gauss(22000,5000)),12000,45000));
+      await maybePause();
+    }
+    P.ok++;MT.push({n:nm,t:tp,e:Date.now()-QT});LOG.ok('"'+nm+'" concluida em '+ftm(Date.now()-QT)+'!');notify('Missao concluida!',nm);LOG.i('Colete a recompensa/orbs manualmente na aba Missoes.');
+  }
+
+  // ── TIPO DESCONHECIDO ─────────────────────────────────────
+  else{
+    LOG.w('Tipo "'+tp+'" nao suportado. Pulando. Reporte em discord.gg/G3wrqyJQrC');
+    try{var det=JSON.stringify({type:tp,name:nm,tasks:Object.keys(tc.tasks)});copy(det);LOG.i('Detalhes copiados para clipboard. Reporte em discord.gg/G3wrqyJQrC');}catch(ex){LOG.i('Reporte o tipo "'+tp+'" em discord.gg/G3wrqyJQrC');}
+    P.sk++;
+  }
+
+  // Cooldown entre missoes
+  if(queue.length>0&&!stopFlag){
+    var el2=MT.length>0?MT[MT.length-1].e:3000;
+    var cd=clamp(Math.floor(gauss(el2<60000?4000:6000,800)),2000,10000);
+    await sl(cd);
+  }
+}
+
+LOG.res(P.ok,P.sk,P.er,MT);
+})();`;
+
+var PROT=protect(RAW);
+var sid='yk_'+Math.random().toString(36).slice(2,6).toUpperCase();
+
+document.getElementById('spc').textContent=PROT;
+document.getElementById('spch').textContent=PROT.length.toLocaleString()+' chars';
+document.getElementById('spsid').textContent=sid;
+document.getElementById('spi').textContent='yKauttiz_v3.0.0.js · '+PROT.length.toLocaleString()+' chars · protegido';
+
+/* Copy */
+window.copiar=async function(){
+  var btn=document.getElementById('cpbtn');
+  var r=btn.getBoundingClientRect();
+  try{
+    await navigator.clipboard.writeText(PROT);
+    btn.classList.add('done');
+    btn.querySelector('.bt').textContent='✓ Copiado ('+PROT.length.toLocaleString()+' bytes) — cole no console F12';
+    confetti(r.left+r.width/2,r.top+r.height/2);
+    setTimeout(function(){btn.classList.remove('done');btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v3.0.0';},3200);
+  }catch(e){
+    btn.querySelector('.bt').textContent='Selecione tudo (Ctrl+A) e copie';
+    setTimeout(function(){btn.querySelector('.bt').textContent='Copiar Script — yKauttiz v3.0.0';},4000);
+  }
+};
+
+setTimeout(function(){resz();initPts();},100);
+
+})();
 </script>
 </body>
 </html>
