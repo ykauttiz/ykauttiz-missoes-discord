@@ -108,11 +108,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:800;border-bottom:1px solid var(
 .nright{display:flex;align-items:center;gap:5px}
 .tlbl{font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--tx3);margin-right:3px}
 /* Theme buttons with SVG icons */
-.tbtn{width:34px;height:34px;border-radius:9px;border:1px solid var(--br);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:none;transition:all .25s;position:relative;overflow:hidden}
-.tbtn svg{width:14px;height:14px;transition:transform .3s;opacity:.55;stroke:var(--ac);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.tbtn:hover{border-color:var(--ac);transform:translateY(-1px)}
-.tbtn:hover svg{transform:scale(1.2) rotate(-8deg);opacity:1}
-.tbtn.act{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--bg2))}
+.tbtn{width:36px;height:36px;border-radius:10px;border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;cursor:none;transition:all .22s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.tbtn svg{width:14px;height:14px;transition:transform .3s,opacity .2s;opacity:.55;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tbtn[data-theme="dark"]{background:#0c0c0f;border-color:#222226}
+.tbtn[data-theme="dark"] svg{stroke:#06b6d4}
+.tbtn[data-theme="light"]{background:#f0f0f5;border-color:#d0d0de}
+.tbtn[data-theme="light"] svg{stroke:#2563eb}
+.tbtn[data-theme="matrix"]{background:#021402;border-color:#0a2a0a}
+.tbtn[data-theme="matrix"] svg{stroke:#00ff41}
+.tbtn[data-theme="vapor"]{background:#0d0029;border-color:#2a0066}
+.tbtn[data-theme="vapor"] svg{stroke:#f0abfc}
+.tbtn:hover{transform:translateY(-2px) scale(1.1)}
+.tbtn:hover svg{transform:scale(1.15) rotate(-8deg);opacity:1}
+.tbtn[data-theme="dark"].act{border-color:#06b6d4;box-shadow:0 0 12px rgba(6,182,212,.4)}
+.tbtn[data-theme="light"].act{border-color:#2563eb;box-shadow:0 0 12px rgba(37,99,235,.4)}
+.tbtn[data-theme="matrix"].act{border-color:#00ff41;box-shadow:0 0 12px rgba(0,255,65,.4)}
+.tbtn[data-theme="vapor"].act{border-color:#f0abfc;box-shadow:0 0 12px rgba(240,171,252,.4)}
 .tbtn.act svg{opacity:1}
 @media(max-width:720px){.nlinks{display:none}.tlbl{display:none}}
 /* ═══ TICKER ═══ */
@@ -977,6 +988,24 @@ var CL=[
     ['f','MemberStore path corrigido — inconsistência de desestruturação eliminada'],
     ['r','Recursão em processNext() — substituída por while loop iterativo'],
   ]},
+  {v:'v3.0.0 STABLE',vs:'v3.0.0',d:'Mar 2026',st:'st-b',h:['Loop iterativo','Anti-Hang 25min','CONFIG editável','yKauttizStop()'],i:[
+    ['a','Loop iterativo substituindo recursão — elimina risco de stack overflow'],
+    ['a','Anti-Hang Protocol: Promise.race com timeout de 25min em PLAY e STREAM'],
+    ['a','CONFIG block no topo: VIDEO_SPEED, HIDE_ACTIVITY, DRY_RUN, LOG_LEVEL, URGENCY_FIRST, SHUFFLE_QUEUE'],
+    ['a','window.yKauttizStop() — parada graciosa, restaura stores'],
+    ['a','Distribuição bi-modal no videoStep: 80% normal + 20% pausa curta'],
+    ['a','Per-request drift — elimina fingerprinting de sessão'],
+    ['a','Fisher-Yates shuffle na fila + urgency-first scheduling'],
+    ['a','VoiceStateStore para detectar canal atual do usuário'],
+    ['a','ETA global calculado antes de iniciar'],
+    ['a','Backoff unificado: backoff(type, attempt, status)'],
+    ['a','DRY_RUN mode — lista missões sem enviar requests'],
+    ['a','configVersion 1 e 2 suportados em WATCH_VIDEO'],
+    ['a','maybePause com cooldown mínimo de 30s'],
+    ['f','checkServer: double-check de membership antes de aceitar 400'],
+    ['f','PLAY_ACTIVITY: VoiceStateStore — não mais o primeiro canal da lista'],
+    ['r','Recursão em processNext() removida'],
+  ]},
   {v:'v2.2 BETA',vs:'v2.2',d:'Fev 2026',st:'st-b',h:['Servidor obrigatório','Código protegido','Velocity tracker','Smart throttle'],i:[
     ['a','Verificação obrigatória do servidor discord.gg/G3wrqyJQrC antes de executar'],
     ['a','Auto-join: tenta entrar no servidor automaticamente ao iniciar'],
@@ -1028,10 +1057,12 @@ var CL=[
 ];
 (function(){
   var el=document.getElementById('cll');if(!el)return;
+  var labelMap={'st-s':'Atual 2026','st-b':'Beta 2026','st-a':'Alpha 2025','st-l':'Legacy 2025'};
   var html='';
-  var typeMap={a:'a',f:'f',r:'r',w:'w'};
   CL.forEach(function(v){
-    html+='<div class="cle"><div class="clm"><div class="clv">'+v.vs+'</div><span class="clst '+v.st+'">'+(['st-s','st-b'].indexOf(v.st)>=0?'Atual':'Legacy')+' · '+v.d.split(' ')[1]+'</span><div class="cldt">'+v.d+'</div></div><div class="clb"><div class="clhl">'+v.h.map(function(h){return'<span class="clh">'+h+'</span>';}).join('')+'</div><ul class="cli">'+v.i.map(function(it){return'<li class="'+it[0]+'">'+it[1]+'</li>';}).join('')+'</ul></div></div>';
+    var items=v.i.map(function(it){return'<li class="'+it[0]+'">'+it[1]+'</li>';}).join('');
+    var hls=v.h.map(function(hh){return'<span class="clh">'+hh+'</span>';}).join('');
+    html+='<div class="cle"><div class="clm"><div class="clv">'+v.vs+'</div><span class="clst '+v.st+'">'+(labelMap[v.st]||'Legacy')+'</span><div class="cldt">'+v.d+'</div></div><div class="clb"><div class="clhl">'+hls+'</div><ul class="cli">'+items+'</ul></div></div>';
   });
   el.innerHTML=html;
 })();
@@ -1100,7 +1131,7 @@ async function backoff(type,n,status){
 function cErr(e){var s=e&&(e.status||e.code)||0;return{s:s,is400:s===400,is401:s===401,is403:s===403,is404:s===404,is429:s===429,is5xx:s>=500&&s<600,isNet:!s};}
 var notifOk=false;
 if(CFG.NOTIFICATIONS&&typeof Notification!=='undefined'){try{Notification.requestPermission().then(function(p){notifOk=p==='granted';});}catch(e){}}
-function notify(t,b){if(!notifOk)return;try{new Notification('yKauttiz — '+t,{body:b});}catch(e){}}
+function notify(t,b){if(!notifOk)return;try{new Notification('yKauttiz  -  '+t,{body:b});}catch(e){}}
 var LOG={_w:0,_e:0,_l:[],
   banner:function(){
     console.log('\n%c yKauttiz %c Missoes Discord %c STABLE %c '+VER+' %c discord.gg/G3wrqyJQrC \n',
@@ -1127,11 +1158,11 @@ var LOG={_w:0,_e:0,_l:[],
   miss:function(nm,tp,pos,tot,fr,tgt,exp,ck){
     if(CFG.LOG_LEVEL==='silencioso')return;
     var r=tgt-fr,p=Math.min(100,Math.round(fr/tgt*100));
-    console.log('%c[yKauttiz]%c\n  -- Missao '+pos+'/'+tot+' | '+SID+' --\n  Nome: '+nm+'\n  Tipo: '+tp+'\n  Prog: '+Math.round(fr)+'s/'+tgt+'s ('+p+'%) | Restam: '+Math.round(r)+'s (~'+Math.ceil(r/60)+'min)\n  Checkpoint: '+ck.toFixed(1)+'s | Expira: em '+exp+'h\n  '+'─'.repeat(42),'color:#FEE75C;font-weight:bold','color:#c0c4d6;font-family:monospace');
+    console.log('%c[yKauttiz]%c\n  -- Missao '+pos+'/'+tot+' | '+SID+' --\n  Nome: '+nm+'\n  Tipo: '+tp+'\n  Prog: '+Math.round(fr)+'s/'+tgt+'s ('+p+'%) | Restam: '+Math.round(r)+'s (~'+Math.ceil(r/60)+'min)\n  Checkpoint: '+ck.toFixed(1)+'s | Expira: em '+exp+'h\n  '+'-'.repeat(42),'color:#FEE75C;font-weight:bold','color:#c0c4d6;font-family:monospace');
   },
   res:function(ok,sk,er,mt){
     var t=ftm(Date.now()-T0);
-    var ts2=mt.length?'\n  Por missao:\n'+mt.map(function(m){return'  · '+m.n+': '+ftm(m.e)+' ('+m.t+')'}).join('\n'):'';
+    var ts2=mt.length?'\n  Por missao:\n'+mt.map(function(m){return'  . '+m.n+': '+ftm(m.e)+' ('+m.t+')'}).join('\n'):'';
     console.log('%c[yKauttiz]%c\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n  \u2551  yKauttiz '+VER+'             \u2551\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  \u2713 Concluidas: '+String(ok).padEnd(5)+'           \u2551\n  \u2551  \u23ed Puladas:    '+String(sk).padEnd(5)+'           \u2551\n  \u2551  \u2717 Erros:      '+String(er).padEnd(5)+'           \u2551\n  \u2551  \u23f1 Tempo:      '+t.padEnd(18)+'\u2551'+ts2+'\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  Colete as recompensas!       \u2551\n  \u2551  (c) 2026 yKauttiz            \u2551\n  \u2551  discord.gg/G3wrqyJQrC       \u2551\n  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
     if(CFG.EXPORT_LOG){window.yKauttizLog={ver:VER,sid:SID,start:new Date(T0).toISOString(),end:new Date().toISOString(),ok:ok,sk:sk,er:er,missions:mt,logs:LOG._l};LOG.i('Log exportavel: copy(JSON.stringify(window.yKauttizLog))');}
   }
@@ -1222,7 +1253,7 @@ async function tryAutoEnroll(q){
     await sl(1000);return true;
   }catch(e){
     var er=cErr(e);
-    if(er.is400)LOG.d('Auto-enroll 400 (jogo nao instalado ou nao elegivel) — pulando');
+    if(er.is400)LOG.d('Auto-enroll 400 (jogo nao instalado ou nao elegivel)  -  pulando');
     else LOG.w('Auto-enroll falhou ('+er.s+')');
     return false;
   }
@@ -1345,7 +1376,7 @@ while(queue.length>0&&!stopFlag){
     }
     if(!done&&fr>0){try{await sl(Math.floor(gauss(700,150)));await API.post({url:'/quests/'+q.id+'/video-progress',body:{timestamp:tgt}});done=true;}catch(ex){}}
     var el=Date.now()-QT;
-    if(done||fr>=tgt){P.ok++;MT.push({n:nm,t:tp,e:el});LOG.ok('"'+nm+'" concluida em '+ftm(el)+'! vel:'+(ns>0?(tv/ns).toFixed(1):'?')+'s/step');notify('Missao concluida!',nm+' — '+ftm(el));LOG.i('Colete a recompensa manualmente.');}
+    if(done||fr>=tgt){P.ok++;MT.push({n:nm,t:tp,e:el});LOG.ok('"'+nm+'" concluida em '+ftm(el)+'! vel:'+(ns>0?(tv/ns).toFixed(1):'?')+'s/step');notify('Missao concluida!',nm+'  -  '+ftm(el));LOG.i('Colete a recompensa manualmente.');}
     else{P.sk++;LOG.w('"'+nm+'" pulada apos '+ftm(el)+'.');}
   }
 
