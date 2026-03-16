@@ -1,131 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Código em manutenção | yKauttiz</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-    :root{
-      --bg:#020617;
-      --bg2:#0f172a;
-      --tx:#f8fafc;
-      --tx2:#cbd5f5;
-      --accent:#38bdf8;
-      --accent2:#818cf8;
-      --border:rgba(56,189,248,.35);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:radial-gradient(circle at top,var(--bg2),var(--bg));
-      color:var(--tx);
-      font-family:'Syne','JetBrains Mono',sans-serif;
-      padding:32px;
-      user-select:none;
-      -webkit-user-select:none;
-    }
-    .manutencao{
-      width:min(920px,100%);
-      background:linear-gradient(135deg,#0f172a,#020617 70%);
-      border:1px solid var(--border);
-      border-radius:20px;
-      padding:48px 36px 52px;
-      box-shadow:0 25px 70px rgba(2,6,23,.65);
-      position:relative;
-      overflow:hidden;
-    }
-    .manutencao::before{
-      content:'';
-      position:absolute;
-      inset:0;
-      background:radial-gradient(circle at 20% -10%,rgba(56,189,248,.25),transparent 55%);
-      opacity:.8;
-      pointer-events:none;
-    }
-    .manutencao__inner{
-      position:relative;
-      z-index:1;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      gap:26px;
-    }
-    .manutencao__eyebrow{
-      font-size:12px;
-      letter-spacing:5px;
-      text-transform:uppercase;
-      color:var(--accent);
-    }
-    .manutencao__title{
-      font-size:clamp(34px,6vw,56px);
-      text-transform:uppercase;
-      letter-spacing:2px;
-    }
-    .manutencao__desc{
-      font-size:16px;
-      line-height:1.9;
-      color:var(--tx2);
-      max-width:720px;
-      margin:0 auto;
-    }
-    .manutencao__list{
-      list-style:none;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      color:#dbeafe;
-      font-size:15px;
-      line-height:1.8;
-    }
-    .manutencao__footer{
-      font-size:13px;
-      text-transform:uppercase;
-      letter-spacing:3px;
-      color:var(--accent2);
-    }
-    .badge{
-      display:inline-flex;
-      align-self:center;
-      align-items:center;
-      gap:8px;
-      padding:8px 18px;
-      border-radius:999px;
-      border:1px solid rgba(129,140,248,.5);
-      color:var(--tx);
-      font-size:12px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      background:rgba(129,140,248,.15);
-    }
-    @media(max-width:640px){
-      body{padding:16px}
-      .manutencao{padding:38px 24px 44px}
-      .manutencao__desc{font-size:15px}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>yKauttiz — Em Manutenção</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+body{
+  background:#020203;color:#e9e9f0;
+  font-family:'JetBrains Mono',monospace;
+  display:flex;align-items:center;justify-content:center;
+  min-height:100vh;margin:0;padding:24px;text-align:center;
+  overflow:hidden;
+}
+canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:-1;opacity:.35;
+}
+.card{
+  background:linear-gradient(160deg,#0a0a12,#0c0c15);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:24px;padding:52px 40px;
+  max-width:760px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.65);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(1200px 600px at 0% 0%,rgba(6,182,212,.12),transparent 40%),
+            radial-gradient(900px 500px at 100% 0%,rgba(168,85,247,.12),transparent 40%);
+  pointer-events:none;
+}
+h1{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(30px,5vw,44px);
+  font-weight:800;letter-spacing:-2px;
+  background:linear-gradient(135deg,#06b6d4,#a855f7);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:14px;
+}
+.sub{
+  font-size:15px;color:#9a9aa8;
+  line-height:1.7;margin-bottom:28px;
+}
+.alert{
+  background:linear-gradient(160deg,#141418,#16161c);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:20px 22px;
+  font-size:13px;color:#f0f0f5;
+  line-height:1.8;
+  position:relative;
+}
+.alert b{color:#f0f0f5}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(160deg,#06b6d4,.a855f7);
+  color:#0b0b12;font-weight:700;
+  border-radius:999px;padding:6px 14px;
+  font-size:12px;margin-bottom:14px;
+}
+footer{
+  margin-top:30px;font-size:11px;color:#5e5e70;
+}
+@media(max-width:520px){
+  .card{padding:36px 24px;}
+}
+</style>
 </head>
 <body>
-  <section class="manutencao">
-    <div class="manutencao__inner">
-      <p class="manutencao__eyebrow">⚠ ATENÇÃO · SISTEMA TEMPORARIAMENTE INDISPONÍVEL ⚠</p>
-      <h1 class="manutencao__title">Código em manutenção até 20h</h1>
-      <p class="manutencao__desc">
-        Estamos aplicando ajustes críticos de estabilidade e segurança nesta build.
-        Para evitar inconsistências, o script permanecerá totalmente bloqueado até as 20h (horário de Brasília).
-        Nenhuma ação adicional é necessária — assim que o relógio marcar 20h, a liberação será automática
-        e você poderá continuar exatamente de onde parou.
-      </p>
-      <ul class="manutencao__list">
-        <li>✅ Logs e progresso atuais foram preservados.</li>
-        <li>✅ Não é necessário reiniciar o Discord ou instalar nada.</li>
-        <li>🚫 Novas execuções permanecerão desativadas durante a manutenção.</li>
-      </ul>
-      <span class="badge">release automático às 20h</span>
-      <p class="manutencao__footer">Agradeço a paciência! — yKauttiz</p>
-    </div>
-  </section>
+<canvas id="bg"></canvas>
+<div class="card">
+  <div class="badge">🛠️ MANUTENÇÃO PROGRAMADA</div>
+  <h1>yKauttiz</h1>
+  <p class="sub">Ferramenta gratuita para automatizar missões do Discord</p>
+  <div class="alert">
+    <b>🔧 O script está temporariamente indisponível</b><br>
+    Estamos trabalhando em atualizações e melhorias de segurança.<br>
+    <b>Estimativa de retorno:</b> <b>20h</b> (horário de Brasília)<br><br>
+    Durante este período, o código não será disponibilizado para cópia.<br>
+    Agradecemos sua compreensão e paciência.
+  </div>
+  <footer>
+    © 2026 yKauttiz · discord.gg/G3wrqyJQrC
+  </footer>
+</div>
+<script>
+const canvas=document.getElementById('bg');
+const ctx=canvas.getContext('2d');
+let w,h;
+function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight;}
+window.addEventListener('resize',resize);resize();
+const stars=[];
+for(let i=0;i<140;i++){
+  stars.push({
+    x:Math.random()*w,
+    y:Math.random()*h,
+    r:Math.random()*1.4+.2,
+    a:Math.random()*Math.PI*2,
+    s:Math.random()*1.6+.4,
+    c:`hsl(${Math.random()*30+180},${Math.random()*40+20}%,${Math.random()*40+60}%)`
+  });
+}
+function draw(){
+  ctx.clearRect(0,0,w,h);
+  const g=ctx.createRadialGradient(w/2,h/2,0,w/2,h/2,Math.max(w,h)/2);
+  g.addColorStop(0,'rgba(6,182,212,.12)');g.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
+  ctx.fillStyle='rgba(255,255,255,.08)';
+  for(let i=0;i<90;i++){
+    const x=Math.random()*w,y=Math.random()*h,r=Math.random()*2;
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+  }
+  for(const s of stars){
+    s.x+=s.s*Math.cos(s.a);s.y+=s.s*Math.sin(s.a);
+    if(s.x<0)s.x=w;if(s.x>w)s.x=0;if(s.y<0)s.y=h;if(s.y>h)s.y=0;
+    ctx.fillStyle=s.c;
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
 </body>
 </html>
