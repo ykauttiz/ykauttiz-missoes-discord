@@ -1,166 +1,244 @@
-# yKauttiz Missões Discord — STABLE 2026
+# yKauttiz Missões Discord
 
-<div align="center">
-
-![STABLE](https://img.shields.io/badge/versao-STABLE%202026-57F287?style=for-the-badge&labelColor=0d0d0d)
-![GRATIS](https://img.shields.io/badge/preco-100%25%20gratuito-57F287?style=for-the-badge&labelColor=0d0d0d)
-![PROTEGIDO](https://img.shields.io/badge/codigo-protegido-5865F2?style=for-the-badge&labelColor=0d0d0d)
-![RISCO](https://img.shields.io/badge/⚠️-use%20por%20sua%20conta%20e%20risco-ED4245?style=for-the-badge&labelColor=0d0d0d)
-
-**Automação de missões (Quests) do Discord via console do navegador**
-
-[discord.gg/G3wrqyJQrC](https://discord.gg/G3wrqyJQrC) · © 2026 yKauttiz
-
-</div>
+> Script gratuito que automatiza missões do Discord diretamente pelo console do navegador/app.  
+> **v4.0.0 STABLE · © 2026 yKauttiz · USE POR SUA CONTA E RISCO**
 
 ---
 
-## ⚠️ AVISO IMPORTANTE
+## ⚠️ Aviso importante
 
-> **USE POR SUA CONTA E RISCO.**
-> Este script usa APIs internas do Discord de forma **não oficial** e pode violar os Termos de Serviço.
-> yKauttiz **não** se responsabiliza por banimentos, suspensões, perda de conta ou qualquer outra consequência.
-> Recomenda-se o uso em contas secundárias ou de teste.
+Este script usa APIs internas não oficiais do Discord e pode violar os Termos de Serviço.  
+**USE EXCLUSIVAMENTE POR SUA CONTA E RISCO. O autor não se responsabiliza por banimentos, suspensões ou qualquer consequência.**
 
 ---
 
 ## O que é
 
-Script JavaScript que completa **missões do Discord (Quests)** automaticamente. Roda direto no console do Discord — não instala nada, não baixa nada, não acessa arquivos do computador. Tudo acontece dentro do navegador ou do aplicativo Discord que você já tem aberto.
+Um script JavaScript que roda no console do Discord (F12) e completa suas missões (Quests) automaticamente:
 
-O código aparece **protegido** (ilegível) para preservar a autoria de yKauttiz. Isso é prática comum entre desenvolvedores para proteger seu trabalho — não há nada malicioso. O script funciona normalmente ao colar no console.
-
----
-
-## Missões suportadas
-
-| Tipo | Descrição | Requisito |
-|---|---|---|
-| `WATCH_VIDEO` | Envia timestamps de progresso do vídeo | Navegador ou App |
-| `WATCH_VIDEO_ON_MOBILE` | Igual ao anterior com parâmetros mobile | Navegador ou App |
-| `PLAY_ON_DESKTOP` | Simula jogo rodando no Discord | **Desktop App obrigatório** |
-| `STREAM_ON_DESKTOP` | Simula stream ativa | **Desktop App + 1 pessoa no canal** |
-| `PLAY_ACTIVITY` | Heartbeat de atividade em canal de voz | Estar em canal de voz |
+- **WATCH_VIDEO** — assiste vídeos de missão com timing gaussiano variável
+- **WATCH_VIDEO_MOBILE** — idem, com parâmetros de cliente mobile
+- **PLAY_ON_DESKTOP** — simula jogo rodando no Discord Desktop App
+- **STREAM_ON_DESKTOP** — simula stream ativa com 1 pessoa no canal de voz
+- **PLAY_ACTIVITY** — envia heartbeats para missões de atividade
+- **ACHIEVEMENT_IN_ACTIVITY** — suporte a missões de conquista em canal de voz
 
 ---
 
-## Funcionalidades
+## Destaques técnicos v4.0.0
 
-- **Retomada de progresso parcial** — se o Discord mostra "faltam X segundos", o script detecta e continua de onde parou automaticamente
-- **Timing anti-detecção** — delays com distribuição gaussiana simulam comportamento humano real
-- **Velocity tracker** — ETA calculado pela velocidade média real dos steps
-- **Smart throttle** — intervalo aumenta automaticamente se o servidor Discord estiver sobrecarregado
-- **Todos os erros HTTP tratados** — 400, 401, 403, 404, 429, 5xx e erros de rede com estratégias individuais
-- **Verificação de servidor** — entra em discord.gg/G3wrqyJQrC automaticamente
-- **Fila automática** — processa todas as missões inscritas em sequência
-- **Logs coloridos** — progresso visível em tempo real no console
-
----
-
-## Como usar
-
-### Pré-requisitos
-
-- Discord aberto no **navegador** ou no **Desktop App**
-- Para missões `PLAY_ON_DESKTOP` e `STREAM_ON_DESKTOP`: **Discord Desktop App** obrigatório
-- **Inscrição manual** nas missões antes de rodar o script (o script não faz inscrição automática)
-
-### Passo a passo
-
-**1.** Abra o Discord e inscreva-se manualmente nas missões disponíveis na aba **Missões**
-
-**2.** Abra o console do Discord:
-
-| Sistema | Atalho |
+| Feature | Descrição |
 |---|---|
-| Windows / Linux | `F12` ou `Ctrl + Shift + I` |
-| macOS | `Cmd + Opt + I` |
-
-**3.** Clique na aba **Console** no topo do DevTools
-
-**4.** Acesse `ykauttiz.github.io/ykauttiz-missoes-discord`, clique em Copiar Script e cole no console
-
-> Se o Discord pedir `allow pasting` — digite isso no console e pressione Enter antes de colar o script
-
-**5.** Acompanhe os logs coloridos. Ao terminar, abra a aba **Missões** no Discord e colete as recompensas manualmente
-
----
-
-## Por que preciso fazer algumas coisas manualmente?
-
-**Inscrição:** Missões de jogos específicos (WoW, Apex, Rocket League etc.) exigem que o jogo esteja instalado e vinculado à conta Discord. O Discord valida isso no servidor — impossível contornar via script.
-
-**Coleta de recompensas:** O Discord processa recompensas de forma assíncrona com validação anti-fraude. Tentar coletar automaticamente retorna erro. As recompensas e orbs ficam disponíveis na aba Missões assim que o script termina.
+| **Gaussiano bi-modal** | 80% normal (5-9s) + 20% pausas curtas (1-4s) por step |
+| **Per-request drift** | Cada request tem latência variável independente — sem fingerprinting |
+| **Retomada parcial** | Lê progresso real do QuestStore antes de começar — nunca repete |
+| **Anti-Hang Protocol** | `Promise.race` com timeout de 25min em PLAY e STREAM |
+| **Loop iterativo** | `while(queue)` em vez de recursão — sem risco de stack overflow |
+| **Auto-enroll** | Inscrição automática com delay gaussiano 2-8s (toggle via CONFIG) |
+| **Smart throttle** | Multiplica intervalo em erros 5xx, reseta em sucesso |
+| **3 estratégias webpack** | Fallback para múltiplos builds do Discord (Stable/PTB/Canary) |
+| **VoiceStateStore** | Detecta canal onde o usuário está, não o primeiro encontrado |
+| **yKauttizStop()** | Para o script graciosamente, restaura todos os stores |
+| **yKauttizLog** | Log de sessão exportável em JSON |
 
 ---
 
-## Isso é um vírus?
+## Uso rápido
 
-**Não.** O script é JavaScript puro que roda dentro do console do seu próprio Discord. Ele não baixa nada, não instala nada, não acessa arquivos do computador e não envia senhas ou dados pessoais a lugar nenhum. Quando você fecha o Discord, o script para e some — não fica rodando em segundo plano.
+### 1. Habilitar DevTools (se necessário)
 
-O código protegido é uma medida para preservar a autoria de yKauttiz, não para esconder algo malicioso.
+O Discord Stable bloqueia o console por padrão. Para habilitar:
 
----
-
-## Erros conhecidos e tratamento
-
-| Código | O que significa | O que o script faz |
-|---|---|---|
-| `400` | Bad Request — elegibilidade ou enroll | Pula a missão |
-| `401` | Sessão expirada | Para o script — recarregue o Discord |
-| `403` | Sem permissão (ex: ACHIEVEMENT requer cliente ativo) | Pula com explicação |
-| `404` | Quest não encontrada / expirada | Pula |
-| `429` | Rate limit | Backoff exponencial, máx 4 tentativas |
-| `5xx` | Servidor Discord com problema | Smart throttle + retry, máx 3 tentativas |
-| `0 / rede` | Falha de conexão | Backoff crescente, máx 5 tentativas |
-
----
-
-## Histórico de versões
-
-| Versão | Status | Descrição |
-|---|---|---|
-| **STABLE** | ✅ Atual | Retomada parcial, protegido, velocity tracker, smart throttle, todos os erros tratados |
-| v2.2 | ⚠️ Beta | ACHIEVEMENT_IN_ACTIVITY (403 confirmado) |
-| v2.1 | ⚠️ Beta instável | Enroll/claim tentados — ambos retornam 400 |
-| v2.0 | 🔶 Alpha | Gaussiano puro, sem extras |
-| v1.2 | 🔴 Legacy | Store reload (404 no Canary) |
-| v1.0 | 🔴 Legacy | Script base original |
-
----
-
-## Site
-
-Acesse o site do projeto com documentação completa, log preview e FAQ:
-
-```
-https://ykauttiz.github.io/ykauttiz-missoes-discord
+**Windows:** Abra `%appdata%/discord/settings.json` e adicione:
+```json
+"DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING": true
 ```
 
+**Linux/macOS:** Mesmo processo em `~/.config/discord/settings.json`
+
+**Alternativa:** Use Discord PTB ou Canary (DevTools habilitados por padrão).
+
+### 2. Inscreva-se nas missões
+
+No Discord → aba **Missões** → inscreva-se manualmente nas elegíveis.  
+Missões de jogos específicos exigem o jogo instalado e vinculado à conta.
+
+### 3. Abra o console
+
+- Windows/Linux: `F12` ou `Ctrl+Shift+I`  
+- macOS: `Cmd+Opt+I`
+
+### 4. Cole e pressione Enter
+
+Copie o script em [ykauttiz.github.io/ykauttiz-missoes-discord](https://ykauttiz.github.io/ykauttiz-missoes-discord), cole no console e pressione Enter.
+
+O script:
+1. Verifica/entra no servidor oficial
+2. Lista as missões ativas com ETA
+3. Processa cada missão automaticamente
+4. Exibe logs coloridos em tempo real
+
+### 5. Colete as recompensas
+
+Após o script terminar → aba **Missões** no Discord → colete manualmente.  
+A coleta automática não funciona por design da plataforma.
+
 ---
 
-## Copyright
+## Configuração
 
+O script tem um bloco `CFG` editável no topo antes de colar:
+
+```javascript
+const CFG = {
+  VIDEO_SPEED: 'normal',    // 'rapido' | 'normal' | 'lento'
+  HIDE_ACTIVITY: false,     // esconde "Jogando X" durante PLAY_ON_DESKTOP
+  DRY_RUN: false,           // lista missões sem enviar requests
+  LOG_LEVEL: 'normal',      // 'normal' | 'verbose' | 'silencioso'
+  URGENCY_FIRST: true,      // missões que expiram primeiro têm prioridade
+  SHUFFLE_QUEUE: true,      // embaralha ordem para variar padrão
+  AUTO_ENROLL: false,       // tenta inscrição automática (experimental)
+  NOTIFICATIONS: true,      // notificações nativas ao completar
+  EXPORT_LOG: true,         // salva log em window.yKauttizLog
+};
 ```
-© 2026 yKauttiz · Todos os direitos reservados
-discord.gg/G3wrqyJQrC · Servidor ID: 1356778105737580554
-```
-
-- ✅ Uso pessoal gratuito permitido
-- ✅ Compartilhamento permitido **com crédito visível**
-- ❌ Proibido vender ou monetizar
-- ❌ Proibido remover autoria ou aviso de risco
-- ❌ Proibido remover ou contornar a proteção do código
-- ❌ Proibido redistribuir modificado sem identificar como fork
-
-> Somente yKauttiz pode criar versões pagas deste script.
-
-Versões legítimas **sempre** contêm: `yKauttiz` · `discord.gg/G3wrqyJQrC` · aviso de risco
 
 ---
 
-<div align="center">
+## Comandos do console
 
-Feito com 💜 por **yKauttiz** · [discord.gg/G3wrqyJQrC](https://discord.gg/G3wrqyJQrC)
+| Comando | Descrição |
+|---|---|
+| `yKauttizStop()` | Para o script graciosamente |
+| `copy(JSON.stringify(window.yKauttizLog))` | Copia o log de sessão |
 
-</div>
+---
+
+## Perguntas frequentes
+
+**Isso é malware?**  
+Não. É JavaScript puro que roda no console do seu próprio Discord. Não baixa nada, não instala nada, não envia dados pessoais.
+
+**Por que o código parece ilegível?**  
+O script é distribuído com proteção de autoria para evitar redistribuição não autorizada. O Discord executa normalmente.
+
+**Por que preciso estar no servidor?**  
+O servidor é o canal oficial de suporte e atualizações. O script entra automaticamente ao iniciar.
+
+**Posso ser banido?**  
+USE POR SUA CONTA E RISCO. O script usa APIs internas não oficiais.
+
+**Como para o script no meio?**  
+Digite `yKauttizStop()` no console.
+
+**Por que preciso coletar manualmente?**  
+Coleta automática retorna 400 — processamento assíncrono do próprio Discord.
+
+---
+
+## Changelog
+
+### v4.0.0 STABLE — Mar 2026
+- `+` AUTO_ENROLL toggle com delay gaussiano 2-8s
+- `+` ACHIEVEMENT_IN_ACTIVITY suportado com `location_type: voice_channel`
+- `+` 3 estratégias webpack bootstrap para resiliência a updates
+- `+` UserStore para identificação correta do usuário no VoiceState
+- `+` Dispatcher e API com fallback de exports
+- `+` Log exportável via `window.yKauttizLog`
+- `~` checkServer: double-check de membership antes de aceitar 400
+- `~` Todos os caracteres não-ASCII removidos do script (bug de proteção corrigido)
+
+### v3.0.0 STABLE — Mar 2026
+- `+` Loop iterativo (fim da recursão — sem stack overflow)
+- `+` Anti-Hang Protocol: `Promise.race` + timeout 25min
+- `+` CONFIG block editável no topo
+- `+` Notificações nativas desktop
+- `+` `window.yKauttizStop()` — parada graciosa
+- `+` Distribuição bi-modal no videoStep
+- `+` Per-request drift (elimina fingerprinting)
+- `+` Fisher-Yates shuffle + urgency-first scheduling
+- `+` VoiceStateStore para PLAY_ACTIVITY
+- `+` ETA global
+- `+` Backoff unificado
+- `~` configVersion 1 e 2 suportados em WATCH_VIDEO
+- `~` maybePause com cooldown mínimo 30s
+- `-` Recursão em processNext() removida
+
+### v2.2 BETA — Fev 2026
+- `+` Verificação obrigatória do servidor
+- `+` Auto-join automático ao iniciar
+- `+` Código protegido (XOR triplo + djb2 + fragmentação)
+- `+` Velocity tracker
+- `+` Smart throttle (1.5× em 5xx, máx 4×)
+- `+` Session digest
+- `-` ACHIEVEMENT_IN_ACTIVITY removido (403 permanente nessa versão)
+
+### v2.1 BETA — Jan 2026
+- `+` Retomada de progresso parcial
+- `+` Backoff exponencial em 429
+- `+` Backoff crescente em erros de rede
+- `+` Micro-pausas aleatórias (15% chance/step)
+
+### v2.0 ALPHA — Dez 2025
+- `+` Distribuição gaussiana Box-Muller em 3 camadas
+- `+` SESSION_DRIFT base por sessão
+- `+` Session ID único (yk_XXXXXX)
+- `+` PLAY_ON_DESKTOP via GameStore
+- `+` STREAM_ON_DESKTOP via StreamStore
+- `+` Tratamento completo de erros HTTP
+
+### v1.2 LEGACY — Nov 2025
+- `+` Store reload via API
+- `+` Delay fixo 3000ms
+- `-` Store reload retorna 404 no Canary
+
+### v1.1 LEGACY — Nov 2025
+- `+` Script base WATCH_VIDEO
+- `+` Auto-enroll tentado
+- `-` Enroll retorna 400 em 100% dos casos
+
+### v1.0 LEGACY — Out 2025
+- `+` Primeira versão pública
+- `+` WATCH_VIDEO via POST /video-progress
+- `+` Logs coloridos
+- `+` QuestStore via webpack bootstrap
+
+---
+
+## Compatibilidade
+
+| Tipo | Navegador | Desktop App | Observação |
+|---|---|---|---|
+| WATCH_VIDEO | ✓ | ✓ | Retomada parcial · configVersion 1/2 |
+| WATCH_VIDEO_MOBILE | ✓ | ✓ | Parâmetros mobile |
+| PLAY_ON_DESKTOP | ✗ | ✓ | GameStore · Anti-Hang 25min |
+| STREAM_ON_DESKTOP | ✗ | ✓ | StreamStore · 1 pessoa no canal |
+| PLAY_ACTIVITY | ✓ | ✓ | VoiceStateStore |
+| ACHIEVEMENT_IN_ACTIVITY | ✓ | ✓ | Canal de voz · trata 403 |
+
+---
+
+## Direitos autorais e licença
+
+© 2026 yKauttiz — Todos os direitos reservados.
+
+| ✅ Permitido | ❌ Proibido |
+|---|---|
+| Uso pessoal gratuito | Vender ou cobrar pelo script |
+| Compartilhar com crédito e aviso de risco | Remover a proteção de autoria |
+| Reportar bugs e sugerir melhorias | Distribuir versões modificadas sem autorização |
+| | Uso comercial ou em escala |
+
+Versões legítimas **sempre** contêm: `yKauttiz` · `discord.gg/G3wrqyJQrC` · aviso de risco.
+
+---
+
+## Suporte
+
+- **Discord:** [discord.gg/G3wrqyJQrC](https://discord.gg/G3wrqyJQrC)
+- **Servidor ID:** 1356778105737580554
+- **Site:** [ykauttiz.github.io/ykauttiz-missoes-discord](https://ykauttiz.github.io/ykauttiz-missoes-discord)
+
+---
+
+*Feito com ♥ pela comunidade · USE POR SUA CONTA E RISCO*
