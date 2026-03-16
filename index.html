@@ -1143,13 +1143,13 @@ var LOG={_w:0,_e:0,_l:[],
     console.log('%c  !! USE POR SUA CONTA E RISCO !!\n\n  Sessao: '+SID+' | '+VER+' | Drift: '+BDRIFT+'ms | Discord '+BLD+' | Desktop: '+(DESK?'Sim':'Nao')+'\n  Para parar: yKauttizStop() | Log: window.yKauttizLog','color:#ED4245;font-family:monospace;font-size:11px;line-height:1.9');
   },
   i:function(m){if(CFG.LOG_LEVEL==='silencioso')return;console.log('%c[yKauttiz]%c ['+ts()+'] '+m,'color:#8b9cf7;font-weight:bold','color:#c0c4d6');this._l.push({t:'i',m:m,ts:Date.now()});},
-  ok:function(m){console.log('%c[yKauttiz]%c \u2713 '+m,'color:#57F287;font-weight:bold','color:#57F287');this._l.push({t:'ok',m:m,ts:Date.now()});},
-  w:function(m){this._w++;console.warn('%c[yKauttiz]%c \u26a0 '+m,'color:#FEE75C;font-weight:bold','color:#FEE75C');this._l.push({t:'w',m:m,ts:Date.now()});},
-  e:function(m){this._e++;console.error('%c[yKauttiz]%c \u2717 '+m,'color:#ED4245;font-weight:bold','color:#ED4245');this._l.push({t:'e',m:m,ts:Date.now()});},
+  ok:function(m){console.log('%c[yKauttiz]%c + '+m,'color:#57F287;font-weight:bold','color:#57F287');this._l.push({t:'ok',m:m,ts:Date.now()});},
+  w:function(m){this._w++;console.warn('%c[yKauttiz]%c ! '+m,'color:#FEE75C;font-weight:bold','color:#FEE75C');this._l.push({t:'w',m:m,ts:Date.now()});},
+  e:function(m){this._e++;console.error('%c[yKauttiz]%c x '+m,'color:#ED4245;font-weight:bold','color:#ED4245');this._l.push({t:'e',m:m,ts:Date.now()});},
   d:function(m){if(CFG.LOG_LEVEL==='verbose')console.debug('%c[yKauttiz/dbg] '+m,'color:#52525e;font-size:10px');},
   bar:function(cur,tot,name,vel,thr){
     var p=Math.min(100,Math.round(cur/tot*100));
-    var b='\u2588'.repeat(Math.floor(p/5))+'\u2591'.repeat(20-Math.floor(p/5));
+    var b='#'.repeat(Math.floor(p/5))+'-'.repeat(20-Math.floor(p/5));
     var eta=cur<tot?'~'+ftm((tot-cur)/(vel||7)*1000):'PRONTO';
     var vs=vel?(vel<4?' rapido':vel>10?' lento':' normal'):'';
     var ts2=thr>1.1?'  thr:'+thr.toFixed(1)+'x':'';
@@ -1163,7 +1163,7 @@ var LOG={_w:0,_e:0,_l:[],
   res:function(ok,sk,er,mt){
     var t=ftm(Date.now()-T0);
     var ts2=mt.length?'\n  Por missao:\n'+mt.map(function(m){return'  . '+m.n+': '+ftm(m.e)+' ('+m.t+')'}).join('\n'):'';
-    console.log('%c[yKauttiz]%c\n  \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n  \u2551  yKauttiz '+VER+'             \u2551\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  \u2713 Concluidas: '+String(ok).padEnd(5)+'           \u2551\n  \u2551  \u23ed Puladas:    '+String(sk).padEnd(5)+'           \u2551\n  \u2551  \u2717 Erros:      '+String(er).padEnd(5)+'           \u2551\n  \u2551  \u23f1 Tempo:      '+t.padEnd(18)+'\u2551'+ts2+'\n  \u255f\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2562\n  \u2551  Colete as recompensas!       \u2551\n  \u2551  (c) 2026 yKauttiz            \u2551\n  \u2551  discord.gg/G3wrqyJQrC       \u2551\n  \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
+    console.log('%c[yKauttiz]%c\n  +==============================+\n  |  yKauttiz '+VER+'             |\n  |------------------------------|\n  |  + Concluidas: '+String(ok).padEnd(5)+'           |\n  |  >> Puladas:    '+String(sk).padEnd(5)+'           |\n  |  x Erros:      '+String(er).padEnd(5)+'           |\n  |  [t] Tempo:      '+t.padEnd(18)+'|'+ts2+'\n  |------------------------------|\n  |  Colete as recompensas!       |\n  |  (c) 2026 yKauttiz            |\n  |  discord.gg/G3wrqyJQrC       |\n  +==============================+','color:#57F287;font-weight:bold','color:#c0c4d6;font-family:monospace');
     if(CFG.EXPORT_LOG){window.yKauttizLog={ver:VER,sid:SID,start:new Date(T0).toISOString(),end:new Date().toISOString(),ok:ok,sk:sk,er:er,missions:mt,logs:LOG._l};LOG.i('Log exportavel: copy(JSON.stringify(window.yKauttizLog))');}
   }
 };
