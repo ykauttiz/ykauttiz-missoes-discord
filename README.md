@@ -1,7 +1,9 @@
 <div align="center">
 
 <!-- Banner -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=yKauttiz&fontSize=80&fontColor=fff&animation=twinkling&fontAlignY=35&d[...]
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=yKauttiz&fontSize=80&fontColor=fff&animation=twinkling&fontAlignY=35" />
+
+</div>
 
 <br/>
 
